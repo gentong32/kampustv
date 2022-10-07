@@ -1,0 +1,156 @@
+body
+{
+	background-color:#CCC;
+}
+
+.kosong
+{
+    height: 27px;    
+}
+
+.framekonten {
+	background-color:#FFF;
+	width:94%;
+	margin-left:3%; 
+    margin-right:3%;
+}
+
+.frameline {
+	background-color:#03C;
+	width:94%;
+	margin-left:3%; 
+    margin-right:3%;
+}
+
+.framemenu1 {
+	background-color:#FFFFFF !important;
+	vertical-align:top;
+}
+
+.frameteksmenu {
+	margin:15px 20px;
+	font-family:Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
+}
+
+.matapelajaran {
+	font-size: 14px;
+	color: #2BE323;
+}
+
+.judulmateri {
+	font-size: 24px;
+	color: #FFFFFF;
+	font-weight:bold;
+}
+
+.teksmenu {
+	font-size: 12px;
+	color: #FFFFFF;
+}
+
+.teksmenu a{
+	font-size: 12px;
+	color: #FFFFFF;
+}
+
+.teksmenu a:hover{
+	font-size: 12px;
+	color: #FFFFFF;
+	font-weight:bold;
+	text-decoration:none;
+}
+
+.teksmenu visited {
+	text-decoration:none;
+}
+
+.frameisi {
+	vertical-align:text-top;
+}
+
+.frameteksisi {
+	margin:20px 20px;
+	line-height:20px;
+	color:#000000;
+}
+
+.judulmenu {
+	font-size:22px;
+	color: #070707;
+	
+}
+
+.floating-menu {
+	position:fixed;background:#ffffff;padding:5px;top:161px;width:225px;z-index:100;
+	padding:0px 5px 5px 0px;
+	text-height:5px;
+	border: 1px solid #063;
+}
+
+#EdgeID {
+	width:545px;
+	height:394px;
+	margin-top:0px;
+	margin-bottom:0px;
+}
+
+.intrinsic-container {
+  position: relative;
+  height: 100%;
+}
+
+.intrinsic-container2 {
+  position: relative;
+  height: 90%;
+  top:500px;
+  background:#FFFFFF;
+  padding-left:10px;
+}
+ 
+/* 16x9 Aspect Ratio */
+.intrinsic-container-16x9 {
+  padding-bottom: 56.25%;
+}
+ 
+/* 4x3 Aspect Ratio */
+.intrinsic-container-4x3 {
+  padding-bottom: 75%;
+}
+ 
+.intrinsic-container iframe {
+  position: absolute;
+  top:0px;
+  width: 100%;
+  height:500px;
+  scrolling="no";
+  border:none;
+}
+
+
+@media (max-width: 799px) {
+	 .framemenu1 {
+	width:220px;
+}
+}
+
+
+@media (min-width:800px) {
+	 .framemenu1 {
+	width:30%;
+}
+}
+
+@media (min-width:850px) {
+	 .framemenu1 {
+	width:850px;
+}
+}
+
+@media (min-width:1200px){
+.framekonten {	
+	width:1100px;
+	margin-left:auto; 
+    margin-right:auto;
+}
+}
+

@@ -1,0 +1,1 @@
+<video src="../file_storage/video_belajar/slb/<?php echo $ikon.'.mp4' ?>" width="auto" height="400" controls />

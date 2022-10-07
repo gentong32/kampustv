@@ -1,0 +1,56 @@
+<?php 
+
+	require_once "session.php";
+	require_once "global.php";
+	include ("xssfunc.php");
+	error_reporting (E_ALL ^ (E_NOTICE | E_WARNING | E_DEPRECATED));
+	
+	$arg1 = $_GET['idkonten'];
+	$arg2 = $_GET['menu'];
+	
+	function callback($buffer)
+{
+	$arg1 = $_GET['idkonten'];
+	
+	
+	return(str_replace("css/", "../file_storage/kontenweb/konweb".$arg1."/css/", $buffer));
+    //return(str_replace("media/", "../file_storage/materi_pokok/mp16_1/media/", $buffer));
+}
+function callback2($buffer)
+{
+	$arg1 = $_GET['idkonten'];
+
+	//return(str_replace("css/", "../file_storage/materi_pokok/mp16_1/css/", $buffer));
+    return(str_replace("media/", "../file_storage/kontenweb/konweb".$arg1."/media/", $buffer));
+}
+ob_start("callback");
+ob_start("callback2");
+//include 'foo.php';
+
+		
+	if($arg2>1)
+	include('../file_storage/kontenweb/konweb'.$arg1.'/menu'.$arg2.'.html');
+	else
+	include('../file_storage/kontenweb/konweb'.$arg1.'/index.html'); 
+ob_end_flush();
+	?>
+    
+    <script language="javascript">
+document.getElementById("menu1").href = "/rumahbelajar/tampil_web.php?idkonten=<?php echo $arg1?>";
+document.getElementById("tambahan").innerHTML = "<p class=\"teksmenu\"><a id=\"unduh\" href=\"../file_storage/kontenweb/konweb<?php echo $arg1?>/konweb.zip\">Unduh</a></p>";
+	for (var $a=2;$a<=20;$a++)
+	{
+	document.getElementById("menu"+$a).href = "/rumahbelajar/tampil_web.php?idkonten=<?php echo $arg1?>&menu="+$a;
+	}
+	
+	$(document).ready(function(){
+	document.getElementById("menu1").href = "/rumahbelajar/tampil_web.php?idkonten=<?php echo $arg1?>";
+document.getElementById("tambahan").innerHTML = "<p class=\"teksmenu\"><a id=\"unduh\" href=\"../file_storage/kontenweb/konweb<?php echo $arg1?>/konweb.zip\">Unduh</a></p>";
+	for (var $a=2;$a<=20;$a++)
+	{
+	document.getElementById("menu"+$a).href = "/rumahbelajar/tampil_web.php?idkonten=<?php echo $arg1?>&menu="+$a;
+	}
+	
+	});
+	</script>
+   

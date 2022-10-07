@@ -1,0 +1,104 @@
+p{
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+.wb_LayoutGrid1 {
+	clear: both;
+	position: relative;
+	table-layout: fixed;
+	display: table;
+	text-align: center;
+	width: 100%;
+	background-color: transparent;
+	background-image: none;
+	border: 0px solid #CCCCCC;
+	box-sizing: border-box;
+	margin: 0;
+}
+
+.LayoutGrid1 {
+	box-sizing: border-box;
+	padding: 0px 15px 0px 15px;
+	margin-right: auto;
+	margin-left: auto;
+	max-width: 600px;
+	background-color: white;
+	vertical-align: center;
+}
+
+.LayoutGrid1 > .row {
+	margin-right: -15px;
+	margin-left: -15px;
+}
+
+.LayoutGrid1 > .row > .col-1 {
+	box-sizing: border-box;
+	font-size: 12px;
+	min-height: 10px;
+	padding-right: 15px;
+	padding-left: 15px;
+	position: relative;
+}
+
+.LayoutGrid1 > .row > .col-1 {
+	float: left;
+}
+
+.LayoutGrid1 > .row > .col-1 {
+	background-color: transparent;
+	background-image: none;
+	border: 0px solid #FFFFFF;
+	width: 100%;
+	text-align: left;
+	font-size: 16px;
+}
+
+.LayoutGrid1:before,
+.LayoutGrid1:after,
+.LayoutGrid1 .row:before,
+.LayoutGrid1 .row:after {
+	display: table;
+	content: " ";
+}
+
+.LayoutGrid1:after,
+.LayoutGrid1 .row:after {
+	clear: both;
+}
+
+@media (max-width: 480px) {
+	.LayoutGrid1 > .row > .col-1 {
+		float: none;
+		width: 100% !important;
+	}
+}
+
+.Image1 {
+	border: 0px solid #000000;
+	box-sizing: border-box;
+	padding: 0;
+	display: block;
+	width: 100%;
+	height: auto;
+	max-width: 300px;
+	text-align: left;
+	vertical-align: top;
+}
+
+.rbsoal {
+	vertical-align: center;
+	margin: auto;
+	width: 1.2em;
+	height: 1.2em;
+}
+
+.tekssoal tr td {
+	font-size: 16px;
+	font-weight:bold;
+}
+
+.tekstanya {
+	font-size: 16px;
+	font-weight:bold;
+}

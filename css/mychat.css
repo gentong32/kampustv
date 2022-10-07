@@ -1,0 +1,484 @@
+.chat_message_area {
+	position: relative;
+	width: 100%;
+	height: auto;
+	background-color: #FFF;
+	border: 1px solid #CCC;
+	border-radius: 3px;
+}
+
+#group_chat_message {
+	width: 100%;
+	height: auto;
+	min-height: 30px;
+	overflow: auto;
+	padding: 6px 24px 6px 12px;
+}
+
+
+.image_upload {
+	position: absolute;
+	top: 3px;
+	right: 3px;
+}
+
+.image_upload > form > input {
+	display: none;
+}
+
+.image_upload img {
+	width: 24px;
+	cursor: pointer;
+}
+
+.form-rounded {
+	border-radius: 50rem;
+}
+
+.btn-rounded {
+	color: #fff;
+	background-color: #007bff;
+	border-radius: 50rem;
+}
+
+.btn-rounded-success {
+	color: #fff;
+	background-color: #28a745;
+	border-radius: 50rem;
+}
+
+.btn-rounded-danger {
+	color: #fff;
+	background-color: #dc3545;
+	border-radius: 35rem;
+}
+
+.btn-rounded-info {
+	color: #fff;
+	background-color: #17a2b8;
+	border-radius: 50rem;
+}
+
+.btn-rounded-light {
+	color: #343a40;
+	background-color: #f8f9fa;
+	border-radius: 50rem;
+}
+
+.btn-rounded-dark {
+	color: #fff;
+	background-color: #343a40;
+	border-radius: 50rem;
+}
+
+.btn-rounded-warning {
+	color: #fff;
+	background-color: #ffc107;
+	border-radius: 50rem;
+}
+
+.btn-rounded-secondary {
+	color: #fff;
+	background-color: #868e96;
+	border-radius: 50rem;
+}
+
+/*
+.btn-success {
+		 color: #fff;
+		 background-color: #28a745;
+		 border-radius: 35px;
+		 border: 1px solid rgba(21, 87, 36, 0.75);
+}
+*/
+
+
+
+#wb_LayoutGrid1
+{
+	clear: both;
+	position: relative;
+	table-layout: fixed;
+	display: table;
+	text-align: center;
+	width: 100%;
+	background-color: transparent;
+	background-image: none;
+	border: 0px solid #CCCCCC;
+	box-sizing: border-box;
+	margin: 0;
+}
+#LayoutGrid1
+{
+	box-sizing: border-box;
+	padding: 0px 0px 0px 15px;
+	margin-right: auto;
+	margin-left: auto;
+	max-width: 970px;
+}
+#LayoutGrid1 > .row
+{
+	margin-right: -15px;
+	margin-left: -15px;
+}
+#LayoutGrid1 > .row > .col-1, #LayoutGrid1 > .row > .col-2
+{
+	box-sizing: border-box;
+	font-size: 13px;
+	min-height: 1px;
+	padding-right: 5px;
+	padding-left: 5px;
+	position: relative;
+}
+#LayoutGrid1 > .row > .col-1, #LayoutGrid1 > .row > .col-2
+{
+	float: left;
+}
+#LayoutGrid1 > .row > .col-1
+{
+	background-color: transparent;
+	background-image: none;
+	border: 0px solid #FFFFFF;
+	width: 40%;
+	text-align: center;
+}
+#LayoutGrid1 > .row > .col-2
+{
+	background-color: transparent;
+	background-image: none;
+	border: 0px solid #FFFFFF;
+	width: 60%;
+	text-align: center;
+}
+#LayoutGrid1:before,
+#LayoutGrid1:after,
+#LayoutGrid1 .row:before,
+#LayoutGrid1 .row:after
+{
+	display: table;
+	content: " ";
+}
+#LayoutGrid1:after,
+#LayoutGrid1 .row:after
+{
+	clear: both;
+}
+
+
+#wb_LayoutGridPilih
+{
+	clear: both;
+	position: relative;
+	table-layout: fixed;
+	display: table;
+	text-align: center;
+	width: 100%;
+	background-color: transparent;
+	background-image: none;
+	border: 0px solid #CCCCCC;
+	box-sizing: border-box;
+	margin: 0;
+}
+#LayoutGridPilih
+{
+	box-sizing: border-box;
+	padding: 0px 0px 0px 15px;
+	margin-right: auto;
+	margin-left: auto;
+	width: 100%;
+}
+#LayoutGridPilih > .row
+{
+	margin-right: -5px;
+	margin-left: -5px;
+}
+#LayoutGridPilih > .row > .col-1, #LayoutGridPilih > .row > .col-2
+{
+	box-sizing: border-box;
+	font-size: 13px;
+	min-height: 1px;
+	padding-right: 5px;
+	padding-left: 5px;
+	position: relative;
+}
+#LayoutGridPilih > .row > .col-1, #LayoutGridPilih > .row > .col-2
+{
+	float: left;
+}
+#LayoutGridPilih > .row > .col-1
+{
+	background-color: transparent;
+	background-image: none;
+	border: 0px solid #FFFFFF;
+	width: 50%;
+	min-width: 300px;
+	text-align: center;
+}
+#LayoutGridPilih > .row > .col-2
+{
+	background-color: transparent;
+	background-image: none;
+	border: 0px solid #FFFFFF;
+	width: 50%;
+	text-align: center;
+}
+#LayoutGridPilih:before,
+#LayoutGridPilih:after,
+#LayoutGridPilih .row:before,
+#LayoutGridPilih .row:after
+{
+	display: table;
+	content: " ";
+}
+#LayoutGridPilih:after,
+#LayoutGridPilih .row:after
+{
+	clear: both;
+}
+
+
+
+
+
+#grupnama
+{
+	height: 324px;
+}
+
+@media (max-width: 1000px)
+{
+	#LayoutGrid1 > .row > .col-1, #LayoutGrid1 > .row > .col-2
+	{
+		float: none;
+		width: 100% !important;
+	}
+	#grupnama
+	{
+		height: 100px;
+	}
+}
+
+#jamsekarang
+{
+	padding-bottom:0px;
+	padding-top:25px;
+	float: right;
+	margin-right: 20px
+}
+
+@media (max-width: 700px)
+{
+	#jamsekarang {
+		float: none;
+		margin-left: auto;
+		margin-right: auto;
+		text-align: center;
+	}
+
+	#LayoutGridPilih > .row > .col-1, #LayoutGridPilih > .row > .col-2
+	{
+		float: none;
+		width: 100% !important;
+	}
+	#grupnama
+	{
+		height: 100px;
+	}
+}
+
+#Table1
+{
+	border: 2px solid #C0C0C0;
+	background-color: transparent;
+	background-image: none;
+	border-collapse: separate;
+	border-spacing: 1px;
+	margin: 0;
+}
+#Table1 td
+{
+	padding: 0;
+}
+#Table1 td div
+{
+	white-space: nowrap;
+}
+#Table1 p, #Table1 ul
+{
+	margin: 0;
+	padding: 0;
+}
+#Table1 .cell0
+{
+	background-color: transparent;
+	background-image: none;
+	border: 1px #C0C0C0 solid;
+	text-align: left;
+	vertical-align: top;
+	color: #000000;
+	font-family: Arial;
+	font-size: 13px;
+	line-height: 16px;
+}
+#wb_LayoutGrid2
+{
+	clear: both;
+	position: relative;
+	table-layout: fixed;
+	display: table;
+	text-align: center;
+	width: 100%;
+	background-color: transparent;
+	background-image: none;
+	border: 0px solid #CCCCCC;
+	box-sizing: border-box;
+	margin: 0;
+}
+#LayoutGrid2
+{
+	box-sizing: border-box;
+	padding: 0px 15px 0px 15px;
+	margin-right: auto;
+	margin-left: auto;
+}
+#LayoutGrid2 > .row
+{
+	margin-right: -15px;
+	margin-left: -15px;
+}
+#LayoutGrid2 > .row > .col-1
+{
+	box-sizing: border-box;
+	font-size: 13px;
+	min-height: 1px;
+	padding-right: 5px;
+	padding-left: 15px;
+	position: relative;
+}
+#LayoutGrid2 > .row > .col-1
+{
+	float: left;
+}
+#LayoutGrid2 > .row > .col-1
+{
+	background-color: transparent;
+	background-image: none;
+	border: 0px solid #FFFFFF;
+	width: 100%;
+	text-align: left;
+}
+#LayoutGrid2:before,
+#LayoutGrid2:after,
+#LayoutGrid2 .row:before,
+#LayoutGrid2 .row:after
+{
+	display: table;
+	content: " ";
+}
+#LayoutGrid2:after,
+#LayoutGrid2 .row:after
+{
+	clear: both;
+}
+@media (max-width: 480px)
+{
+	#LayoutGrid2 > .row > .col-1
+	{
+		float: none;
+		width: 100% !important;
+	}
+}
+#wb_LayoutGrid3
+{
+	clear: both;
+	position: relative;
+	table-layout: fixed;
+	display: table;
+	text-align: center;
+	width: 100%;
+	background-color: transparent;
+	background-image: none;
+	border: 0px solid #CCCCCC;
+	box-sizing: border-box;
+	margin: 0;
+}
+#LayoutGrid3
+{
+	box-sizing: border-box;
+	padding: 0px 15px 0px 15px;
+	margin-right: auto;
+	margin-left: auto;
+}
+#LayoutGrid3 > .row
+{
+	margin-right: -15px;
+	margin-left: -15px;
+}
+#LayoutGrid3 > .row > .col-1
+{
+	box-sizing: border-box;
+	font-size: 13px;
+	min-height: 1px;
+	padding-right: 5px;
+	padding-left: 15px;
+	position: relative;
+}
+#LayoutGrid3 > .row > .col-1
+{
+	float: left;
+}
+#LayoutGrid3 > .row > .col-1
+{
+	background-color: transparent;
+	background-image: none;
+	border: 0px solid #FFFFFF;
+	width: 100%;
+	text-align: left;
+}
+#LayoutGrid3:before,
+#LayoutGrid3:after,
+#LayoutGrid3 .row:before,
+#LayoutGrid3 .row:after
+{
+	display: table;
+	content: " ";
+}
+#LayoutGrid3:after,
+#LayoutGrid3 .row:after
+{
+	clear: both;
+}
+@media (max-width: 480px)
+{
+	#LayoutGrid3 > .row > .col-1
+	{
+		float: none;
+		width: 100% !important;
+	}
+}
+#wb_Text1
+{
+	background-color: transparent;
+	background-image: none;
+	border: 0px solid #000000;
+	padding: 0;
+	margin: 0;
+	text-align: left;
+}
+#wb_Text1 div
+{
+	text-align: left;
+}
+#wb_Text2
+{
+	background-color: transparent;
+	background-image: none;
+	border: 0px solid #000000;
+	padding: 0;
+	margin: 0;
+	text-align: left;
+}
+#wb_Text2 div
+{
+	text-align: left;
+}

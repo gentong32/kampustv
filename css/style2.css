@@ -1,0 +1,348 @@
+.text-wrap {
+	white-space: initial;
+	word-break: break-word;
+}
+.width-50 {
+	min-width: 10px;
+}
+
+.ratakanan {
+	text-align:center;
+}
+
+.indukplay {
+	width: 100%;
+	top:0px;
+}
+
+.iframe-container {
+	overflow: hidden;
+	/*padding-top: 30%;*/
+	position: relative;
+}
+
+.iframe-container iframe {
+	border: 0;
+	height: 100%;
+	left: 0;
+	position: relative;
+	top: 65px;
+	width: 100%;
+}
+
+.columnvodbimbel {
+	flex: 25%;
+	max-width: 25%;
+}
+
+@media screen and (max-width: 1400px) {
+	.columnmenu {
+		flex: 30%;
+		max-width: 30%;
+		display: none;
+	}
+
+	.columnvod {
+		flex: 20%;
+		max-width: 20%;
+	}
+
+	.columnvodbimbel {
+		flex: 25%;
+		max-width: 25%;
+	}
+
+	.thumbbimbel {
+		width:220px;
+		height:140px;
+	}
+
+	.indukplay {
+		width: 50%;
+	}
+
+	.avatar {
+		height: 120px;
+	}
+	.lebarikon {
+		width:120px;
+	}
+
+	.slider {
+		width: 80%;
+	}
+}
+
+@media screen and (max-width: 1100px) {
+
+	.columnmenu {
+		flex: 100%;
+		max-width: 100%;
+		display: none;
+	}
+
+	.columnvod {
+		flex: 30%;
+		max-width: 30%;
+	}
+
+	.columnvodbimbel {
+		flex: 33.3%;
+		max-width: 33.3%;
+	}
+
+	.thumbbimbel {
+		width:220px;
+		height:140px;
+	}
+
+	.indukplay {
+		width: 60%;
+	}
+
+	.avatar {
+		height: 120px;
+		padding-bottom: 20px;
+	}
+	.lebarikon {
+		width:120px;
+		padding-bottom: 20px;
+	}
+
+	.slider {
+		width: 80%;
+	}
+}
+
+@media screen and (max-width: 950px) {
+
+	.columnmenu {
+		flex: 50%;
+		max-width: 50%;
+	}
+
+	.columnvod {
+		flex: 50%;
+		max-width: 50%;
+	}
+
+	.columnvodbimbel {
+		flex: 50%;
+		max-width: 50%;
+	}
+
+	.thumbbimbel {
+		width:176px;
+		height:112px;
+	}
+
+	.indukplay {
+		width: 60%;
+	}
+
+	.avatar {
+		height: 120px;
+		padding-bottom: 20px;
+	}
+	.lebarikon {
+		width:100px;
+		padding-bottom: 20px;
+	}
+
+	.slider {
+		width: 80%;
+	}
+}
+
+@media screen and (max-width: 766px) {
+
+	.columnmenu {
+		flex: 100%;
+		max-width: 100%;
+		display: none;
+	}
+
+	.columnvod {
+		flex: 100%;
+		max-width: 100%;
+	}
+
+	.columnvodbimbel {
+		flex: 50%;
+		max-width: 50%;
+	}
+
+	.thumbbimbel {
+		width:176px;
+		height:112px;
+	}
+
+	.indukplay {
+		margin-top:20px;
+		width: 60%;
+	}
+
+	.avatar {
+		height: 120px;
+		padding-bottom: 20px;
+	}
+	.lebarikon {
+		width:120px;
+		padding-bottom: 20px;
+	}
+
+	.slider {
+		width: 80%;
+	}
+
+}
+
+/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+
+	.columnmenu {
+		flex: 100%;
+		max-width: 100%;
+		display: none;
+	}
+
+	.columnvod {
+		flex: 100%;
+		max-width: 100%;
+	}
+
+	.columnvodbimbel {
+		flex: 50%;
+		max-width: 50%;
+	}
+
+	.rowvod {
+		padding: 10px 10px;
+	}
+
+	.grup {
+		color: #0c0c0c;
+	}
+
+	.thumbbimbel {
+		width:150px;
+		height:100px;
+
+	}
+
+	.indukplay {
+		width: 90%;
+	}
+
+	#video-youtube{
+		max-width: 97%;
+		width: 97%;
+		height: 100%;
+		/*position: fixed;*/
+		top: 130px;
+		text-align: center;
+		alignment: center;
+	}
+
+	#video-placeholder {
+		text-align: center;
+		margin-left: auto;
+		margin-right: auto;
+		margin-bottom: 10px;
+		width: auto;
+		height: auto;
+	}
+
+	.avatar {
+		height: 50px;
+		padding-bottom: 20px;
+	}
+	.lebarikon {
+		width:50px;
+		padding-bottom: 20px;
+		font-size:10px;
+	}
+
+	.slider {
+		width: 95%;
+	}
+
+	#video_playermp4 {
+		width: 100%;
+	}
+}
+
+@media screen and (max-width: 400px) {
+
+	.columnmenu {
+		flex: 100%;
+		max-width: 100%;
+		display: none;
+	}
+
+	.columnvod {
+		flex: 100%;
+		max-width: 100%;
+	}
+
+	.columnvodbimbel {
+		flex: 50%;
+		width: 50%;
+	}
+
+	.rowvod {
+		padding: 10px 10px;
+	}
+
+	.grup {
+		color: #0c0c0c;
+	}
+
+	.thumbbimbel {
+		width:120px;
+		height:76px;
+		margin: auto;
+		padding: 0;
+	}
+
+	.indukplay {
+		width: 90%;
+	}
+
+	#video-youtube{
+		max-width: 97%;
+		width: 97%;
+		height: 100%;
+		/*position: fixed;*/
+		top: 130px;
+		text-align: center;
+		alignment: center;
+	}
+
+	#video-placeholder {
+		text-align: center;
+		margin-left: auto;
+		margin-right: auto;
+		margin-bottom: 10px;
+		width: auto;
+		height: auto;
+	}
+
+	.avatar {
+		height: 50px;
+		padding-bottom: 20px;
+	}
+	.lebarikon {
+		width:50px;
+		padding-bottom: 20px;
+		font-size:10px;
+	}
+
+	.slider {
+		width: 95%;
+	}
+
+	#video_playermp4 {
+		width: 100%;
+	}
+}

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zxx">
+<?php require_once('head.php'); ?>
+<body>
+<div id="wrapper">
+	<?php
+	require_once('header_umum.php');
+	require_once('konten.php');
+	?>
+	<a href="#" id="back-to-top"></a>
+	<?php require_once('footer.php'); ?>
+</div>
+<?php require_once('calljs.php'); ?>
+</body>
+</html>
+
+<script>
+function pilihpropinsi() {
+	if ($('#ipropinsi').val()>0)
+	{
+		window.open('<?php echo base_url();?>perwakilan/propinsi/' + $('#ipropinsi').val(), '_self');
+	}
+	else
+	{
+		window.open('<?php echo base_url();?>perwakilan', '_self');
+	}
+}
+</script>
