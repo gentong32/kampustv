@@ -43,7 +43,7 @@ else
 						<li><a href="<?php echo base_url() . 'profil/profil_diri'; ?>"><i
 									class="fa fa-user green_color"></i> <span>Profil Saya</span></a></li>
 						<li><a href="<?php echo base_url() . 'profil/sekolah'; ?>"><i
-									class="fa fa-university blue1_color"></i> <span>Sekolah Saya</span></a></li>
+									class="fa fa-university blue1_color"></i> <span>Kampus Saya</span></a></li>
 						<?php if ($this->session->userdata('verifikator') == 1){ ?>
 						<li><a href="<?php echo base_url() . 'event/calon_verifikator'; ?>"><i
 									class="fa fa-star green_color"></i> <span>Event Calon Verifikator</span></a></li>
@@ -204,7 +204,7 @@ else
 						<li><a href="<?php echo base_url() . 'profil/profil_diri'; ?>"><i
 									class="fa fa-user green_color"></i> <span>Profil Saya</span></a></li>
 						<li><a href="<?php echo base_url() . 'profil/sekolah'; ?>"><i
-									class="fa fa-university blue1_color"></i> <span>Sekolah Saya</span></a></li>
+									class="fa fa-university blue1_color"></i> <span>Kampus Saya</span></a></li>
 						<?php if ($jmldonasi>0){ ?>
 							<li><a href="<?php echo base_url() . 'profil/donasi'; ?>"><i
 										class="fa fa-university blue1_color"></i> <span>Donasi Saya</span></a></li>
@@ -214,10 +214,10 @@ else
 						if($this->session->userdata('verifikator')==3){ ?>
 							<li>
 						<a href="#elementpla" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i
-									class="fa fa-television blue1_color"></i> <span>Playlist Sekolah</span></a>
+									class="fa fa-television blue1_color"></i> <span>Playlist Kampus</span></a>
 							<ul class="collapse list-unstyled" id="elementpla">
-								<li><a href="<?php echo base_url()."channel/playlistsekolah/dashboard";?>">> <span>Daftar Playlist Sekolah</span></a></li>
-								<li><a href="<?php echo base_url()."channel/pilihsiaran";?>">> <span>MCR Siaran TV Sekolah</span></a></li>
+								<li><a href="<?php echo base_url()."channel/playlistsekolah/dashboard";?>">> <span>Daftar Playlist Kampus</span></a></li>
+								<li><a href="<?php echo base_url()."channel/pilihsiaran";?>">> <span>MCR Siaran TV Kampus</span></a></li>
 							</ul>
 						</li>
 										<?php } ?>
@@ -232,10 +232,10 @@ else
 					<?php if($this->session->userdata('verifikator')==3){ ?>
 						<li>
 						<a href="#elementpla" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i
-									class="fa fa-television blue1_color"></i> <span>Playlist Sekolah</span></a>
+									class="fa fa-television blue1_color"></i> <span>Playlist Kampus</span></a>
 							<ul class="collapse list-unstyled" id="elementpla">
-								<li><a href="<?php echo base_url()."channel/playlistsekolah/dashboard";?>">> <span>Daftar Playlist Sekolah</span></a></li>
-								<li><a href="<?php echo base_url()."channel/pilihsiaran";?>">> <span>MCR Siaran TV Sekolah</span></a></li>
+								<li><a href="<?php echo base_url()."channel/playlistsekolah/dashboard";?>">> <span>Daftar Playlist Kampus</span></a></li>
+								<li><a href="<?php echo base_url()."channel/pilihsiaran";?>">> <span>MCR Siaran TV Kampus</span></a></li>
 							</ul>
 						</li>
 
@@ -243,7 +243,7 @@ else
 						<li><a href="#elementtrans" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i
 									class="fa fa-money yellow_color"></i> <span>Transaksi</span></a>
 							<ul class="collapse list-unstyled" id="elementtrans">
-								<li><a href="<?php echo base_url() . 'profil/pembayaran'; ?>">> <span>Iuran Sekolah</span></a></li>
+								<li><a href="<?php echo base_url() . 'profil/pembayaran'; ?>">> <span>Iuran Kampus</span></a></li>
 								<?php if($this->session->userdata('verifikator')!=3){ ?>
 									<li><a href="<?php echo base_url() . 'tutor/transaksi'; ?>">> <span>Transaksi Bimbel</span></a></li>
 								<?php } else { ?>
@@ -276,16 +276,16 @@ else
 							<ul class="collapse list-unstyled" id="element3">
 								<li><a href="<?php echo base_url().'bimbel/modul_saya'; ?>">> <span>Modul Bimbel</span></a></li>
 								<?php if ($this->session->userdata("verifikator")==3) { ?>
-									<li><a href="<?php echo base_url()."virtualkelas/event/";?>">> <span>Modul Sekolah Saya</span></a></li>
-									<li><a href="<?php echo base_url()."virtualkelas/modul/";?>">> <span>Modul Sekolah Guru</span></a></li>
+									<li><a href="<?php echo base_url()."virtualkelas/event/";?>">> <span>Modul Kampus Saya</span></a></li>
+									<li><a href="<?php echo base_url()."virtualkelas/modul/";?>">> <span>Modul Kampus Dosen</span></a></li>
 								<?php }
 								else
 								{ ?>
-									<li><a href="<?php echo base_url()."virtualkelas/sekolah_saya/";?>">> <span>Dashboard Modul Sekolah</span></a></li>
+									<li><a href="<?php echo base_url()."virtualkelas/sekolah_saya/";?>">> <span>Dashboard Modul Kampus</span></a></li>
 									<?php if ($profilku->referrer!="") { ?>
-											<li><a href="<?php echo base_url()."virtualkelas/event";?>">> <span>Tambah Modul Sekolah</span></a></li>
+											<li><a href="<?php echo base_url()."virtualkelas/event";?>">> <span>Tambah Modul Kampus</span></a></li>
 										<?php } ?>
-									<li><a href="<?php echo base_url()."virtualkelas/modul/";?>">> <span>Daftar Modul Sekolah</span></a></li>
+									<li><a href="<?php echo base_url()."virtualkelas/modul/";?>">> <span>Daftar Modul Kampus</span></a></li>
 								<?php } ?>
 							</ul>
 						</li>
@@ -295,11 +295,11 @@ else
 							<a href="#elementkv" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i
 									class="fa fa-folder blue2_color"></i> <span>Kelas Virtual</span></a>
 							<ul class="collapse list-unstyled" id="elementkv">
-								<li><a href="<?php echo base_url()."virtualkelas/sekolah_saya/";?>">> <span>Dashboard Modul Sekolah</span></a></li>
+								<li><a href="<?php echo base_url()."virtualkelas/sekolah_saya/";?>">> <span>Dashboard Modul Kampus</span></a></li>
 								<?php if ($profilku->referrer!="") { ?>
-											<li><a href="<?php echo base_url()."virtualkelas/event";?>">> <span>Tambah Modul Sekolah</span></a></li>
+											<li><a href="<?php echo base_url()."virtualkelas/event";?>">> <span>Tambah Modul Kampus</span></a></li>
 										<?php } ?>
-								<li><a href="<?php echo base_url()."virtualkelas/modul";?>">> <span>Daftar Modul Sekolah</span></a></li>
+								<li><a href="<?php echo base_url()."virtualkelas/modul";?>">> <span>Daftar Modul Kampus</span></a></li>
 							</ul>
 						</li>
 					<?php }
@@ -309,8 +309,8 @@ else
 					<?php } else if ($profilku->statususer == 1) { ?>
 						<li><a href="<?php echo base_url();?>" onclick="balikkedepan();"><i class="fa fa-home purple_color2"></i>
 								<span>Beranda</span></a></li>
-						<li><a href="<?php echo base_url() . 'login/profile/'; ?>"><i
-									class="fa fa-user yellow_color"></i> <span>Profil Saya</span></a></li>
+						<!-- <li><a href="<?php //echo base_url() . 'login/profile/'; ?>"><i
+									class="fa fa-user yellow_color"></i> <span>Profil Saya</span></a></li> -->
 						<li><a href="<?php echo base_url() . 'profil/'; ?>"><i
 									class="fa fa-dashboard yellow_color"></i> <span>Dashboard</span></a></li>
 						<li>

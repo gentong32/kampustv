@@ -51,6 +51,7 @@ class Video extends CI_Controller
 
 		$data['statusvideo'] = 'semua';
 		$data['linkdari'] = "video";
+		
 		$data['kembali'] = $adakembali;
 		$data['kodemodul'] = $kodemodul;
 		$data['bulan'] = $bulan;
@@ -63,15 +64,18 @@ class Video extends CI_Controller
 			$this->saya();
 
 		$id_user = $this->session->userdata('id_user');
+		$npsn = $this->session->userdata('npsn');
+		$getuser = getstatususer();
+		$prodi = $getuser["kelasku"];
+		
 		if ($this->session->userdata('a01')) {
 			$data['dafvideo'] = $this->M_video->getVideoAll();
 			$data['statusvideo'] = 'admin';
-
 		} else if ($this->session->userdata('sebagai') == 4 && $this->session->userdata('verifikator')==3) {
 			$data['dafvideo'] = $this->M_video->getVideoAll();
 			$data['statusvideo'] = 'fordorum';
 		} else if ($this->session->userdata('a02') && $this->session->userdata('sebagai') != 4) {
-			$data['dafvideo'] = $this->M_video->getVideoSekolah($this->session->userdata('npsn'));
+			$data['dafvideo'] = $this->M_video->getVideoSekolah($npsn, $prodi);
 			$data['statusvideo'] = 'sekolah';
 		} else if ($this->session->userdata('a03')) {
 			$data['dafvideo'] = $this->M_video->getVideoUser($id_user);
@@ -83,6 +87,7 @@ class Video extends CI_Controller
 			redirect("/");
 		}
 
+		
 		$this->load->view('layout/wrapper_tabel', $data);
 	}
 
@@ -110,11 +115,13 @@ class Video extends CI_Controller
 
 		$getstatus = getstatusverifikator();
 		$data['status_verifikator'] = $getstatus['status_verifikator'];
+		$getuser = getstatususer();
+		$prodi = $getuser['kelasku'];
 
 		$data['opsi'] = $opsi;
 
 		if ($this->session->userdata('sebagai') == 1) {
-			$data['dafvideo'] = $this->M_video->getVideoSekolah($this->session->userdata('npsn'),"saya",0);
+			$data['dafvideo'] = $this->M_video->getVideoSekolah($this->session->userdata('npsn'),$prodi,"saya",0,null,null,null,$prodi);
 			if ($this->session->userdata('verifikator') == 3)
 				$data['statusvideo'] = 'sekolahsaya';
 			else if ($this->session->userdata('kontributor') == 3)
@@ -122,7 +129,7 @@ class Video extends CI_Controller
 
 		} else if ($this->session->userdata('bimbel') == 3) {
 
-			$data['dafvideo'] = $this->M_video->getVideoSekolah(null,"saya",0);
+			$data['dafvideo'] = $this->M_video->getVideoSekolah(null,null,"saya",0);
 			$data['statusvideo'] = 'bimbelsaya';
 //			echo "<pre>";
 //			echo var_dump($data['dafvideo']);
@@ -130,7 +137,7 @@ class Video extends CI_Controller
 //			die();
 		} else if ($this->session->userdata('bimbel') == 4) {
 
-			$data['dafvideo'] = $this->M_video->getVideoSekolah(null,"saya",0);
+			$data['dafvideo'] = $this->M_video->getVideoSekolah(null,null,"saya",0);
 			$data['statusvideo'] = 'bimbelsaya';
 //			echo "<pre>";
 //			echo var_dump($data['dafvideo']);
@@ -355,9 +362,6 @@ class Video extends CI_Controller
 		$data['linkdari'] = "video";
 		$data['addedit'] = "edit";
 		$data['asal'] = $asal;
-		$data['dafjenjang'] = $this->M_video->getAllJenjang();
-		$data['dafkategori'] = $this->M_video->getAllKategori();
-		$data['dafkurikulum'] = $this->M_video->getKurikulum();
 		$data['datavideo'] = $this->M_video->getVideo($id_video);
 
 		$iduservideo = $data['datavideo']['id_user'];
@@ -365,13 +369,6 @@ class Video extends CI_Controller
 		redirect("/");
 		
 		if ($data['datavideo']) {
-			$data['dafkelas'] = $this->M_video->dafKelas($data['datavideo']['id_jenjang']);
-
-			$data['dafmapel'] = $this->M_video->dafMapel($data['datavideo']['id_jenjang'], $data['datavideo']['id_jurusan']);
-
-			$data['dafjurusan'] = $this->M_video->dafJurusan();
-			$data['dafjurusanpt'] = $this->M_video->dafJurusanPT();
-
 			$data['idvideo'] = $id_video;
 
 			$data['jenisvideo'] = "mp4";
@@ -380,9 +377,6 @@ class Video extends CI_Controller
 				//$data['infodurasi'] = $this->getVideoInfo($idyoutube);
 				$data['jenisvideo'] = "yt";
 			}
-
-			$data['dafkd1'] = $this->M_video->dafKD($data['datavideo']['kdnpsn'], $data['datavideo']['kdkur'], $data['datavideo']['id_kelas'], $data['datavideo']['id_mapel'], $data['datavideo']['id_ki1']);
-			$data['dafkd2'] = $this->M_video->dafKD($data['datavideo']['kdnpsn'], $data['datavideo']['kdkur'], $data['datavideo']['id_kelas'], $data['datavideo']['id_mapel'], $data['datavideo']['id_ki2']);
 			$this->load->view('layout/wrapper_tabel', $data);
 		} else {
 			redirect("/");
@@ -820,12 +814,12 @@ class Video extends CI_Controller
 		}
 		$data['channeltitle'] = $this->input->post('ichannel');
 		$data['channelid'] = $this->input->post('ichannelid');
-		$data['id_jenis'] = $this->input->post('ijenis');
-		$data['id_jenjang'] = $this->input->post('ijenjang');
-		$data['id_kelas'] = $this->input->post('ikelas');
-		$data['id_mapel'] = $this->input->post('imapel');
-		$data['kdnpsn'] = $this->input->post('istandar');
-		$data['kdkur'] = $this->input->post('ikurikulum');
+		$data['id_jenis'] = 0;
+		$data['id_jenjang'] = 0;
+		$data['id_kelas'] = 0;
+		$data['id_mapel'] = 0;
+		$data['kdnpsn'] = 0;
+		$data['kdkur'] = 0;
 		if ($data['id_jenjang'] == 2)
 			$data['id_tematik'] = $this->input->post('itema');
 		else
@@ -836,6 +830,10 @@ class Video extends CI_Controller
 			$data['id_jurusan'] = 0;
 //        echo $data['id_jurusan'];
 //        die();
+
+		$npsn = $this->session->userdata('npsn');
+		$getuser = getstatususer();
+		$prodi = $getuser['kelasku'];
 
 		$data['id_ki1'] = $this->input->post('iki1');
 		$data['id_ki2'] = $this->input->post('iki2');
@@ -864,12 +862,17 @@ class Video extends CI_Controller
 				$data['npsn_user']="";
 			else
 				$data['npsn_user'] = $this->session->userdata('npsn');
+			$data['kd_prodi_user'] = $prodi;
 			if ($data['link_video'] != "") {
 				$data['durasi'] = $data['durasi'];
 				$data['thumbnail'] = $this->input->post('ytube_thumbnail');
 				$data['id_youtube'] = $this->input->post('idyoutube');
 			}
-			$data['kode_video'] = base_convert(microtime(false), 10, 36);
+			$angka = microtime(false);
+			$angka2 = str_replace(".","",$angka);
+			$angka2 = str_replace(" ","",$angka2);
+			$kode_video = base_convert($angka2, 10, 36);
+			$data['kode_video'] = $kode_video;
 		} else {
 			//$data['kode_video'] = base_convert($this->input->post('created'),10,16);
 		}
@@ -895,28 +898,27 @@ class Video extends CI_Controller
 		}
 
 
-		if ($data['id_jenis'] == 1) {
-			$data['id_kategori'] = 0;
-		} else {
-			$data['id_jenjang'] = 0;
-			$data['id_kelas'] = 0;
-			$data['id_mapel'] = 0;
-			$data['id_ki1'] = 0;
-			$data['id_ki2'] = 0;
-			$data['id_kd1_1'] = 0;
-			$data['id_kd1_2'] = 0;
-			$data['id_kd1_3'] = 0;
-			$data['id_kd2_1'] = 0;
-			$data['id_kd2_2'] = 0;
-			$data['id_kd2_3'] = 0;
-		}
+		$data['id_kategori'] = 0;
+		$data['id_jenjang'] = 0;
+		$data['id_kelas'] = 0;
+		$data['id_mapel'] = 0;
+		$data['id_ki1'] = 0;
+		$data['id_ki2'] = 0;
+		$data['id_kd1_1'] = 0;
+		$data['id_kd1_2'] = 0;
+		$data['id_kd1_3'] = 0;
+		$data['id_kd2_1'] = 0;
+		$data['id_kd2_2'] = 0;
+		$data['id_kd2_3'] = 0;
+		
 
 		// $this->load->model("M_marketing");
 		// $this->M_marketing->updateCalVerDafUser('videokontri',$this->session->userdata('id_user'));
 
 		if ($this->input->post('addedit') == "add") {
 			$idbaru = $this->M_video->addVideo($data);
-			$this->M_video->updatejmlvidsekolah($this->session->userdata('npsn'));
+
+			$this->M_video->updatejmlvidsekolah($npsn, $prodi);
 			if ($asal=='bimbel')
 				redirect('video/bimbel/dashboard');
 			else if ($asal=='saya')
@@ -928,7 +930,7 @@ class Video extends CI_Controller
 			//redirect('video/edit/'.$idbaru);
 		} else {
 			$this->M_video->editVideo($data, $this->input->post('id_video'));
-			$this->M_video->updatejmlvidsekolah($this->session->userdata('npsn'));
+			$this->M_video->updatejmlvidsekolah($npsn, $prodi);
 			if ($asal=='bimbel')
 				redirect('video/bimbel/dashboard');
 			else if ($asal=='saya')

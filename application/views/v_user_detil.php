@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$txt_sebagai = Array('', 'Guru', 'Siswa', 'Umum', 'Staf Fordorum');
+$txt_sebagai = Array('', 'Dosen', 'Mahasiswa', 'Umum', 'Staf Fordorum');
 $nmbulan = Array('', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September',
 	'Oktober', 'November', 'Desember');
 
@@ -174,10 +174,32 @@ if ($userData['sebagai'] == "" || $userData['sebagai'] == "99" ||
 										$userData['sebagai'] == 3) echo 'none';
 									else echo 'block'; ?>">
 
-										<legend>Data Sekolah</legend>
+										<legend>Data Kampus</legend>
 
 										<div class="form-group">
-											<label for="inputDefault" class="col-md-12 control-label">NPSN</label>
+											<label for="inputDefault" class="col-md-12 control-label">Kode Prodi</label>
+											<div class="col-md-12">
+												<input readonly type="text" class="form-control" id="iprodi" name="iprodi"
+													   maxlength="10"
+													   value="<?php
+													   echo $userData['kd_prodi']; ?>" placeholder="Kode Prodi">
+
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label for="inputDefault" class="col-md-12 control-label">Nama Prodi</label>
+											<div class="col-md-12">
+												<input readonly type="text" class="form-control" id="prodi" name="prodi"
+													   maxlength="10"
+													   value="<?php
+													   echo $userData['nama_prodi']; ?>" placeholder="Nama Prodi">
+
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label for="inputDefault" class="col-md-12 control-label">Kode Kampus (NPSN)</label>
 											<div class="col-md-12">
 												<input readonly type="text" class="form-control" id="inpsn" name="inpsn"
 													   maxlength="10"
@@ -188,7 +210,7 @@ if ($userData['sebagai'] == "" || $userData['sebagai'] == "99" ||
 										</div>
 
 										<div class="form-group">
-											<label for="inputDefault" class="col-md-12 control-label">Sekolah</label>
+											<label for="inputDefault" class="col-md-12 control-label">Nama Kampus</label>
 											<div class="col-md-12">
 												<input readonly type="text" class="form-control" id="isekolah"
 													   name="isekolah"
@@ -200,7 +222,7 @@ if ($userData['sebagai'] == "" || $userData['sebagai'] == "99" ||
 
 										<div class="form-group">
 											<label for="inputDefault"
-												   class="col-md-12 control-label">NUPTK/NISN/NIP</label>
+												   class="col-md-12 control-label">NIDN / NUP</label>
 											<div class="col-md-12">
 												<input readonly type="text" class="form-control" id="inomor"
 													   name="inomor"
@@ -237,9 +259,9 @@ if ($userData['sebagai'] == "" || $userData['sebagai'] == "99" ||
 															}
 														   
 													   else if ($userData['kontributor'] == 2)
-														   echo 'Calon kontributor';
+														   echo 'Calon Dosen';
 													   else if ($userData['kontributor'] == 3)
-														   echo 'Kontributor'; ?>">
+														   echo 'Dosen'; ?>">
 												<?php if ($userData['kontributor'] == 3) { ?>
 													<label for="inputDefault" style="margin-left: 0px;">
 													- Tanggal Kontributor: <?php echo $tgl_pengajuan; ?> <br>
@@ -294,7 +316,7 @@ if ($userData['sebagai'] == "" || $userData['sebagai'] == "99" ||
 									<input type="hidden" id="kondisi" name="kondisi" value="9"/>
 									<input type="hidden" id="kondisibayar" name="kondisibayar" value="9"/>
 									<input type="hidden" id="id_user" name="id_user"
-										   value="<?php echo $userData['id']; ?>"/>
+										   value="<?php echo $userData['kd_user']; ?>"/>
 									<input type="hidden" id="npsn" name="npsn"
 										   value="<?php echo $userData['npsn']; ?>"/>
 									<input type="hidden" id="nm_sekolah" name="nm_sekolah"
@@ -337,7 +359,7 @@ if ($userData['sebagai'] == "" || $userData['sebagai'] == "99" ||
 											($userData['kontributor'] == 1 && $this->session->userdata('verifikator')==1)) && $userData['activate']==1) { ?>
 												<button style="margin: 5px;" <?php if ($this->session->userdata('a02'))
 													echo 'onclick="return gantikondisi(3)"';
-												?> type="submit" class="btn btn-primary">Setujui Menjadi Kontributor
+												?> type="submit" class="btn btn-primary">Setujui Menjadi Dosen
 												</button>
 											<?php } ?>
 

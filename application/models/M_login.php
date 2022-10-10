@@ -49,7 +49,7 @@ class M_login extends CI_Model
 
 	public function getidkota($npsn)
 	{
-		$this->db->where('npsn', $npsn);
+		$this->db->where('npsn_sekolah', $npsn);
 		$this->db->from('daf_sekolah');
 		$query = $this->db->get();
 		$ret = $query->row();
@@ -212,7 +212,7 @@ class M_login extends CI_Model
 	public function ambilUserSosmed($userID)
 	{
 		$con = array(
-			'tb_user.kd_user' => $userID
+			'tb_user.kd_user' => intval($userID)
 		);
 		$this->db->where($con);
 		$this->db->select('tb_user.*,id_jenjang');
@@ -225,7 +225,7 @@ class M_login extends CI_Model
 
 		$data['modified'] = $tglsekarang;
 //		$data['activate'] = true;
-		$update = $this->db->update($this->table, $data, array('id' => $userID));
+		$update = $this->db->update($this->table, $data, array('id' => intval($userID)));
 
 		return $hasil;
 	}
@@ -318,9 +318,23 @@ class M_login extends CI_Model
 
 	public function getUser($id)
 	{
-		$query = $this->db->get_where('tb_user', array('kd_user' => $id));
-		return $query->row_array();
+		$this->db->from('tb_user tu');
+		$this->db->join('daf_chn_sekolah dc','dc.npsn_sekolah = tu.npsn','left');
+		$this->db->where('kd_user', $id);
+		$result = $this->db->get()->row_array();
+		return $result;
 	}
+
+	public function getUserById($id)
+	{
+		$this->db->from('tb_user tu');
+		$this->db->join('daf_chn_sekolah dc','dc.npsn_sekolah = tu.npsn','left');
+		$this->db->where('tu.id', $id);
+		$result = $this->db->get()->row_array();
+		return $result;
+	}
+
+	
 
 	public function getUserVokus($id)
 	{
@@ -438,9 +452,9 @@ class M_login extends CI_Model
 	function getsekolah($npsn)
 	{
 		$this->db->select('dc.*,dk.nama_kota');
-		$this->db->from('daf_chn_sekolah dc');
-		$this->db->join('daf_kota dk', 'dk.id_kota = dc.idkota', 'left');
-		$this->db->where('npsn', $npsn);
+		$this->db->from('daf_sekolah dc');
+		$this->db->join('daf_kota dk', 'dk.id_kota = dc.id_kota', 'left');
+		$this->db->where('npsn_sekolah', $npsn);
 		$result = $this->db->get()->result();
 		return $result;
 	}
@@ -521,8 +535,8 @@ class M_login extends CI_Model
 
 	public function getLogo($npsn)
 	{
-		$this->db->where('npsn', $npsn);
-		$this->db->from('daf_chn_sekolah');
+		$this->db->where('npsn_sekolah', $npsn);
+		$this->db->from('daf_sekolah');
 		$query = $this->db->get();
 		$result = $query->row();
 		if ($result)
@@ -535,7 +549,7 @@ class M_login extends CI_Model
 	{
 		$this->db->from('daf_sekolah ds');
 		$this->db->join('daf_kota dk', 'dk.id_kota = ds.id_kota', 'left');
-		$this->db->where('npsn', $npsn);
+		$this->db->where('npsn_sekolah', $npsn);
 		$query = $this->db->get();
 		$result = $query->row();
 		return $result;
@@ -651,15 +665,15 @@ class M_login extends CI_Model
 		return $result;
 	}
 
-	public function dafprodi($npsn,$kodeprodi,$kduser)
+	public function dafprodi($npsn,$kodeprodi=null,$kduser=null)
 	{
-		$this->db->where('npsn', $npsn);
+		$this->db->where('npsn_sekolah', $npsn);
 		if ($kodeprodi!=null)
 			$this->db->where('kd_prodi', $kodeprodi);
-		else
+		if ($kduser!=null)
 			$this->db->where('pengusul', $kduser);
-		$this->db->from('daf_prodi');
-		$result = $this->db->get()->row();
+		$this->db->from('daf_chn_sekolah');
+		$result = $this->db->get()->result();
 		
 		return $result;
 	}

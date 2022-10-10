@@ -92,10 +92,11 @@ class M_ekskul extends CI_Model
 		}
 	}
 
-	public function updateEkskul($npsn, $id, $kodebeli)
+	public function updateEkskul($npsn, $prodi, $id, $kodebeli)
 	{
 		$this->db->from('tb_ekskul te');
 		$this->db->where('npsn_sekolah', $npsn);
+		$this->db->where('kd_prodi', $prodi);
 		$this->db->where('id_user', $id);
 		$result = $this->db->get()->last_row();
 		$idnya = $result->id;
@@ -407,7 +408,7 @@ class M_ekskul extends CI_Model
 	public function cekpembayar()
 	{
 		$this->db->from('daf_chn_sekolah');
-		$this->db->where('npsn', $this->session->userdata('npsn'));
+		$this->db->where('npsn_sekolah', $this->session->userdata('npsn'));
 		$result = $this->db->get()->last_row();
 		return $result;
 	}

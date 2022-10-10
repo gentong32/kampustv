@@ -9,8 +9,8 @@
 					$gambar1 = $data->gambar;
 					$gambar2 = $data->gambar2;
 					$link = $data->link;
-					if ($link != "") { ?>
-						<a href="' . base_url() . '/event/pilihan/' . $link . '">
+					if (trim($link) != "") { ?>
+						<a href="<?php echo base_url() . 'event/pilihan/' . $link;?>">
 					<?php } ?>
 
 					<div class="video_pic_wrap">

@@ -106,6 +106,7 @@ class Profil extends CI_Controller
 		$data['profilku'] = $this->ambilprofil();
 
 		$npsn = $this->session->userdata('npsn');
+		$prodi = $this->session->userdata('prodi');
 
 		$kadaluwarsa = 0;
 		$telat2bulan = 0;
@@ -115,8 +116,8 @@ class Profil extends CI_Controller
 		if ($npsn==null)
 		$npsn = "9999099999";
 		$this->load->Model('M_eksekusi');
-		$dataverifikator = $this->M_eksekusi->getveraktif($npsn);
-		$datacalonverifikator = $this->M_eksekusi->getcalonveraktif($npsn, $referrer);
+		$dataverifikator = $this->M_eksekusi->getveraktif($npsn, $prodi);
+		$datacalonverifikator = $this->M_eksekusi->getcalonveraktif($npsn, $prodi, $referrer);
 
 		// echo "<br><br><br><br><br><pre>";
 		// echo var_dump ($dataverifikator);
@@ -125,7 +126,7 @@ class Profil extends CI_Controller
 
 		if ($dataverifikator) {
 			$veraktif = 2; //verifikator ditemukan aktif
-			$cekkadaluwarsa = $this->M_eksekusi->getchanelkadaluwarsa($npsn);
+			$cekkadaluwarsa = $this->M_eksekusi->getchanelkadaluwarsa($npsn, $prodi);
 			$cekbayarakhir = $this->M_eksekusi->getlastverbayar($dataverifikator->id);
 
 			// echo $dataverifikator->id."--";
@@ -204,17 +205,18 @@ class Profil extends CI_Controller
 	{
 		$iduser = $this->session->userdata('id_user');
 		$npsn = $this->session->userdata('npsn');
+		$prodi = $this->session->userdata('prodi');
 
 		$veraktif = 0;
 		$idverlama = 0;
 
 		$this->load->Model('M_eksekusi');
-		$dataverifikator = $this->M_eksekusi->getveraktif($npsn);
+		$dataverifikator = $this->M_eksekusi->getveraktif($npsn, $prodi);
 
 		if ($dataverifikator) {
 			$idverlama = $dataverifikator->id;
 			$veraktif = 2; //verifikator ditemukan aktif
-			$cekkadaluwarsa = $this->M_eksekusi->getchanelkadaluwarsa($npsn);
+			$cekkadaluwarsa = $this->M_eksekusi->getchanelkadaluwarsa($npsn, $prodi);
 			$cekbayarakhir = $this->M_eksekusi->getlastverbayar($idverlama);
 		
 			$tgl_kadaluwarsa = $cekkadaluwarsa->kadaluwarsa;
@@ -263,7 +265,7 @@ class Profil extends CI_Controller
 		}
 
 		$this->load->Model('M_eksekusi');
-		$dataverifikator = $this->M_eksekusi->getveraktif($this->session->userdata('npsn'));
+		$dataverifikator = $this->M_eksekusi->getveraktif($npsn, $prodi);
 		if ($veraktif==2) {
 			echo "ada";
 		} else {
@@ -379,6 +381,7 @@ class Profil extends CI_Controller
 		$data['konten'] = "profil_dashboard_verifikator";
 		$data['profilku'] = $this->ambilprofil();
 
+
 		$this->load->Model('M_payment');
 		$standarbayar = $this->M_payment->getstandar();
 		$data['iuranbulanan'] = $standarbayar->iuran;
@@ -464,8 +467,11 @@ class Profil extends CI_Controller
 
 		$data['jumlahvertotal'] = $jumlahvertotal;
 
+		$npsn = $this->session->userdata['npsn'];
+		$prodi = $data['profilku']->kd_prodi;
+
 		$this->load->Model('M_user');
-		$getuserguru = $this->M_user->getUserSebagai($this->session->userdata['npsn']);
+		$getuserguru = $this->M_user->getUserSebagai($npsn, $prodi);
 
 		$totalguru = 0;
 		$jmlcalonkontri = 0;
@@ -486,11 +492,11 @@ class Profil extends CI_Controller
 
 		if ($jmlcalonkontri > 0) {
 			$data['keteranganguru1'] = $jmlcalonkontri;
-			$data['keteranganguru2'] = "Calon Guru menunggu diverifikasi";
+			$data['keteranganguru2'] = "Calon Dosen menunggu diverifikasi";
 			$data['linkguru'] = base_url() . "user/kontributor/dashboard";
 		} else {
 			$data['keteranganguru1'] = $totalguru;
-			$data['keteranganguru2'] = "Jumlah Seluruh Guru";
+			$data['keteranganguru2'] = "Jumlah Dosen";
 			$data['linkguru'] = base_url() . "user/usersekolah/dashboard/guru";
 		}
 
@@ -508,9 +514,9 @@ class Profil extends CI_Controller
 		$this->load->Model('M_ekskul');
 		$getpembayar = $this->M_ekskul->cekpembayar();
 		if ($getpembayar->pembayarekskul == 1)
-				$pembayar = "sekolah";
+				$pembayar = "Kampus";
 			else
-				$pembayar = "siswa";
+				$pembayar = "Mahasiswa";
 		
 		$data['pembayar'] = $pembayar;
 
@@ -777,8 +783,8 @@ class Profil extends CI_Controller
 		if ($kodekota==0)
 		{
 			$this->load->Model("M_channel");
-			$sekolahku=$this->M_channel->getSekolahKu($this->session->userdata('npsn'));
-			$kodekota = $sekolahku[0]->idkota;
+			$sekolahku=$this->M_channel->getSekolahKu($this->session->userdata('npsn'),$this->session->userdata('prodi'));
+			$kodekota = $sekolahku[0]->id_kota;
 			$datapropkota = $this->M_login->getpropkota($kodekota);
 			$kodepropinsi = $datapropkota->id_propinsi;
 			$datakota = array ("kd_provinsi"=>$kodepropinsi, "kd_kota"=>$kodekota);
@@ -806,9 +812,13 @@ class Profil extends CI_Controller
 		// echo $data['referrer'];
 		// die();
 
+		$npsn = $this->session->userdata('npsn');
+		$prodi = $this->session->userdata('prodi');
+
+
 		$this->load->Model('M_eksekusi');
-		$dataverifikator = $this->M_eksekusi->getveraktif($this->session->userdata('npsn'));
-		$dataagam = $this->M_eksekusi->getagam($this->session->userdata('npsn'));
+		$dataverifikator = $this->M_eksekusi->getveraktif($npsn, $prodi);
+		$dataagam = $this->M_eksekusi->getagam($npsn);
 
 		if ($dataverifikator) {
 			$data['namaverifikator'] = $dataverifikator->first_name . " " . $dataverifikator->last_name;
@@ -918,8 +928,9 @@ class Profil extends CI_Controller
 		else if (substr($fotouser, 0, 4) != "http")
 			$fotouser = base_url() . "uploads/profil/" . $fotouser;
 		$data->fotouser = $fotouser;
+		$data->prodi = $data->nama_prodi;
 		$data->username = $data->first_name . " " . $data->last_name;
-		$data->logosekolah = base_url() . "uploads/profil/" . $data->logo;
+		$data->logosekolah = base_url() . "uploads/sekolah/" . $data->logo;
 
 		if ($this->session->userdata('a01')) {
 			$statususer = 1;
@@ -928,16 +939,16 @@ class Profil extends CI_Controller
 			if ($data->kd_prodi=="prodibaru")
 				{
 					$getprodi = $this->M_login->dafprodi($data->npsn, null, $data->kd_user);
-					echo "1";
-					echo "NPSN:".$data->npsn;
-					echo "KODEUSER:".$data->kd_user;
-					print_r($getprodi);
+					// echo "1";
+					// echo "NPSN:".$data->npsn;
+					// echo "KODEUSER:".$data->kd_user;
+					// print_r($getprodi);
 				}
 			else
 				{
 					$getprodi = $this->M_login->dafprodi($data->npsn, $data->kd_prodi);
-					echo "2";
-					print_r($getprodi);
+					// echo "2";
+					// print_r($getprodi);
 				}
 			$data->namaprodi = $getprodi->nama_prodi;
 			
@@ -958,7 +969,7 @@ class Profil extends CI_Controller
 				if ($row->nama_mapel!="")
 				$dafmapelsaya = $dafmapelsaya . $row->nama_mapel . ", ";
 			}
-			$dafmapelsaya = "Guru ".substr($dafmapelsaya, 0, -2);
+			$dafmapelsaya = "Dosen ".substr($dafmapelsaya, 0, -2);
 			$data->namamapel = $dafmapelsaya;
 		} else if ($this->session->userdata('sebagai') == 3 && $this->session->userdata('kontributor') == 3) {
 			$statususer = 6;
@@ -1058,8 +1069,12 @@ class Profil extends CI_Controller
 			$keteranganlunas4 = "";
 			$keterangansiplah = "";
 
+			$this->load->model('M_login');
+			$getuser = $this->M_login->getUser($this->session->userdata('id_user'));
+			$iduser = $getuser['id'];
+
 			$this->load->model('M_payment');
-			$getsiplah = $this->M_payment->getSiplah($this->session->userdata('id_user'));
+			$getsiplah = $this->M_payment->getSiplah($iduser);
 
 			// echo "<br><br><br>";
 			// echo var_dump($getsiplah);
@@ -1398,8 +1413,10 @@ class Profil extends CI_Controller
 		$iduser = $this->session->userdata('id_user');
 		$npsn = $this->session->userdata('npsn');
 		$kodeacak = "TVS-" . $iduser . "-" . rand();
+		$getuser = getstatususer();
+		$prodi = $getuser['kelasku'];
 
-		$this->M_payment->insertkodeorder($kodeacak, $iduser, $npsn, $iuran, $tanggalbatas);
+		$this->M_payment->insertkodeorder($kodeacak, $iduser, $npsn, $prodi, $iuran, $tanggalbatas);
 
 //        echo $iuran;
 //        die();
@@ -1514,8 +1531,10 @@ class Profil extends CI_Controller
 		$iduser = $this->session->userdata('id_user');
 		$npsn = $this->session->userdata('npsn');
 		$kodeacak = "EKS-" . $iduser . "-" . rand();
+		$getuser = getstatususer();
+		$prodi = $getuser['kelasku'];
 
-		$this->M_payment->insertkodeorder($kodeacak, $iduser, $npsn, $iuran, $tanggalbatas);
+		$this->M_payment->insertkodeorder($kodeacak, $iduser, $npsn, $prodi, $iuran, $tanggalbatas);
 
 //        echo $iuran;
 //        die();

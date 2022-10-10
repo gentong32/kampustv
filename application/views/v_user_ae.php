@@ -78,6 +78,7 @@ $nama_verifikator = Array('-', 'Calon', 'Verifikator', 'Verifikator', '', '', ''
 </div>
 
 <!----------------------------- SCRIPT DATATABLE  -------------------------------->
+<script src="<?php echo base_url();?>js/jquery.min.js"></script>
 <?php require_once('layout/calljs.php'); ?>
 <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript"

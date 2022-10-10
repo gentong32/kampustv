@@ -424,10 +424,11 @@ class M_eksekusi extends CI_Model
 		return $result->nsekolahmasuk;
 	}
 
-	public function getveraktif($npsn)
+	public function getveraktif($npsn, $prodi)
 	{
 		$this->db->from('tb_user');
 		$this->db->where('npsn', $npsn);
+		$this->db->where('kd_prodi', $prodi);
 		$this->db->where('sebagai', 1);
 		$this->db->where('verifikator', 3);
 		$this->db->order_by('level', 'asc');
@@ -436,10 +437,11 @@ class M_eksekusi extends CI_Model
 		return $result;
 	}
 
-	public function getcalonveraktif($npsn, $referrer)
+	public function getcalonveraktif($npsn, $prodi, $referrer)
 	{
 		$this->db->from('tb_user');
 		$this->db->where('npsn', $npsn);
+		$this->db->where('kd_prodi', $prodi);
 		$this->db->where('sebagai', 1);
 		$this->db->where('verifikator', 1);
 		$this->db->where('referrer', $referrer);
@@ -554,7 +556,7 @@ class M_eksekusi extends CI_Model
 		return $result;
 	}
 
-	public function getdibayardonatur($npsn)
+	public function getdibayardonatur($npsn, $prodi)
 	{
 		$datesekarang = new DateTime();
 		$datesekarang->setTimezone(new DateTimezone('Asia/Jakarta'));
@@ -564,6 +566,7 @@ class M_eksekusi extends CI_Model
 		$this->db->join('tb_eksekusi_ae te', 'SUBSTRING(tp.order_id,5)=te.order_id', 'left');
 		$this->db->join('tb_donatur td', 'td.id=te.id_donatur', 'left');
 		$this->db->where('npsn_sekolah', $npsn);
+		$this->db->where('kd_prodi', $prodi);
 		$this->db->where('status', 4);
 		$this->db->where('(tgl_order<="' . $tglsekarang . '")');
 		$this->db->where('(tgl_berakhir>="' . $tglsekarang . '")');
@@ -580,10 +583,11 @@ class M_eksekusi extends CI_Model
 		return $result;
 	}
 
-	public function getchanelkadaluwarsa($npsn)
+	public function getchanelkadaluwarsa($npsn, $prodi)
 	{
 		$this->db->from('daf_chn_sekolah');
-		$this->db->where('npsn', $npsn);
+		$this->db->where('npsn_sekolah', $npsn);
+		$this->db->where('kd_prodi', $prodi);
 		$result = $this->db->get()->last_row();
 		return $result;
 	}

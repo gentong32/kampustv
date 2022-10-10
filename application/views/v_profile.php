@@ -221,8 +221,9 @@ else if ($opsiuser=="kelasuser")
 
 				<div style="font-weight:bold;font-size:18px;text-align: center;margin: auto">
 					<?php if ($this->session->userdata('activate') == 0) {
-						echo "Silakan lengkapi Data Personal dan Data " . $sekolahatauinstansi . " <br> terlebih dahulu.";
-					} else { ?>
+						echo "Silakan lengkapi Data Personal dan Data " . $sekolahatauinstansi . " <br> terlebih dahulu.";?>
+						<br><a target="_blank" href="<?php echo base_url().'tentangkami/kebijakan';?>"><span style="font-size:14px;"><i>[Lihat Kebijakan Privasi]</i></span></a>
+					<?php } else { ?>
 						Profil <?php
 						if ($this->session->userdata('a01'))
 							echo "ADMIN";
@@ -610,86 +611,11 @@ else if ($opsiuser=="kelasuser")
 									</label>
 								<div class="col-md-12">
 										<div class="ui-widget">
-											<input type="text" name="isearch" class="form-control" id="isearch" placeholder="Nama Kampus"
+											<input type="text" name="isearch" class="form-control" id="isearch" 
+											value="<?php echo $userData['sekolah']; ?>" placeholder="Nama Kampus"
 												style="height:35px">
 										</div>
 								</div>
-							</div>
-							<div class="form-group" id="ketsekolahbaru" style="display:none;">
-								<div id="ketsekolah" style="margin-left:30px;font-weight:bold;color: #ff2222">Nama kampus belum terdaftar
-								</div>
-								<button style="margin-left: 30px;" class="myButtonblue"
-										onclick="return tambahsekolah();">Ajukan Data Baru
-								</button>
-							</div>
-
-							<div id="dsekolahbaru" style="display: none;">
-								
-								<?php if ($this->session->userdata('sebagai')!=3) {?>
-								<div class="form-group" id="dpropinsi">
-									<label for="select"
-										   class="col-md-12 control-label">Propinsi</label>
-									<div class="col-md-12">
-										<select class="form-control" name="ipropinsi" id="ipropinsi">
-											<option value="0">-- Pilih --</option>
-											<?php
-											for ($b2 = 1; $b2 <= $jml_propinsi; $b2++) {
-												$terpilihb2 = '';
-												if ($id_propinsi[$b2] == $userData['kd_provinsi']) {
-													$terpilihb2 = 'selected';
-												}
-												echo '<option ' . $terpilihb2 . ' value="' . $id_propinsi[$b2] . '">' . substr($nama_propinsi[$b2],8) . '</option>';
-											}
-											?>
-										</select>
-									</div>
-								</div>
-								<?php } ?>
-								<div id="dsekolahbaruindo">
-									<?php if ($this->session->userdata('sebagai')!=3) {?>
-									<div class="form-group" id="dkota">
-										<label for="select" class="col-md-12 control-label">Kota/Kabupaten</label>
-										<div class="col-md-12">
-											<select class="form-control" name="ikota" id="ikota">
-												<option value="0">-- Pilih --</option>
-												<?php
-												for ($b3 = 1; $b3 <= $jml_kota; $b3++) {
-													$terpilihb3 = '';
-													if ($id_kota[$b3] == $userData['kd_kota']) {
-														$terpilihb3 = 'selected';
-													}
-													echo '<option ' . $terpilihb3 . ' value="' . $id_kota[$b3] . '">' . $nama_kota[$b3] . '</option>';
-												}
-												?>
-											</select>
-										</div>
-									</div>
-									<?php } ?>
-
-									<div class="form-group">
-										<label for="inputDefault" class="col-md-12 control-label">Kecamatan</label>
-										<div class="col-md-12">
-											<input type="text" class="form-control" id="ikecamatansekolah"
-												   name="ikecamatansekolah"
-												   maxlength="100" value="">
-										</div>
-									</div>
-
-								</div>
-
-								<div class="form-group">
-									<label for="inputDefault" class="col-md-12 control-label">Alamat Kampus</label>
-									<div class="col-md-12">
-										<input type="text" class="form-control" id="ialamatsekolah"
-											   name="ialamatsekolah"
-											   maxlength="100" value="">
-									</div>
-								</div>
-
-								<input type="hidden" name="ijenjangsekolah" id="ijenjangsekolah" value="6">					
-								<input type="hidden" name="inegara" id="inegara" value="1">					
-								<input type="hidden" name="isekolah" id="isekolah" value="<?php echo $userData['nama_sekolah'];?>">					
-
 							</div>
 
 							<div class="form-group">
@@ -735,6 +661,52 @@ else if ($opsiuser=="kelasuser")
 								</div>
 							</div>
 
+							<div id="dlogosekolah" class="form-group">
+								<label for="inputDefault" class="col-md-12 control-label">Logo Sekolah</label>
+								<div style="margin-left:25px;width: 300px;height: auto;">
+									<?php
+									if ($logosekolah == "")
+										$logo = base_url() . "assets/images/school_blank.jpg";
+									else {
+										$logo = base_url() . "uploads/sekolah/" . $logosekolah;
+									}
+
+									?>
+									<table style="width:220px;border: 1px solid black;">
+										<tr>
+											<th>
+												<img id="previewing2" width="220px" src="<?php echo $logo; ?>">
+											</th>
+										</tr>
+
+									</table>
+
+								</div>
+
+							</div>
+
+							<div class="form-group">
+								<label for="inputDefault" class="col-md-12 control-label">Prodi Kampus
+									<span style="color: #ff2222"> *</span>
+									</label>
+								<div id="dprodi" class="col-md-12">
+									<select class="form-control" name="iprodi" id="iprodi">
+										<option value="0">-- Pilih --</option>
+										<?php
+											foreach ($daftarprodi as $datarow) {
+												$terpilihprodi = '';
+												if ($datarow->kd_prodi == $userData['kd_prodi'] && 
+												$datarow->npsn_sekolah == $userData['npsn']) 
+												{
+													$terpilihprodi = 'selected';
+												};
+												echo '<option ' . $terpilihprodi . ' value="' . $datarow->kd_prodi. '">' . $datarow->nama_prodi . '</option>';
+											}
+											?>
+									</select>
+								</div>
+							</div>
+
 
 							<div class="form-group">
 								<?php if($userData['sebagai']==1)
@@ -757,7 +729,7 @@ else if ($opsiuser=="kelasuser")
 								</div>
 							</div>
 
-							<?php if ($this->session->userdata("sebagai")==2) { ?>
+							<?php if ($this->session->userdata("sebagai")==22) { ?>
 							<div class="form-group">
 								<label for="inputDefault" class="col-md-12 control-label">PROGRAM STUDI<span
 										style="color: #ff2222"> *</span></label>
@@ -790,53 +762,7 @@ else if ($opsiuser=="kelasuser")
 								</div>
 							</div>
 
-							<div id="dlogosekolah" <?php if (!$this->session->userdata("a02"))
-								echo 'style="display: none;"'; ?> class="form-group">
-								<label for="inputDefault" class="col-md-12 control-label">Logo Sekolah</label>
-								<div style="margin-left:25px;width: 300px;height: auto;">
-									<?php
-									if ($logosekolah == "")
-										$logo = base_url() . "assets/images/school_blank.jpg";
-									else {
-										$logo = base_url() . "uploads/profil/" . $logosekolah;
-									}
-
-									?>
-									<table style="width:220px;border: 1px solid black;">
-										<tr>
-											<th>
-												<img id="previewing2" width="220px" src="<?php echo $logo; ?>">
-											</th>
-										</tr>
-
-									</table>
-
-									<form method="POST" enctype="multipart/form-data" id="fileUploadForm2">
-									</form>
-
-									<form class="form-horizontal" id="submit2">
-										<div class="form-group" style="margin-left: 5px">
-											<!--                                <span style="color: #3d773d;font-style:italic ">Klik tombol dibawah ini untuk mengubah foto. Kemudian "Terapkan" </span>-->
-											<input style="display:<?php echo $displayawal; ?>;" type="file" name="file2"
-												   id="file2" accept="image/*">
-
-											<button style="display:<?php echo $displayawal; ?>;" id="btn_upload2"
-													type="submit">
-												Terapkan
-											</button>
-											<!--								<div class="progress" style="display:none">-->
-											<!--									<div id="progressBar" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">-->
-											<!--										<span class="sr-only">0%</span>-->
-											<!--									</div>-->
-											<!--								</div>-->
-											<span style="margin-left: 30px" id="message2"></span>
-										</div>
-									</form>
-
-								</div>
-								<h4 style="display: none;" id='loading2'>uploading ... </h4>
-
-							</div>
+							
 
 							<span style="margin-left:20px;color: #ff2222;font-style: italic;font-size: 12px;">&nbsp;&nbsp;*) wajib diisi</span>
 
@@ -1178,6 +1104,29 @@ else if ($opsiuser=="kelasuser")
 		});
 	}
 
+    function getdaftarprodi() {
+        isihtml1 = '<select class="form-control" name="iprodi" id="iprodi"><option value="0">-- Pilih --</option>';
+        isihtml3 = '</select>';
+        $.ajax({
+            type: 'GET',
+            data: {
+                kodekampus: $('#inpsn').val()
+            },
+            dataType: 'json',
+            cache: false,
+            url: '<?php echo base_url();?>login/daftarprodi',
+            success: function (result) {
+                isihtml2 = "";
+                $.each(result, function (i, result) {
+                    isihtml2 = isihtml2 + "<option value='" + result.kd_prodi + "'>" + result.nama_prodi +
+                            "</option>";
+                });
+                $('#dprodi').html(isihtml1 + isihtml2 + isihtml3);
+            }
+        });
+    }
+
+
 	<?php //if ($userData['sebagai'] >= 1)
 	{?>
 
@@ -1187,10 +1136,10 @@ else if ($opsiuser=="kelasuser")
 	});
 	<?php } ?>
 
-	$(document).on('change', '#ikelas', function () {
-		if ($('#ikelas').val()=="prodibaru")
-		document.getElementById('dprodibaru').style.display = "block";
-	});
+	// $(document).on('change', '#ikelas', function () {
+	// 	if ($('#ikelas').val()=="prodibaru")
+	// 	document.getElementById('dprodibaru').style.display = "block";
+	// });
 
 	function cekkampus() {
 		$.ajax({
@@ -1204,37 +1153,30 @@ else if ($opsiuser=="kelasuser")
 				// isihtml2 = "";
 				$('#inpsn').prop('readonly', true);
 				$('#inpsn').val("");
-				$('#inpsn').focus();
+				$('#ikotasekolah').val("");
+				$('#previewing2').attr('src', '<?php echo base_url() . "assets/images/school_blank.jpg";?>');
+				isihtml1 = '<select class="form-control" name="iprodi" id="iprodi"><option value="0">-- Pilih --</option>';
+        		isihtml3 = '</select>';
+				$('#dprodi').html(isihtml1 + isihtml3);
 				$.each(result, function (i, result) {
 					//alert (result.nama_sekolah);
 					if (!result.nama_sekolah == "") {
 
 						$('#inpsn').prop('readonly', true);
-						$('#inpsn').val(result.npsn);
+						$('#inpsn').val(result.npsn_sekolah);
 						$('#isekolah').val($('#isearch').val());
-						$('#ikotasekolah').val(result.nama_kota);
+						$('#ikotasekolah').val(result.nama_kota)
+						$('#previewing2').attr('src', '<?php echo base_url() . "uploads/sekolah/";?>' + result.logo);
+						getdaftarprodi();
 						//alert(result.nama_sekolah);
 						if (!result.logo == "") {
 							// alert (result.logo);
-							document.getElementById('dlogosekolah').style.display = "block";
-							$('#previewing2').attr('src', '<?php echo base_url() . "uploads/profil/";?>' + result.logo);
+							$('#previewing2').attr('src', '<?php echo base_url() . "uploads/sekolah/";?>' + result.logo);
 						} else {
 
-							document.getElementById('dlogosekolah').style.display = "none";
 						}
-						document.getElementById('ketsekolahbaru').style.display = "none";
 
-					} else {
-						$('#inpsn').prop('readonly', false);
-						if ($('#npsnHasil').html() == "") {
-							document.getElementById('dlogosekolah').style.display = "none";
-							document.getElementById('ketsekolahbaru').style.display = "block";
-						}
-					}
-
-
-					//alert (result.nama_sekolah);
-					// 	isihtml2 = isihtml2 + "<option value='" + result.id_kota + "'>" + result.nama_kota + "</option>";
+					} 
 				});
 				// $('#dkota').html(isihtml0 + isihtml1 + isihtml2 + isihtml3);
 			}
@@ -1291,15 +1233,6 @@ else if ($opsiuser=="kelasuser")
 		}
 	});
 
-	$(document).on('change', '#inpsn', function () {
-		var objRegExp = /^[+0-9\s]+$/;
-		if (objRegExp.test($('#inpsn').val()) && $('#inpsn').val().length == 6) {
-			$('#npsnHasil').html("");
-		} else {
-			$('#npsnHasil').html("* minimal 6 digit angka");
-			document.getElementById('ketsekolahbaru').style.display = "none";
-		}
-	});
 
 	$(document).on('change', '#itgl_lahir', function () {
 		if (($('#ithn_lahir').val()) > 1900) {
@@ -1430,10 +1363,14 @@ else if ($opsiuser=="kelasuser")
 		<?php } ?>
 
 		<?php if ($userData['sebagai'] == 1 || $userData['sebagai'] == 2) { ?>
-		if ($('#isearch').val().trim() == "" || $('#inpsn').val() == "" || $('#ikelas').val() == 0) {
+		$('#inpsn').prop('readonly', false);
+		if ($('#isearch').val().trim() == "" || $('#inpsn').val() == "" || $('#inomor').val() == "" || $('#iprodi').val() == 0) {
 			ijinlewat2 = false;
 		}
+		$('#inpsn').prop('readonly', true);
 		<?php } ?>
+
+		
 
 		<?php if ($userData['sebagai'] == 3 || $userData['sebagai'] == 4) { ?>
 		if ($('#ibidang').val() == 0 || $('#ikerja').val() == 0 || $('#inomor2').val().trim() == "") {
@@ -1447,20 +1384,7 @@ else if ($opsiuser=="kelasuser")
 				ijinlewat2 = false;
 			}
 		}
-
-		if (document.getElementById('dsekolahbaru').style.display == "block") {
-			if (document.getElementById('dsekolahbaruindo').style.display == "block") {
-				if ($('#ipropinsi').val() == 0 || $('#ikota').val() == 0 || $('#ialamatsekolah').val() == ""
-					|| $('#ikecamatansekolah').val() == "") {
-					alert ("03");
-				}
-			} else if (document.getElementById('dsekolahbaruindo').style.display == "none") {
-				if ($('#ialamatsekolah').val() == "" || $('#ijenjangsekolah').val() == "0") {
-					alert ("04");
-				}
-			}
-		}
-
+		
 		<?php if($userData['sebagai'] == 3 || $userData['sebagai'] == 4){?>
 		$('#inomor').val($('#inomor2').val());<?php } ?>
 
@@ -1483,7 +1407,7 @@ else if ($opsiuser=="kelasuser")
 
 		if (ijinlewat1 && ijinlewat2) {
 			//alert ($('#gender').val());
-			var r = confirm("Menambahkan nama kampus "+$('#isearch').val()+" ?");
+			var r = confirm("Apakah data sudah benar ?");
 			if (r == true) {
 				return true;
 			} else {
@@ -1494,10 +1418,10 @@ else if ($opsiuser=="kelasuser")
 			if ($('#inpwp').val().trim() == "")
 				$('#ketawal').html("NPWP harus diisi");
 			else if ($('#ikota').val() == 0 && $('#ikotasekolah').val() == "")
-				$('#ketawal').html("Kota harus diisi");
+				$('#ketawal').html("Data Kampus harus dilengkapi");
 			else if (ijinlewat1 == false && ijinlewat2 == false)
 				$('#ketawal').html("Data Personal dan Data Sekolah/Instansi harus dilengkapi");
-			else if (ijinlewat1 == false)
+			else if (ijinlewat1 == false || kelamin==false)
 				$('#ketawal').html("Data Personal belum lengkap");
 			else if (ijinlewat2 == false)
 				$('#ketawal').html("Data Sekolah/Instansi belum dilengkapi");

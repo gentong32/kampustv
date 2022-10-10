@@ -50,7 +50,7 @@ foreach ($dafpaket as $datane) {
 			<div class="container">
 				<div class="row">
 					<div class="col-md-12 text-center wow fadeInRight" data-wow-delay=".5s">
-						<h1>Playlist Sekolah</h1>
+						<h1>Playlist Kampus</h1>
 					</div>
 					<div class="clearfix"></div>
 
@@ -170,6 +170,7 @@ foreach ($dafpaket as $datane) {
 
 
 <!----------------------------- SCRIPT DATATABLE  -------------------------------->
+<script src="<?php echo base_url();?>js/jquery.min.js"></script>
 <?php require_once('layout/calljs.php'); ?>
 <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript"

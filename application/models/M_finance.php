@@ -219,7 +219,7 @@ class M_finance extends CI_Model
 
 	public function getTransaksiFee($bulan = null, $tahun = null)
 	{
-		$this->db->select('tgl_bayar, tipebayar, order_id, id_agency, id_siam, id_ver, 0 as id_kontri, nama_sekolah, 
+		$this->db->select('tgl_bayar, tipebayar, order_id, id_agency, id_siam, id_ver, 0 as id_kontri, nama_prodi, 
 		fee_agencybruto,  pph_agencyrp, fee_agencynet, 
 		tu1.first_name as first_name_agency, tu1.last_name as last_name_agency, tu1.npwp as npwp_agency, fee_siambruto, pph_siamrp, fee_siamnet, 
 		tu2.first_name as first_name_siam, tu2.last_name as last_name_siam, tu2.npwp as npwp_siam,
@@ -231,11 +231,9 @@ class M_finance extends CI_Model
 		$this->db->join('tb_user tu1', 'tp.id_agency = tu1.id', 'left');
 		$this->db->join('tb_user tu2', 'tp.id_siam = tu2.id', 'left');
 		$this->db->join('tb_user tu3', 'tp.id_ver = tu3.id', 'left');
-		$this->db->join('daf_chn_sekolah ds', 'tp.npsn_sekolah = ds.npsn', 'left');
+		$this->db->join('daf_chn_sekolah ds', 'tp.npsn_sekolah = ds.npsn_sekolah', 'left');
 		$this->db->where('tp.status', 3);
 		$this->db->where('iuran>', 0);
-		$this->db->where('npsn_sekolah<>', '1234567890');
-		$this->db->where('npsn_sekolah<>', '1234567891');
 		if (($bulan==null || $bulan==0) && ($tahun==null||$tahun==0))
 		{
 			
@@ -259,7 +257,7 @@ class M_finance extends CI_Model
 
 		$query1 = $this->db->get_compiled_select();
 
-		$this->db->select ('tgl_aktif, tipe_bayar, tk.kode_beli as order_id, id_ag, id_am, id_ver, id_kontri, nama_sekolah, 
+		$this->db->select ('tgl_aktif, tipe_bayar, tk.kode_beli as order_id, id_ag, id_am, id_ver, id_kontri, nama_prodi, 
 		SUM(rp_ag_bruto) as fee_agencybruto, SUM(rp_ag_pph) as pph_agencyrp, SUM(rp_ag_net) as fee_agencynet, 
 		tu1.first_name as first_name_agency, tu1.last_name as last_name_agency, tu1.npwp as npwp_agency, 
 		SUM(rp_am_bruto) as fee_siambruto, SUM(rp_am_pph) as pph_siamrp, SUM(rp_am_net) as fee_siamnet, 
@@ -274,11 +272,9 @@ class M_finance extends CI_Model
 		$this->db->join('tb_user tu2', 'tk.id_am = tu2.id', 'left');
 		$this->db->join('tb_user tu3', 'tk.id_ver = tu3.id', 'left');
 		$this->db->join('tb_user tu4', 'tk.id_kontri = tu4.id', 'left');
-		$this->db->join('daf_chn_sekolah ds', 'tb.npsn_user = ds.npsn', 'left');
+		$this->db->join('daf_chn_sekolah ds', 'tb.npsn_user = ds.npsn_sekolah', 'left');
 		$this->db->where('rupiah>', 0);
 		$this->db->where('status_beli', 2);
-		$this->db->where('npsn_user<>', '1234567890');
-		$this->db->where('npsn_user<>', '1234567891');
 		if (($bulan==null || $bulan==0) && ($tahun==null||$tahun==0))
 		{
 			
@@ -304,7 +300,7 @@ class M_finance extends CI_Model
 
 		$query2 = $this->db->get_compiled_select();
 
-		$this->db->select('tgl_bayar, tipebayar, order_id, id_agency, id_siam, 0 as id_ver, 0 as id_kontri, nama_sekolah, 
+		$this->db->select('tgl_bayar, tipebayar, order_id, id_agency, id_siam, 0 as id_ver, 0 as id_kontri, nama_prodi, 
 		fee_agencybruto,  pph_agencyrp, fee_agencynet, 
 		tu1.first_name as first_name_agency, tu1.last_name as last_name_agency, tu1.npwp as npwp_agency, fee_siambruto, pph_siamrp, fee_siamnet, 
 		tu2.first_name as first_name_siam, tu2.last_name as last_name_siam, tu2.npwp as npwp_siam,
@@ -315,11 +311,9 @@ class M_finance extends CI_Model
 		$this->db->from('tb_userevent tp');
 		$this->db->join('tb_user tu1', 'tp.id_agency = tu1.id', 'left');
 		$this->db->join('tb_user tu2', 'tp.id_siam = tu2.id', 'left');
-		$this->db->join('daf_chn_sekolah ds', 'tp.npsn = ds.npsn', 'left');
+		$this->db->join('daf_chn_sekolah ds', 'tp.npsn = ds.npsn_sekolah', 'left');
 		$this->db->where('status_user', 2);
 		$this->db->where('iuran>', 0);
-		$this->db->where('tp.npsn<>', '1234567890');
-		$this->db->where('tp.npsn<>', '1234567891');
 		if (($bulan==null || $bulan==0) && ($tahun==null||$tahun==0))
 		{
 			

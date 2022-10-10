@@ -470,6 +470,11 @@ if ($jml_video == 0) { ?>
 		var detikawal = <?php echo substr($stampdate, 17, 2);?>;
 		var totaldetikawal = jamawal * 3600 + menitawal * 60 + detikawal;
 		var yutubredi = false;
+
+		jamsekarangini = new Date(jamnow).getHours();
+		jambulatawal = jammulaitayang + ((jamsekarangini-jammulaitayang)/jambulat);
+
+		detikke[1]="0"+jammulaitayang+":00:00";
 		
 
 		$.get("<?php echo base_url() . 'channel/realdate';?>", function (Jam) {

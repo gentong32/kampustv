@@ -49,7 +49,7 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>css/responsive.dataTables.min.css">
 	<!-- payment -->
 	<?php if (base_url() == "https://tutormedia.net/tvsekolahbaru/" || base_url() == "http://localhost/fordorum/"
-		|| base_url() == "http://localhost/tvsekolah/" || base_url() == "http://localhost/tvsekolah2/" || $this->session->userdata('npsn') == "1234567890" || $this->session->userdata('npsn') == "1234567891") { ?>
+		|| base_url() == "http://localhost/tvsekolah/" || base_url() == "http://localhost/kampustv/" || $this->session->userdata('npsn') == "1234567890" || $this->session->userdata('npsn') == "1234567891") { ?>
 		<script type="text/javascript"
 				src="https://app.sandbox.midtrans.com/snap/snap.js"
 				data-client-key="SB-Mid-client-VDif4cE3IaAm2asG"></script>

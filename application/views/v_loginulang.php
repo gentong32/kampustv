@@ -24,7 +24,7 @@
 
 				<div style="color:black;margin-bottom:30px;font-weight:bold; font-size:22px;text-align: center">SELAMAT.
 					ANDA
-					BERHASIL MENDAFTAR DI TVSEKOLAH SEBAGAI
+					BERHASIL MENDAFTAR DI TV-KAMPUS SEBAGAI
 				</div>
 				<br>
 
@@ -77,7 +77,7 @@
 							 style="max-width: 200px;max-height: 200px"
 							 src="<?php echo base_url(); ?>assets/images/ikon-guru.png"
 							 alt=""><br>
-						<span style="font-weight: bold;font-size: 24px">CALON GURU/DOSEN</span>
+						<span style="font-weight: bold;font-size: 24px">CALON DOSEN</span>
 						<br>
 						<?php if($calvermentor==1)
 						{
@@ -91,8 +91,8 @@
 						{ 	
 							
 							?>
-							<span style="font-size: 16px; color: red;">(Mintalah Verifikator Sekolah segera memverifikasi
-							anda. Klik tombol Saya untuk melihat nama Verifikator pada bagian Sekolah Saya)</span>
+							<span style="font-size: 16px; color: red;">(Mintalah Verifikator Prodi Kampus segera memverifikasi
+							anda. Klik tombol Saya untuk melihat nama Verifikator pada bagian Kampus Saya)</span>
 							<?php 
 							
 						}

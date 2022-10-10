@@ -27,6 +27,8 @@ else
 
 if(!isset($opsi))
 $opsi = "";
+else if ($opsi=="dashboard")
+$opsi="/dashboard";
 
 ?>
 
@@ -133,7 +135,7 @@ $opsi = "";
 		<?php }
 		else
 		{ ?>
-			window.open("<?php echo base_url(); ?>channel/playlistsekolah", "_self");
+			window.open("<?php echo base_url(); ?>channel/playlistsekolah<?php echo $opsi;?>", "_self");
 		<?php }
 		?>
 		

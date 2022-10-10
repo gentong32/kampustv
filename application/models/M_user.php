@@ -68,10 +68,10 @@ class M_user extends CI_Model
 
 	public function getAllKontri($kontri)
 	{
-		$this->db->from('tb_user');
-		$this->db->where('id!=1');
+		$this->db->from('tb_user tu');
+		$this->db->join('daf_kota dk','dk.id_kota=tu.kd_kota');
+		$this->db->where('tu.id!=1');
 		$this->db->where('sebagai!=10');
-		$this->db->where('npsn<>"10000010"');
 
 		$this->db->where('golongan=0');
 		$this->db->where('sebagai!=4');
@@ -119,7 +119,7 @@ class M_user extends CI_Model
 		month(`tgl_batas`) = '. $bulanskr . ' AND 
 		year(`tgl_batas`) = '. $tahunskr . ' AND jenis_paket=1 AND status_beli=2','left');
 		$this->db->join('daf_kota dk', 'tu.kd_kota = dk.id_kota');
-		$this->db->where('tu.id='.$idku.' AND npsn="' . $npsn . '"');
+		$this->db->where('tu.id!="'.$idku.'" AND npsn="' . $npsn . '"');
 		if ($sebagai=="guru")
 			$this->db->where('sebagai',1);
 		else if ($sebagai=="siswa")
@@ -140,7 +140,7 @@ class M_user extends CI_Model
 		month(`tgl_batas`) = '. $bulanskr . ' AND 
 		year(`tgl_batas`) = '. $tahunskr . ' AND jenis_paket=1 AND status_beli=2','left');
 		$this->db->join('daf_kota dk', 'tu.kd_kota = dk.id_kota');
-		$this->db->where('tu.id!=1 AND tu.id!='.$idku.' AND npsn="' . $npsn . '"');
+		$this->db->where('tu.kd_user!="'.$idku.'" AND npsn="' . $npsn . '"');
 		if ($sebagai=="guru")
 			$this->db->where('sebagai',1);
 		else if ($sebagai=="siswa")
@@ -159,7 +159,7 @@ class M_user extends CI_Model
 
 		$query2 = $this->db->get_compiled_select();
 
-		$query = $this->db->query($query1 . ' UNION ' . $query2);
+		$query = $this->db->query($query2);
 		$query = $query->result();
 
 		return $query;
@@ -177,7 +177,7 @@ class M_user extends CI_Model
 		$this->db->select('*, MAX(strata_paket) as strata');
 		$this->db->from('tb_vk_beli');
 
-		$this->db->where('id_user!=1 AND id_user!='.$idku.' AND npsn_user="' . $npsn . '"');
+		$this->db->where('id_user!=1 AND id_user!="'.$idku.'" AND npsn_user="' . $npsn . '"');
 		$this->db->where('(month(`tgl_batas`) = '. $bulanskr . ' AND year(`tgl_batas`) = '. $tahunskr .
 			' AND jenis_paket=1 AND status_beli=2)');
 
@@ -277,7 +277,7 @@ class M_user extends CI_Model
 		$tglsekarang = $now->format('Y-m-d H:i:s');
 		$data['modified'] = $tglsekarang;
 
-		$this->db->where('id', $id);
+		$this->db->where('kd_user', $id);
 		return $this->db->update('tb_user', $data);
 	}
 
@@ -317,8 +317,9 @@ class M_user extends CI_Model
 
     public function getNamaSekolah($npsn)
     {
-        $this->db->from('daf_chn_sekolah');
-        $this->db->where('npsn',$npsn);
+        $this->db->from('daf_sekolah ds');
+        $this->db->join('daf_chn_sekolah dc', 'dc.npsn_sekolah=ds.npsn_sekolah');
+        $this->db->where('ds.npsn_sekolah',$npsn);
         $result = $this->db->get()->row();
 		if ($result)
 			$result=$result->nama_sekolah;
@@ -415,13 +416,15 @@ class M_user extends CI_Model
 		return $result;
 	}
 
-	public function getUserSebagai($npsn, $sebagai=null)
+	public function getUserSebagai($npsn, $prodi, $sebagai=null)
 	{
 		$this->db->from('tb_user tu');
 		$this->db->where('npsn', $npsn);
+		$this->db->where('kd_prodi', $prodi);
 		if($sebagai!=null)
 		$this->db->where('sebagai', $sebagai);
 		$this->db->where('id!=1');
+		$this->db->where('kd_user!="'.$this->session->userdata('id_user').'"');
 		$result = $this->db->get()->result();
 		return $result;
 	}

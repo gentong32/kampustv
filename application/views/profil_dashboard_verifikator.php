@@ -83,7 +83,7 @@
 								<div class="counter_no">
 									<div>
 										<p class="total_no"><?php echo $keterangansiswa1; ?></p>
-										<p class="head_couter">Jumlah Seluruh Siswa</p>
+										<p class="head_couter">Jumlah Mahasiswa</p>
 									</div>
 								</div>
 							</div>
@@ -95,13 +95,13 @@
 						<div class="white_shd full margin_bottom_30">
 							<div class="full graph_head">
 								<div class="heading1 margin_0">
-									<h4>Informasi Sekolah</h4>
+									<h4>Informasi Kampus</h4>
 								</div>
 							</div>
 
 							<div class="task_list_main">
 								<ul class="task_list">
-									<li><strong>Status Sekolah</strong><br>
+									<li><strong>Status Kampus</strong><br>
 										<?php echo $keteranganstatus; ?>
 										<?php if (isset($aku)) { ?>
 											<div>
@@ -118,7 +118,7 @@
 								<ul class="task_list">
 									<li>
 <!--										<a href="--><?php //echo base_url() . 'ekskul/daftar_bayar_verifikator/dashboard'; ?><!--">-->
-											<strong>Siswa Ekskul Gratis</strong><br>
+											<strong>Mahasiswa Ekskul Gratis</strong><br>
 <!--										</a>-->
 										<?php echo $keteranganekskul; ?>
 									</li>
@@ -155,18 +155,18 @@
 										</a>
 									</li>
 									<li><a href="<?php echo base_url().'ekskul/daftar_peserta/dashboard';?>"><strong>Ekstrakurikuler</strong><br>
-											Peserta ekskul aktif : <?php echo $jumlah_siswaeks;?> anak<br>
+											Peserta ekskul aktif : <?php echo $jumlah_siswaeks;?> orang<br>
 										</a>
 									</li>
-									<li><strong>Sekolah</strong><br>
-											Paket lite : <?php echo $jumlah_lite;?> anak<br>
-											Paket pro : <?php echo $jumlah_pro;?> anak<br>
-											Paket premium : <?php echo $jumlah_premium;?> anak<br>
+									<li><strong>Kampus</strong><br>
+											Paket lite : <?php echo $jumlah_lite;?> orang<br>
+											Paket pro : <?php echo $jumlah_pro;?> orang<br>
+											Paket premium : <?php echo $jumlah_premium;?> orang<br>
 									</li>
 									<li><strong>Bimbel</strong><br>
-											Paket lite : <?php echo $jumlah_lite_bimbel;?> anak<br>
-											Paket pro : <?php echo $jumlah_pro_bimbel;?> anak<br>
-											Paket premium : <?php echo $jumlah_premium_bimbel;?> anak<br>
+											Paket lite : <?php echo $jumlah_lite_bimbel;?> orang<br>
+											Paket pro : <?php echo $jumlah_pro_bimbel;?> orang<br>
+											Paket premium : <?php echo $jumlah_premium_bimbel;?> orang<br>
 									</li>
 								</ul>
 							</div>

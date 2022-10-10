@@ -28,7 +28,7 @@
 							<div class="col-lg-12" style="font-size: 18px;">
 								<?php if($verifikator_aktif==0)
 									{?>
-										Sekolah Anda belum memiliki Verifikator. Apakah Anda bersedia menjadi Verifikator?
+										Prodi Anda belum memiliki Verifikator. Apakah Anda bersedia menjadi Verifikator?
 										<br>
 										<button class="btn-danger" style="padding: 5px;" onclick="window.open('<?php
 										echo base_url();?>','_self')">Tidak</button>

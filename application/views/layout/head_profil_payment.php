@@ -31,7 +31,7 @@
 	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 	<![endif]-->
 
-	<?php if (base_url() == "https://tutormedia.net/tvsekolahbaru/" || base_url() == "http://localhost/fordorum/" || base_url() == "http://localhost/tvsekolah2/" || 
+	<?php if (base_url() == "https://tutormedia.net/tvsekolahbaru/" || base_url() == "http://localhost/fordorum/" || base_url() == "http://localhost/kampustv/" || 
 		$this->session->userdata('npsn') == "1234567890" || $this->session->userdata('npsn') == "1234567891") { ?>
 		<script type="text/javascript"
 				src="https://app.sandbox.midtrans.com/snap/snap.js"

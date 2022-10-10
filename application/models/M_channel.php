@@ -89,12 +89,14 @@ class M_channel extends CI_Model
 		return $result;
 	}
 
-	public function getSekolahKu($npsn)
+	public function getSekolahKu($npsn, $prodi)
 	{
-		$this->db->from('daf_chn_sekolah');
-		$this->db->where('status', 1);
-		$this->db->where('(npsn=' . $npsn . ')');
-		$this->db->order_by('created', 'desc');
+		$this->db->from('daf_chn_sekolah dc');
+		$this->db->join('daf_sekolah ds', 'ds.npsn_sekolah = dc.npsn_sekolah', 'left');
+		$this->db->where('dc.status', 1);
+		$this->db->where('(dc.npsn_sekolah=' . $npsn . ')');
+		$this->db->where('(dc.kd_prodi=' . $prodi . ')');
+		$this->db->order_by('dc.created', 'desc');
 		$result = $this->db->get()->result();
 		return $result;
 	}
@@ -105,11 +107,12 @@ class M_channel extends CI_Model
 			'FROM daf_sekolah WHERE npsn = ' . $npsn);
 	}
 
-	public function getPlayList($npsn)
+	public function getPlayList($npsn, $prodi)
 	{
 		$this->db->from('tb_channel_video tcv');
 		$this->db->join('tb_video tv', 'tcv.id_video = tv.id_video', 'left');
 		$this->db->where('(npsn=' . $npsn . ')');
+		$this->db->where('(kd_prodi=' . $prodi . ')');
 		$this->db->where('(tv.durasi<>"")');
 		$this->db->order_by('urutan', 'asc');
 		$result = $this->db->get()->result();
@@ -211,12 +214,13 @@ class M_channel extends CI_Model
 		return $result;
 	}
 
-	public function getPlayListSekolah($npsn, $link_list)
+	public function getPlayListSekolah($npsn, $prodi, $link_list)
 	{
 		$this->db->from('tb_channel_video_sekolah tcv');
 		$this->db->join('tb_video tv', 'tcv.id_video = tv.id_video', 'left');
-		$this->db->join('tb_paket_channel_sekolah tpc', 'tpc.id = tcv.id_paket', 'left');
+		$this->db->join('tb_paket_channel_sekolah tpc', 'tpc.link_list = tcv.link_list_paket', 'left');
 		$this->db->where('(tcv.npsn=' . $npsn . ')');
+		$this->db->where('(tcv.kd_prodi=' . $prodi . ')');
 		$this->db->where('(tpc.link_list="' . $link_list . '")');
 		$this->db->where('(tv.durasi<>"")');
 		$this->db->where('(status_verifikasi_admin=4)');
@@ -378,13 +382,14 @@ class M_channel extends CI_Model
 		return $result;
 	}
 
-	public function getDafPlayListSekolah($npsn, $tayang, $hari)
+	public function getDafPlayListSekolah($npsn, $prodi, $tayang, $hari)
 	{
 		$this->db->from('tb_paket_channel_sekolah tpc');
-		$this->db->join('tb_channel_video_sekolah tcv', 'tcv.id_paket = tpc.id', 'left');
+		$this->db->join('tb_channel_video_sekolah tcv', 'tcv.link_list_paket = tpc.link_list', 'left');
 		$this->db->join('tb_video tv', 'tv.id_video = tcv.id_video', 'left');
 //		$this->db->where('(urutan=0 OR urutan=1)');
 		$this->db->where('(tpc.npsn=' . $npsn . ')');
+		$this->db->where('(tpc.kd_prodi=' . $prodi . ')');
 		$this->db->where('(tpc.tayang=' . $tayang . ')');
 		$this->db->where('(tpc.hari=' . $hari . ')');
 		$this->db->group_by('nama_paket');
@@ -473,12 +478,13 @@ class M_channel extends CI_Model
 		return $result;
 	}
 
-	public function getPaketSekolah($npsn)
+	public function getPaketSekolah($npsn, $prodi)
 	{
 		$this->db->select('tpc.*,tu.first_name,tu.last_name');
 		$this->db->from('tb_paket_channel_sekolah tpc');
 		$this->db->join('tb_user tu', 'tu.id = tpc.iduser', 'left');
 		$this->db->where('tpc.npsn', $npsn);
+		$this->db->where('tpc.kd_prodi', $prodi);
 		$this->db->order_by('hari', 'asc');
 		$result = $this->db->get()->result();
 		return $result;
@@ -506,11 +512,12 @@ class M_channel extends CI_Model
 		return $result;
 	}
 
-	public function getChannelGuru($npsn)
+	public function getChannelGuru($npsn, $prodi)
 	{
 		$this->db->from('tb_user tu');
 		$this->db->join('tb_paket_channel tpc', 'tu.id = tpc.id_user', 'right');
 		$this->db->where('npsn', $npsn);
+		$this->db->where('kd_prodi', $prodi);
 		$this->db->order_by('level', 'desc');
 		$this->db->group_by('tu.id');
 		$result = $this->db->get()->result();
@@ -525,22 +532,24 @@ class M_channel extends CI_Model
 		return $result;
 	}
 
-	public function getInfoSekolah($npsn)
+	public function getInfoSekolah($npsn, $prodi)
 	{
 		$this->db->from('daf_chn_sekolah');
-		$this->db->where('npsn', $npsn);
+		$this->db->where('npsn_sekolah', $npsn);
+		$this->db->where('kd_prodi', $prodi);
 		$result = $this->db->get()->result();
 		return $result;
 	}
 
-	public function getVODSekolah($npsn)
+	public function getVODSekolah($npsn, $prodi)
 	{
 		$this->db->select('tv.*,first_name');
 		$this->db->from('tb_video tv');
 		$this->db->join('tb_user tu', 'tu.id = tv.id_user', 'left');
 		$this->db->where('((status_verifikasi=4 AND id_jenis=1) OR (status_verifikasi=2 AND id_jenis=2) 
         OR (status_verifikasi=4 AND file_video!="") OR (status_verifikasi=4 AND link_video!=""))');
-		$this->db->where('npsn', $npsn);
+		$this->db->where('npsn_user', $npsn);
+		$this->db->where('kd_prodi_user', $prodi);
 		$this->db->where('(tv.durasi<>"")');
 		$this->db->where('sifat', 0);
 		$this->db->order_by('modified', 'desc');
@@ -603,7 +612,7 @@ class M_channel extends CI_Model
 		dcs.status as statuschannel,dcs.*,ds.*');
 		$this->db->from('daf_chn_sekolah dcs');
 		$this->db->join('daf_sekolah ds', 'ds.npsn_sekolah=dcs.npsn_sekolah', 'left');
-		$this->db->join('tb_user tu','ds.id_agency=tu.kd_user','left');
+		$this->db->join('tb_user tu','dcs.npsn_sekolah=tu.npsn AND dcs.kd_prodi=tu.kd_prodi AND tu.verifikator=3','left');
 		$this->db->where('(dcs.status>=1)');
 		$this->db->order_by('dcs.strata_sekolah', 'desc');
 		$this->db->order_by('dcs.modified', 'desc');
@@ -1281,17 +1290,18 @@ class M_channel extends CI_Model
 		return $result;
 	}
 
-	public function getVideoSekolah($npsn, $kodepaket, $sifat = null)
+	public function getVideoSekolah($npsn, $prodi, $kodepaket, $sifat = null)
 	{
-		$this->db->select('*,tv.id_video as idvideo, tcv.id as idchannel');
+		$this->db->select('*,tv.id_video as idvideo');
 		$this->db->from('tb_video tv');
-		$this->db->join('tb_user tu', 'tu.id = tv.id_user', 'left');
-		$this->db->join('tb_paket_channel_sekolah tpc', 'tu.npsn = tpc.npsn', 'left');
-		$this->db->join('tb_channel_video_sekolah tcv', '(tcv.id_video = tv.id_video AND tcv.id_paket = tpc.id)', 'left');
+		$this->db->join('tb_user tu', 'tu.kd_user = tv.id_user', 'left');
+		$this->db->join('tb_channel_video_sekolah tcv', 'tcv.id_video = tv.id_video', 'left');
+		$this->db->join('tb_paket_channel_sekolah tpc', 'tpc.link_list=tcv.link_list_paket', 'left');
 
-		$this->db->where('tu.npsn', $npsn);
-		if ($kodepaket!=null)
-		$this->db->where('tpc.link_list', $kodepaket);
+		$this->db->where('tv.npsn_user', $npsn);
+		$this->db->where('tv.kd_prodi_user', $prodi);
+		// if ($kodepaket!=null)
+		// $this->db->where('tpc.link_list', $kodepaket);
 		$this->db->where('(tv.durasi<>"")');
 		$this->db->where('(status_verifikasi=2 OR status_verifikasi=4)');
 		$this->db->where('(status_verifikasi_admin=4)');
@@ -1301,7 +1311,7 @@ class M_channel extends CI_Model
 			$this->db->where('(sifat='.$sifat.' OR sifat=0)');
 //		$this->db->where('(dilist=0||(dilist=1 && tcv.id_video = tv.id_video))');
 		$this->db->order_by('tv.modified', 'desc');
-		$this->db->group_by('tv.id_video');
+		// $this->db->group_by('tv.id_video');
 		$result = $this->db->get()->result();
 		return $result;
 	}
@@ -1328,7 +1338,7 @@ class M_channel extends CI_Model
 		return $result;
 	}
 
-	public function getVideoEvent($npsn, $kodepaket, $idevent)
+	public function getVideoEvent($npsn, $prodi, $kodepaket, $idevent)
 	{
 		$this->db->select('*,tv.id_video as idvideo, tcv.id as idchannel');
 		$this->db->from('tb_video tv');
@@ -1337,6 +1347,7 @@ class M_channel extends CI_Model
 		$this->db->join('tb_channel_video_sekolah tcv', '(tcv.id_video = tv.id_video AND tcv.id_paket = tpc.id)', 'left');
 
 		$this->db->where('tu.npsn', $npsn);
+		$this->db->where('tu.kd_prodi', $prodi);
 		$this->db->where('tv.id_event', $idevent);
 		$this->db->where('tpc.link_list', $kodepaket);
 		$this->db->where('(tv.durasi<>"")');
@@ -1350,7 +1361,7 @@ class M_channel extends CI_Model
 		return $result;
 	}
 
-	public function getVideoSekolahEkskul($npsn, $iduser, $idpaket=null, $hari=null)
+	public function getVideoSekolahEkskul($npsn, $prodi, $iduser, $idpaket=null, $hari=null)
 	{
 //		$npsn = $result['npsn'];
 //		$idpaket = $result['id'];
@@ -1361,7 +1372,7 @@ class M_channel extends CI_Model
 		$this->db->from('tb_video tv');
 		$this->db->join('tb_user tu', 'tu.id = tv.id_user', 'left');
 		$this->db->join('tb_channel_video_sekolah tcv', '(tcv.id_video = tv.id_video AND tcv.id_paket = '.$idpaket.')', 'left');
-		$this->db->where('(npsn_user="'.$npsn.'" AND tu.sebagai=1) OR (id_user='.$iduser.')');
+		$this->db->where('(npsn_user="'.$npsn.'" AND kd_prodi_user="'.$prodi.'" AND tu.sebagai=1) OR (id_user='.$iduser.')');
 		$this->db->where('(tv.durasi<>"")');
 		$this->db->where('(status_verifikasi=2 OR status_verifikasi=4)');
 		$this->db->where('(status_verifikasi_admin=4)');
@@ -1379,7 +1390,7 @@ class M_channel extends CI_Model
 		return $result;
 	}
 
-	public function getVideoSekolahCalver($npsn, $kodepaket, $sifat = null)
+	public function getVideoSekolahCalver($npsn, $prodi, $kodepaket, $sifat = null)
 	{
 		$this->db->select('*,tv.id_video as idvideo, tcv.id as idchannel');
 		$this->db->from('tb_video tv');
@@ -1388,6 +1399,7 @@ class M_channel extends CI_Model
 		$this->db->join('tb_channel_video_sekolah tcv', '(tcv.id_video = tv.id_video AND tcv.id_paket = tpc.id)', 'left');
 
 		$this->db->where('tu.npsn', $npsn);
+		$this->db->where('tu.kd_prodi', $prodi);
 		if ($kodepaket!=null)
 		$this->db->where('tpc.link_list', $kodepaket);
 		$this->db->where('(tv.durasi<>"")');
@@ -1410,7 +1422,7 @@ class M_channel extends CI_Model
 		$this->db->from('tb_channel_video_sekolah tcv');
 		$this->db->join('tb_video tv', '(tcv.id_video = tv.id_video)', 'left');
 		$this->db->join('tb_user tu', 'tu.id = tv.id_user', 'left');
-		$this->db->where('(tcv.id_paket = '.$idpaket.')');
+		$this->db->where('(tcv.link_list_paket = "'.$idpaket.'")');
 		$this->db->order_by('tcv.urutan', 'asc');
 		$this->db->order_by('tcv.id', 'asc');
 		$result = $this->db->get()->result();
@@ -1695,7 +1707,7 @@ class M_channel extends CI_Model
 	{
 		$this->db->from('tb_channel_video_sekolah tcv');
 		$this->db->join('tb_video tv', 'tv.id_video = tcv.id_video', 'left');
-		$this->db->where('id_paket', $id_paket);
+		$this->db->where('link_list_paket', $id_paket);
 		$this->db->where('(tv.durasi<>"")');
 		$this->db->order_by('urutan', 'desc');
 		$result = $this->db->get()->result();
@@ -1752,13 +1764,13 @@ class M_channel extends CI_Model
 
 	public function delDataChannelVideoSekolah($id_video, $id_paket)
 	{
-		$this->db->where('(id_video = ' . $id_video . ' AND id_paket = ' . $id_paket . ')');
+		$this->db->where('(id_video = ' . $id_video . ' AND link_list_paket = "' . $id_paket . '")');
 		$this->db->delete('tb_channel_video_sekolah');
 	}
 
 	public function delDataChannelVideoTVE($id_video, $id_paket)
 	{
-		$this->db->where('(id_video = ' . $id_video . ' AND id_paket = ' . $id_paket . ')');
+		$this->db->where('(id_video = ' . $id_video . ' AND id_paket = "' . $id_paket . '")');
 		$this->db->delete('tb_channel_video_tve');
 	}
 
@@ -2512,12 +2524,13 @@ class M_channel extends CI_Model
 		$this->db->update_batch('daf_chn_sekolah', $data, 'npsn');
 	}
 
-	public function cektayangchannel($npsn)
+	public function cektayangchannel($npsn, $prodi)
 	{
 		$this->db->select('count(hari) as totharitayang, 
 		SEC_TO_TIME(SUM(TIME_TO_SEC(durasi_paket))) as tottotaltayang');
 		$this->db->from('tb_paket_channel_sekolah');
 		$this->db->where('npsn', $npsn);
+		$this->db->where('kd_prodi', $prodi);
 		$result = $this->db->get()->result();
 		return $result;
 	}
@@ -2532,9 +2545,10 @@ class M_channel extends CI_Model
 		return $result;
 	}
 
-	public function updatetayangchannel($data, $npsn)
+	public function updatetayangchannel($data, $npsn, $prodi)
 	{
-		$this->db->where('npsn', $npsn);
+		$this->db->where('npsn_sekolah', $npsn);
+		$this->db->where('kd_prodi', $prodi);
 		$this->db->update('daf_chn_sekolah', $data);
 	}
 
@@ -2574,7 +2588,7 @@ class M_channel extends CI_Model
 		$this->db->update('tb_vk_beli', $data);
 	}
 
-	public function getpaymentsekolah($npsn, $opsi)
+	public function getpaymentsekolah($npsn, $prodi, $opsi)
 	{
 		$now = new DateTime();
 		$now->setTimezone(new DateTimezone('Asia/Jakarta'));
@@ -2582,6 +2596,7 @@ class M_channel extends CI_Model
 
 		$this->db->from('tb_payment');
 		$this->db->where('npsn_sekolah', $npsn);
+		$this->db->where('kd_prodi', $prodi);
 		if ($opsi=="semua")
 			$this->db->where('(SUBSTRING(order_id,1,3)="TVS" OR SUBSTRING(order_id,1,2)="TP" OR SUBSTRING(order_id,1,2)="TF")');
 		else if ($opsi=="premium")
@@ -2639,15 +2654,16 @@ class M_channel extends CI_Model
 		return $ret;
 	}
 
-	public function getsiaranaktif($npsn=null)
+	public function getsiaranaktif($npsn=null, $prodi)
 	{
 		if ($this->session->userdata('verifikator')==3)
 		{
 			$npsn = $this->session->userdata('npsn');
 		}
 
-		$this->db->from('daf_sekolah');
-		$this->db->where('npsn', $npsn);
+		$this->db->from('daf_chn_sekolah');
+		$this->db->where('npsn_sekolah', $npsn);
+		$this->db->where('kd_prodi', $prodi);
 		$query = $this->db->get();
 		$ret = $query->row();
 		return $ret;

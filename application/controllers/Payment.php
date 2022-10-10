@@ -15,7 +15,7 @@ class Payment extends CI_Controller
 		$this->load->library('midtrans');
 		$this->load->library('Pdf');
 		if (base_url() == "https://tutormedia.net/tvsekolahbaru/" || base_url() == "http://localhost/fordorum/"
-			|| base_url() == "http://localhost/tvsekolah/" || base_url() == "http://localhost/tvsekolah2/"
+			|| base_url() == "http://localhost/tvsekolah/" || base_url() == "http://localhost/kampustv/"
 			|| $this->session->userdata('npsn') == "1234567890" || $this->session->userdata('npsn') == "1234567891") {
 			$params = array('server_key' => 'SB-Mid-server-dQDHk1T4KGhT9kh24H46iyV-', 'production' => false);
 		} else {
@@ -313,11 +313,16 @@ class Payment extends CI_Controller
 			$namane = "Pembayaran " . $bulanapa . " Bulan TV Sekolah";
 		}
 
+		$this->load->model('M_login');
 		$iduser = $this->session->userdata('id_user');
 		$npsn = $this->session->userdata('npsn');
-		$kodeacak = "TVS-" . $iduser . "-" . rand();
+		$getuser = $this->M_login->getUser($iduser);
+		$prodi = $getuser['kd_prodi'];
+		$id = $getuser['id'];
 
-		$this->M_payment->insertkodeorder($kodeacak, $iduser, $npsn, $iuran, $tanggalbatas);
+		$kodeacak = "TVS-" . $id . "-" . rand();
+
+		$this->M_payment->insertkodeorder($kodeacak, $id, $npsn, $prodi, $iuran, $tanggalbatas);
 
 //        echo $iuran;
 //        die();
@@ -567,55 +572,15 @@ class Payment extends CI_Controller
 
 		$namane = "Pembayaran Pro " . $bulanapa . " Bulan TV Sekolah";
 
-		$iduser = $this->session->userdata('id_user');
+		$this->load->model('M_login');
+		$getuser = $this->M_login->getUser($this->session->userdata('id_user'));
+		$iduser = $getuser['id'];
+		$prodi = $getuser['kd_prodi'];
 		$npsn = $this->session->userdata('npsn');
 
 		$kodeacak = "TP2-" . $iduser . "-" . rand();
 
-//		$this->load->model('M_login');
-//		$cekSekolahTerdaftar = $this->M_login->getsekolah($npsn);
-//		$tgldaftar = new DateTime($cekSekolahTerdaftar[0]->created);
-//
-//		$tglbatasTP0 = new DateTime('2020-01-01 00:00:00');
-//		if ($tgldaftar <= $tglbatasTP0) {
-//			$tglcek1 = $tglbatasTP0;
-//			$tglcek2 = $tglbatasTP0;
-//		} else {
-//			$tglcek1 = $tgldaftar;
-//			$tglcek2 = $tgldaftar;
-//		}
-//
-//		$bulanpertamaTP0 = new DateTime($tglcek1->format("Y-m-01 00:00:00"));
-//		$batas6bulan = $bulanpertamaTP0->modify("+5 months");
-//		$batas6bulan = new DateTime($batas6bulan->format("Y-m-t 23:23:59"));
-//		$bulanpertamaTP1 = new DateTime($tglcek2->format("Y-m-01 00:00:00"));
-//		$batas12bulan = $bulanpertamaTP1->modify("+11 months");
-//		$batas12bulan = new DateTime($batas12bulan->format("Y-m-t 23:23:59"));
-//
-//		$tglsekarang = new DateTime();
-//		$tglsekarang->setTimezone(new DateTimeZone("Asia/Jakarta"));
-
-//		if ($tglsekarang <= $batas6bulan) {
-//			//echo "Masuk promo 6 bulan pertama";
-//			$iuran = $standar->pro / 10;
-//			$kodeacak = "TP0-" . $iduser . "-" . rand();
-//			$namane = "Iuran Pro EarlyBird " . $bulanapa . " Bulan TV Sekolah";
-//		} else if ($tglsekarang <= $batas12bulan) {
-//			//echo "Masuk promo 6 bulan kedua";
-//			$iuran = $standar->pro / 10 * 4;
-//			$kodeacak = "TP1-" . $iduser . "-" . rand();
-//			$namane = "Iuran Pro EarlyBird II " . $bulanapa . " Bulan TV Sekolah";
-//		}
-
-//		$batasbulanini = new DateTime();
-//		$batasbulanini->setTimezone(new DateTimezone('Asia/Jakarta'));
-//		$batasbulanini = $batasbulanini->modify('first day of this month');
-//		$namabulanini = $batasbulanini->format('n');
-//		$batasbulanini = $batasbulanini->format("Y-m-t 23:59:59");
-//
-//		$this->M_payment->insertkodeorder($kodeacak, $iduser, $npsn, $iuran, $batasbulanini);
-
-		$this->M_payment->insertkodeorder($kodeacak, $iduser, $npsn, $iuran, $tanggalbatas);
+		$this->M_payment->insertkodeorder($kodeacak, $iduser, $npsn, $prodi, $iuran, $tanggalbatas);
 
 //        echo $iuran;
 //        die();
@@ -752,55 +717,16 @@ class Payment extends CI_Controller
 
 		$namane = "Pembayaran Premium " . $bulanapa . " Bulan TV Sekolah";
 
-		$iduser = $this->session->userdata('id_user');
+		$this->load->model('M_login');
+		$getuser = $this->M_login->getUser($this->session->userdata('id_user'));
+		$iduser = $getuser['id'];
+		$prodi = $getuser['kd_prodi'];
 		$npsn = $this->session->userdata('npsn');
 
 		$kodeacak = "TF2-" . $iduser . "-" . rand();
 
-//		$this->load->model('M_login');
-//		$cekSekolahTerdaftar = $this->M_login->getsekolah($npsn);
-//		$tgldaftar = new DateTime($cekSekolahTerdaftar[0]->created);
-//
-//		$tglbatasTP0 = new DateTime('2020-01-01 00:00:00');
-//		if ($tgldaftar <= $tglbatasTP0) {
-//			$tglcek1 = $tglbatasTP0;
-//			$tglcek2 = $tglbatasTP0;
-//		} else {
-//			$tglcek1 = $tgldaftar;
-//			$tglcek2 = $tgldaftar;
-//		}
-//
-//		$bulanpertamaTP0 = new DateTime($tglcek1->format("Y-m-01 00:00:00"));
-//		$batas6bulan = $bulanpertamaTP0->modify("+5 months");
-//		$batas6bulan = new DateTime($batas6bulan->format("Y-m-t 23:23:59"));
-//		$bulanpertamaTP1 = new DateTime($tglcek2->format("Y-m-01 00:00:00"));
-//		$batas12bulan = $bulanpertamaTP1->modify("+11 months");
-//		$batas12bulan = new DateTime($batas12bulan->format("Y-m-t 23:23:59"));
-//
-//		$tglsekarang = new DateTime();
-//		$tglsekarang->setTimezone(new DateTimeZone("Asia/Jakarta"));
 
-//		if ($tglsekarang <= $batas6bulan) {
-////			echo "Masuk promo 6 bulan pertama";
-//			$iuran = $standar->premium / 10;
-//			$kodeacak = "TF0-" . $iduser . "-" . rand();
-//			$namane = "Iuran Premium EarlyBird " . $bulanapa . " Bulan TV Sekolah";
-//		} else if ($tglsekarang <= $batas12bulan) {
-////			echo "Masuk promo 6 bulan kedua";
-//			$iuran = $standar->premium / 10 * 4;
-//			$kodeacak = "TF1-" . $iduser . "-" . rand();
-//			$namane = "Iuran Premium EarlyBird II " . $bulanapa . " Bulan TV Sekolah";
-//		}
-
-//		$batasbulanini = new DateTime();
-//		$batasbulanini->setTimezone(new DateTimezone('Asia/Jakarta'));
-//		$batasbulanini = $batasbulanini->modify('first day of this month');
-//		$namabulanini = $batasbulanini->format('n');
-//		$batasbulanini = $batasbulanini->format("Y-m-t 23:59:59");
-//
-//		$this->M_payment->insertkodeorder($kodeacak, $iduser, $npsn, $iuran, $batasbulanini);
-
-		$this->M_payment->insertkodeorder($kodeacak, $iduser, $npsn, $iuran, $tanggalbatas);
+		$this->M_payment->insertkodeorder($kodeacak, $iduser, $npsn, $prodi, $iuran, $tanggalbatas);
 
 //        echo $iuran;
 //        die();
@@ -907,6 +833,9 @@ class Payment extends CI_Controller
 
 		$iduser = $this->session->userdata('id_user');
 		$npsn = $this->session->userdata('npsn');
+		$getuser = $this->M_login->getUser($iduser);
+		$prodi = $getuser['kd_prodi'];
+		$id = $getuser['id'];
 
 		if ($opsi == "bulanan") {
 			$kodeacak = "EKS-" . $iduser . "-" . $bulan . $tahun . "-" . rand();
@@ -925,12 +854,10 @@ class Payment extends CI_Controller
 
 		$tglakhir = $tglakhir->format("Y-m-t H:i:s");
 
-		$this->M_payment->insertkodeorderekskul($kodeacak, $iduser, $npsn, $iuran, $tglakhir);
+		$this->M_payment->insertkodeorderekskul($kodeacak, $id, $npsn, $prodi, $iuran, $tglakhir);
 
-		$id = $this->session->userdata('id_user');
-		$npsn = $this->session->userdata('npsn');
 		$this->load->model("M_ekskul");
-		$this->M_ekskul->updateEkskul($npsn, $id, $kodeacak);
+		$this->M_ekskul->updateEkskul($npsn, $prodi, $iduser, $kodeacak);
 
 //        echo $iuran;
 //        die();
@@ -1079,6 +1006,9 @@ class Payment extends CI_Controller
 
 		$iduser = $this->session->userdata('id_user');
 		$npsn = $this->session->userdata('npsn');
+		$getuser = $this->M_login->getUser($iduser);
+		$prodi = $getuser['kd_prodi'];
+		$id = $getuser['id'];
 
 		if ($opsi == "1") {
 			$kodeacak = "EK1-" . $iduser . "-" . $bulan . $tahun . "-" . rand();
@@ -1119,7 +1049,7 @@ class Payment extends CI_Controller
 
 		$tglakhir = $tglakhir->format("Y-m-t H:i:s");
 
-		$this->M_payment->insertkodeorderekskul($kodeacak, $iduser, $npsn, $iuran, $tglakhir, null, null, null, null, $feever, $iduser);
+		$this->M_payment->insertkodeorderekskul($kodeacak, $id, $npsn, $prodi, $iuran, $tglakhir, null, null, null, null, $feever, $iduser);
 
 		$id = $this->session->userdata('id_user');
 		$npsn = $this->session->userdata('npsn');
@@ -1181,6 +1111,7 @@ class Payment extends CI_Controller
 
 	public function finish($opsi = null)
 	{
+		// console.log("MAMPIR KESINI");
 		//$datesekarang = new DateTime("2021-03-02 01:00:00");
 		$datesekarang = new DateTime();
 		$datesekarang->setTimezone(new DateTimezone('Asia/Jakarta'));
@@ -1192,6 +1123,10 @@ class Payment extends CI_Controller
 //        echo '</pre>' ;
 
 		$iduser = $this->session->userdata('id_user');
+		$this->load->model('M_login');
+		$getuser = $this->M_login->getUser($iduser);
+		$iduserid = $getuser['id'];
+		$prodi = $getuser['kd_prodi'];
 		$order_id = $result->order_id;
 		$tgl_order = $result->transaction_time;
 		$tipebayar = $result->payment_type;
@@ -1237,7 +1172,7 @@ class Payment extends CI_Controller
 		else if ($statusorder == 3)
 			$this->session->set_userdata('statusbayar', 3);
 
-		$this->M_payment->tambahbayar($data, $order_id, $iduser);
+		$this->M_payment->tambahbayar($data, $order_id, $iduserid);
 		$data2 = array('statusbayar' => 1, 'lastorder' => $order_id);
 		$this->M_payment->updatestatusbayar($iduser, $data2);
 
@@ -2126,15 +2061,18 @@ class Payment extends CI_Controller
 				$term = "4";
 			}
 
-			$iduser = $this->session->userdata("id_user");
-			$npsn = $this->session->userdata("npsn");
+			$iduser = $this->session->userdata('id_user');
+			$npsn = $this->session->userdata('npsn');
+			$getuser = $this->M_login->getUser($iduser);
+			$prodi = $getuser['kd_prodi'];
+			$id = $getuser['id'];
 			$namapaket = array("", "A", "B", "C", "D");
-			$kodeacak = "MO" . $indeks . "_" . $term . "_" . $iduser . "-" . rand(1000000000, 9999999999);
+			$kodeacak = "MO" . $indeks . "_" . $term . "_" . $id . "-" . rand(1000000000, 9999999999);
 
 			$datamou["order_id_payment" . $term] = $kodeacak;
 
 			$this->load->model('M_payment');
-			$this->M_payment->insertkodeorder($kodeacak, $iduser, $npsn, $tagihantoken,
+			$this->M_payment->insertkodeorder($kodeacak, $id, $npsn, $prodi, $tagihantoken,
 				$fee_agancy, $fee_siam, $idegency, $idsiam);
 
 			$this->M_mou->updatedatamou($idmou, $datamou);
@@ -4295,12 +4233,12 @@ class Payment extends CI_Controller
 	public function testvv()
 	{
 		$this->load->model("M_payment");
-		$order_id = "TVS-4019-1815714986";
-		$sejumlah = 50000;
-		$type = "alfamart";
-		$namabank = "echannel";
-		$rektujuan = "3445556";
-		$transaction_time = "2022-02-10 21:38:00";
+		$order_id = "TP2-2-1292208483";
+		$sejumlah = 750000;
+		$type = "bank_transfer";
+		$namabank = "bca";
+		$rektujuan = "22282237652";
+		$transaction_time = "2022-10-09 09:37:24";
 
 		//--------------------------------------------------------
 		$this->load->model('M_payment');
@@ -4356,7 +4294,7 @@ class Payment extends CI_Controller
 			//$npsn = $cekorder->npsn_sekolah;
 			$iduser = $cekorder->iduser;
 			$this->load->model('M_login');
-			$cekuser = $this->M_login->getUser($iduser);
+			$cekuser = $this->M_login->getUserById($iduser);
 			$referrer = $cekuser['referrer'];
 
 			//echo $iduser;

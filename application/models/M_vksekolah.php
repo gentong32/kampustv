@@ -12,7 +12,7 @@ class M_vksekolah extends CI_Model {
         $this->load->database();
     }
 
-    public function getSekolahMapel($npsn, $namajenjang,$idmapel,$limit=null,$start=null){
+    public function getSekolahMapel($npsn, $prodi, $namajenjang,$idmapel,$limit=null,$start=null){
 		$this->db->from('tb_paket_channel tpc');
 		$this->db->join('tb_channel_video tcv', 'tcv.id_paket = tpc.id', 'left');
 		$this->db->join('tb_video tv', 'tv.id_video = tcv.id_video', 'left');
@@ -22,6 +22,7 @@ class M_vksekolah extends CI_Model {
         $this->db->where('((status_verifikasi=4 AND tv.id_jenis=1) OR ((status_verifikasi=2 OR status_verifikasi=4) AND tv.id_jenis=2) 
         OR (status_verifikasi=4 AND file_video!=""))');
 		$this->db->where('tpc.npsn_user',$npsn);
+		$this->db->where('tpc.kd_prodi_user',$prodi);
 		$this->db->where('(status_verifikasi_admin=4)');
         if ($idmapel==0)
         $this->db->where('(nama_pendek="'.$namajenjang.'")');
@@ -1248,10 +1249,14 @@ class M_vksekolah extends CI_Model {
 
 	}
 
-	public function getsiswabayarvk($jenispaket=null, $npsn = null)
+	public function getsiswabayarvk($jenispaket=null, $npsn = null, $prodi=null)
 	{
 		if ($npsn==null)
-			$npsn = $this->session->userdata('npsn');
+			{
+				$npsn = $this->session->userdata('npsn');
+				$getuser = getstatususer();
+				$prodi = $getuser['kelasku'];
+			}
 		$now = new DateTime();
 		$now->setTimezone(new DateTimezone('Asia/Jakarta'));
 		$tglsekarang = $now->format('Y-m-d H:i:s');
@@ -1259,6 +1264,7 @@ class M_vksekolah extends CI_Model {
 		$this->db->select('*,max(strata_paket) as strata_paket');
 		$this->db->from('tb_vk_beli');
 		$this->db->where('npsn_user', $npsn);
+		$this->db->where('kd_prodi', $prodi);
 		if ($jenispaket!=null)
 			$this->db->where('jenis_paket', $jenispaket);
 		else
@@ -1272,16 +1278,21 @@ class M_vksekolah extends CI_Model {
 		return $result;
 	}
 
-	public function getsiswabayarekskul($npsn = null)
+	public function getsiswabayarekskul($npsn = null, $prodi=null)
 	{
 		if ($npsn==null)
-			$npsn = $this->session->userdata('npsn');
+			{
+				$npsn = $this->session->userdata('npsn');
+				$getuser = getstatususer();
+				$prodi = $getuser['kelasku'];
+			}
 		$now = new DateTime();
 		$now->setTimezone(new DateTimezone('Asia/Jakarta'));
 		$tglsekarang = $now->format('Y-m-d H:i:s');
 
 		$this->db->from('tb_payment');
 		$this->db->where('npsn_sekolah', $npsn);
+		$this->db->where('kd_prodi', $prodi);
 		$this->db->where('(SUBSTRING(order_id,1,2)="EK")');
 		$this->db->where('tgl_berakhir>=', $tglsekarang);
 		$this->db->where('status', 3);
@@ -1293,12 +1304,15 @@ class M_vksekolah extends CI_Model {
 	public function get_vkbeli_berbayar()
 	{
 		$npsn = $this->session->userdata('npsn');
+		$getuser = getstatususer();
+		$prodi = $getuser['kelasku'];
 		$now = new DateTime();
 		$now->setTimezone(new DateTimezone('Asia/Jakarta'));
 		$tglsekarang = $now->format('Y-m-d H:i:s');
 
 		$this->db->from('tb_payment');
 		$this->db->where('npsn_sekolah', $npsn);
+		$this->db->where('kd_prodi', $prodi);
 		$this->db->where('(SUBSTRING(order_id,1,2)="EK")');
 		$this->db->where('tgl_berakhir>=', $tglsekarang);
 		$this->db->where('status', 3);

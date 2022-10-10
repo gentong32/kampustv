@@ -14,7 +14,7 @@ $jml_user = 0;
 foreach ($dafuser as $datane) {
 	$jml_user++;
 	$nomor[$jml_user] = $jml_user;
-	$id_user[$jml_user] = $datane->id;
+	$id_user[$jml_user] = $datane->kd_user;
 	$first_name[$jml_user] = $datane->first_name;
 	$nomor_nasional[$jml_user] = $datane->nomor_nasional;
 	$last_name[$jml_user] = $datane->last_name;
@@ -54,7 +54,7 @@ foreach ($dafuser as $datane) {
 		<div class="container">
 			<div class="row">
 				<br>
-				<center><span style="font-size:18px;font-weight: bold;">Daftar Calon Guru</span>
+				<center><span style="font-size:18px;font-weight: bold;">Daftar Calon Dosen</span>
 				<br><?php echo $sekolahku; ?>
 				</center>
 				<!--<button style="margin-left:10px" id="btn-show-all-children" type="button">Expand All</button>-->
@@ -77,7 +77,7 @@ foreach ($dafuser as $datane) {
 							<th>Sekolah</th>
 							<th>Email</th>
 							<th>Tanggal Pengajuan</th>
-							<th>Status Kontributor</th>
+							<th>Status Dosen</th>
 							<th class="none">NUPTK/NISN/NIP</th>
 							<th class="none">Nama Belakang</th>
 
@@ -127,6 +127,7 @@ foreach ($dafuser as $datane) {
 	</section>
 </div>
 <!----------------------------- SCRIPT DATATABLE  -------------------------------->
+<script src="<?php echo base_url();?>js/jquery.min.js"></script>
 <?php require_once('layout/calljs.php'); ?>
 <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript"

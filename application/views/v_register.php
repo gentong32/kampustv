@@ -65,6 +65,7 @@ if ($jabatan == "Guru")
 				<legend><span
 						style="font-weight: bold;color: black">Mendaftar Sebagai <?php echo $xjabatan; ?></span>
 				</legend>
+				<a target="_blank" href="<?php echo base_url().'tentangkami/kebijakan';?>">Lihat Kebijakan Privasi</a>
 				<fieldset style="background-color: white;margin-top: 20px">
 
 

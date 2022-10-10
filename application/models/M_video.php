@@ -18,7 +18,7 @@ class M_video extends CI_Model
     {
         $this->db->from('tb_video tv');
         $this->db->join('tb_user tu', 'tu.id = tv.id_user', 'left');
-        $this->db->where('id_video', $id_video);
+        $this->db->where('kode_video', $id_video);
         $result = $this->db->get()->row_array();
         return $result;
     }
@@ -27,13 +27,13 @@ class M_video extends CI_Model
     {
     	if ($this->session->userdata('a01'))
 		{
-			$this->db->where('(id_video = ' . $id_video.')');
+			$this->db->where('(kode_video = ' . $id_video.')');
 		}
         else if ($this->session->userdata('sebagai')==4) {
 			$this->db->select('tb_video.id_video');
 			$this->db->from('tb_video');
 			$this->db->join('tb_user', 'tb_user.id = tb_video.id_user', 'left');
-			$this->db->where('(id_video = ' . $id_video . ' AND 
+			$this->db->where('(kode_video = ' . $id_video . ' AND 
 		(status_verifikasi=0 OR sebagai=4))');
 			$where_clause = $this->db->get_compiled_select();
 
@@ -43,35 +43,35 @@ class M_video extends CI_Model
 			$this->db->select('tb_video.id_video');
 			$this->db->from('tb_video');
 			$this->db->join('tb_user', 'tb_user.id = tb_video.id_user', 'left');
-			$this->db->where('(id_video = ' . $id_video . ' AND 
+			$this->db->where('(kode_video = ' . $id_video . ' AND 
 		(status_verifikasi=0 OR sebagai=4) AND dilist = 0 AND dilist2 = 0)');
 			$where_clause = $this->db->get_compiled_select();
 
-			$this->db->where("`id_video` IN ($where_clause)", NULL, FALSE);
+			$this->db->where("`kode_video` IN ($where_clause)", NULL, FALSE);
 
 		}
         else if ($this->session->userdata('verifikator')==3) {
-			$this->db->select('tb_video.id_video');
+			$this->db->select('tb_video.kode_video');
 			$this->db->from('tb_video');
 			$this->db->join('tb_user', 'tb_user.id = tb_video.id_user', 'left');
-			$this->db->where('(id_video = ' . $id_video . ' AND 
+			$this->db->where('(kode_video = ' . $id_video . ' AND 
 		npsn="'.$this->session->userdata('npsn').'")');
 			$where_clause = $this->db->get_compiled_select();
 
-			$this->db->where("`id_video` IN ($where_clause)", NULL, FALSE);
+			$this->db->where("`kode_video` IN ($where_clause)", NULL, FALSE);
 		}
         else if ($this->session->userdata('verifikator')==2) {
-			$this->db->select('tb_video.id_video');
+			$this->db->select('tb_video.kode_video');
 			$this->db->from('tb_video');
 			$this->db->join('tb_user', 'tb_user.id = tb_video.id_user', 'left');
-			$this->db->where('(id_video = ' . $id_video . ' AND 
+			$this->db->where('(kode_video = ' . $id_video . ' AND 
 		npsn="'.$this->session->userdata('npsn').'")');
 			$where_clause = $this->db->get_compiled_select();
 
-			$this->db->where("`id_video` IN ($where_clause)", NULL, FALSE);
+			$this->db->where("`kode_video` IN ($where_clause)", NULL, FALSE);
 		}
 		else {
-            $this->db->where('(id_video = ' . $id_video . ' AND 
+            $this->db->where('(kode_video = ' . $id_video . ' AND 
 		id_user = ' . $this->session->userdata("id_user") . ' AND
 		status_verifikasi=0)');
         }
@@ -215,14 +215,17 @@ class M_video extends CI_Model
 		return $result;
 	}
 
-    public function getVideoSekolah($npsn=null, $opsi = null, $tipevideo = null, $statusverifikasi = null,
+    public function getVideoSekolah($npsn=null, $prodi=null, $opsi = null, $tipevideo = null, $statusverifikasi = null,
 									$sifat = null, $kodekotaku = null)
     {
-        $this->db->select('tv.*,tu.*,tu.created as createduser');
+        $this->db->select('tv.*,tu.first_name as namadepan,tu.*,tu.created as createduser');
         $this->db->from('tb_video tv');
-        $this->db->join('tb_user tu', 'tu.id = tv.id_user', 'left');
+        $this->db->join('tb_user tu', 'tu.kd_user = tv.id_user', 'left');
 		if ($npsn!=null)
-        $this->db->where('tu.npsn', $npsn);
+        {
+			$this->db->where('tv.npsn_user', $npsn);
+			$this->db->where('tv.kd_prodi_user', $prodi);
+		}
         if ($tipevideo!=null)
 			$this->db->where('tv.tipe_video', $tipevideo);
 		if ($sifat!=null)
@@ -459,16 +462,18 @@ class M_video extends CI_Model
         //    $this->db->insert('tb_penilaian', $data);
     }
 
-    public function updatejmlvidsekolah($npsn)
+    public function updatejmlvidsekolah($npsn, $prodi)
     {
         $this->db->select('tv.*,tu.*,tu.created as createduser');
         $this->db->from('tb_video tv');
         $this->db->join('tb_user tu', 'tu.id = tv.id_user', 'left');
-        $this->db->where('tu.npsn', $npsn);
+        $this->db->where('tv.npsn_user', $npsn);
+        $this->db->where('tv.kd_prodi_user', $prodi);
         $query = $this->db->get();
         $rowcount = $query->num_rows();
         $data = array('jml_video' => $rowcount);
-        $this->db->where('npsn', $npsn);
+        $this->db->where('npsn_sekolah', $npsn);
+        $this->db->where('kd_prodi', $prodi);
         $this->db->update('daf_chn_sekolah', $data);
     }
 

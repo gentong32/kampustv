@@ -109,10 +109,7 @@ if (!isset($premium))
 							<th style='width:5px;text-align:center'>No</th>
 							<th style='width:20%;text-align:center'>Nama</th>
 							<th style='width:15%;text-align:center'>Sebagai</th>
-							<?php if ($sebagai != "siswa") { ?>
-								<th style='text-align:center'>Level</th>
-							<?php } ?>
-							<?php if ($this->session->userdata('a02') && !$this->session->userdata('a01')) { ?>
+							<?php if ($this->session->userdata('a01')) { ?>
 								<th style='text-align:center'>Paket Bulan Ini</th>
 							<?php } else { ?>
 								<th style='text-align:center'>Nama Sekolah</th>
@@ -135,6 +132,7 @@ if (!isset($premium))
 </div>
 
 <!----------------------------- SCRIPT DATATABLE  -------------------------------->
+<script src="<?php echo base_url();?>js/jquery.min.js"></script>
 <?php require_once('layout/calljs.php'); ?>
 <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript"
@@ -153,14 +151,18 @@ if (!isset($premium))
 		$jml_user = 0;
 		foreach ($dafuser as $datane) {
 			$txtsebagai = array("", "Guru", "Siswa", "Umum", "Staf");
-			if ($datane->verifikator == 3)
-				$level = "Verifikator";
+			if ($datane->sebagai == 2 && $datane->kontributor == 3)
+				$level = "Mahasiswa";
+			else if ($datane->sebagai == 2 && $datane->kontributor == 2)
+				$level = "Calon Mahasiswa";
+			else if ($datane->verifikator == 3)
+				$level = "Verifikator Prodi";
 			else if ($datane->verifikator == 2)
 				$level = "Calon Verifikator";
 			else if ($datane->kontributor == 1 || $datane->kontributor == 2)
-				$level = "Calon Kontributor";
+				$level = "Calon Dosen";
 			else if ($datane->kontributor == 3)
-				$level = "Kontributor";
+				$level = "Dosen";
 			else if ($datane->siam == 3)
 				$level = "Mentor";
 			else if ($datane->siae == 3)
@@ -192,21 +194,20 @@ if (!isset($premium))
 
 			if($this->session->userdata('a01')) {
 				echo "data.push([ " . $jml_user . ", \"" . $datane->first_name . " " .
-					$datane->last_name . "\", \"" . $txtsebagai[$datane->sebagai] . "\", \"" .
-					$level . "\", \"" . $datapaketsekolah . "\", \"" . $datane->nama_kota . "\", \"" . $datane->email . "\", \"" . $datane->hp .
-					"\",\"<button onclick='detil(" . $datane->id . ");'>Detil</button>\"]);";
+					$datane->last_name . "\", \"" . $level . "\", \"" . $datapaketsekolah . "\", \"" . $datane->nama_kota . "\", \"" . $datane->email . "\", \"" . $datane->hp .
+					"\",\"<button onclick='detil(`" . $datane->kd_user . "`);'>Detil</button>\"]);";
 			}
 			else if ($sebagai != "siswa") {
 				echo "data.push([ " . $jml_user . ", \"" . $datane->first_name . " " .
 					$datane->last_name . "\", \"" . $txtsebagai[$datane->sebagai] . "\", \"" .
 					$level . "\", \"" . $datapaketsekolah . "\", \"" . $datane->email . "\", \"" . $datane->hp .
-					"\",\"<button onclick='detil(" . $datane->id . ");'>Detil</button>\"]);";
+					"\",\"<button onclick='detil(`" . $datane->kd_user . "`);'>Detil</button>\"]);";
 			}
 			else
 			{
 				echo "data.push([ " . $jml_user . ", \"" . $datane->first_name . " " .
 					$datane->last_name . "\", \"" . $txtsebagai[$datane->sebagai] . "\", \"" . $datapaketsekolah . "\", \"" . $datane->email . "\", \"" . $datane->hp .
-					"\",\"<button onclick='detil(" . $datane->id . ");'>Detil</button>\"]);";
+					"\",\"<button onclick='detil(`" . $datane->kd_user . "`);'>Detil</button>\"]);";
 			}
 		}
 		?>

@@ -4,7 +4,7 @@
 		<div class="row column_title">
 			<div class="col-md-12">
 				<div class="page_title">
-					<h2>Sekolah Saya</h2>
+					<h2>Kampus Saya</h2>
 				</div>
 			</div>
 		</div>
@@ -14,7 +14,7 @@
 				<div class="white_shd full margin_bottom_30">
 					<div class="full graph_head">
 						<div class="heading1 margin_0">
-							<h2>Data Sekolah</h2>
+							<h2>Data Kampus</h2>
 						</div>
 					</div>
 					<div class="full price_table padding_infor_info">
@@ -32,13 +32,17 @@
 																	  echo base_url()."assets/images/tutwuri.png";?>" alt="#"/></div>
 									<div class="profile_contant">
 										<div class="contact_inner">
-											<h3><?php echo $profilku->sekolah.$statussekolah;?></h3>
+											<h3><?php echo $profilku->prodi.$statussekolah;?></h3>
+											<h4><span style="color: #808080"><?php echo $profilku->sekolah;?></span></h4>
 											<ul class="list-unstyled">
 												<li><i class="fa fa-home"></i> : <?php
 													echo $profilku->alamat_sekolah.'<br>'.$namakota.", ".$namapropinsi.
-														'<br>NPSN: '.$profilku->npsn;?> </li>
+														'<br>Kode Kampus: '.$profilku->npsn;?> </li>
 												<li><i class="fa fa-info"></i> :<br> <?php
-													echo 'NISN: '.$profilku->nomor_nasional;?>
+													if ($this->session->userdata('sebagai')==1)
+													echo 'NIDN / NUP : '.$profilku->nomor_nasional;
+													else
+													echo 'NIM / NISN : '.$profilku->nomor_nasional;?>
 													<?php if($this->session->userdata('verifikator')!=3){ 
 														if ($this->session->userdata('verifikator')==2 && $namaverifikator=="-")
 														{

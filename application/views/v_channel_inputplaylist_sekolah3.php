@@ -1,3 +1,4 @@
+<script src="<?php echo base_url();?>js/jquery.min.js"></script>
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -137,6 +138,8 @@ if ($jmldaf_list > 0) {
 		</div>
 	<?php }
 } ?>
+
+
 
 <?php if ($punyalist)
 	$hitungdurasi = substr($durasidaf[1], 0, 2) * 3600 + substr($durasidaf[1], 3, 2) * 60 + substr($durasidaf[1], 6, 2);
@@ -300,13 +303,14 @@ if ($jml_video == 0) { ?>
 
 
 	<!----------------------------- SCRIPT DATATABLE  -------------------------------->
-	<?php require_once('layout/calljs.php'); ?>
-	<script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-	<script type="text/javascript"
-			src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+<script src="<?php echo base_url();?>js/jquery.min.js"></script>
+<?php require_once('layout/calljs.php'); ?>
+<script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript"
+		src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
 
-	<script src="https://www.youtube.com/iframe_api"></script>
-	<script src="<?php echo base_url(); ?>js/videoscript.js"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
+<script src="<?php echo base_url(); ?>js/videoscript.js"></script>
 	<script>
 
 		var oldurl = "";
@@ -349,7 +353,7 @@ if ($jml_video == 0) { ?>
 			var jammulaitayang =<?php echo substr($tgl_tayang[1], 0, 2);?>;
 			var jumlahjudul = <?php echo $jml_list;?>;
 			var posisijudul = 1;
-			var jambulatawal = 0;
+			var jambulatawal = jammulaitayang;
 			var sisadetikawal = 0;
 			var detiklokal;
 			var gabung = "";
@@ -360,7 +364,11 @@ if ($jml_video == 0) { ?>
 			var detikawal = <?php echo substr($stampdate, 17, 2);?>;
 			var totaldetikawal = jamawal * 3600 + menitawal * 60 + detikawal;
 			var yutubredi = false;
-			
+
+			jamsekarangini = new Date(jamnow).getHours();
+			jambulatawal = jammulaitayang + ((jamsekarangini-jammulaitayang)/jambulat);
+
+			detikke[1]="0"+jammulaitayang+":00:00";
 
 			$.get("<?php echo base_url() . 'channel/realdate';?>", function (Jam) {
 				yJam = Jam;
@@ -399,6 +407,7 @@ if ($jml_video == 0) { ?>
 				// console.log("MENIT BARU:"+menitbaru);
 				// console.log("DETIK BARU:"+detikbaru);
 				jamjadwal = detikke[1].substring(0, 2);
+				// console.log("detik1_awal:"+detikke[1]);
 				durasijam = parseInt(jambaru) * 3600 + parseInt(menitbaru) * 60 + parseInt(detikbaru);
 				durasijadwal = parseInt(jamjadwal) * 3600;
 				if (durasijam - durasijadwal >= totalseluruhdurasi) {
@@ -413,6 +422,7 @@ if ($jml_video == 0) { ?>
 
 			function initbaru() {
 				jambulatawal = parseInt(detikke[1].substring(0, 2)) + jambulat;
+				// console.log("detik1:"+detikke[1]);
 				gabung = '<table border="0"><col width="80">';
 				for (var q = 1; q <= <?php echo $jml_list;?>; q++) {
 					if (q == 1) {
@@ -595,7 +605,7 @@ if ($jml_video == 0) { ?>
 			$namafile = $datane->file_video;
 			$dilist = $datane->dilist;
 			$sifat = $datane->sifat;
-			if ($datane->idchannel != null)
+			if ($kodepaket == $datane->link_list_paket)
 				$idchannel = "Masuk";
 			else
 				$idchannel = "---";

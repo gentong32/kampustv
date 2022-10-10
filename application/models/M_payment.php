@@ -67,10 +67,10 @@ class M_payment extends CI_Model
 		return $ret->nama_event;
 	}
 
-	public function insertkodeorder($kodeacak,$iduser,$npsn,$iuran,$tanggalbatas=null,
+	public function insertkodeorder($kodeacak,$iduser,$npsn,$prodi,$iuran,$tanggalbatas=null,
 									$feeagensy=null,$feeam=null,$idagency=null,$idsiam=null)
 	{
-		$data = array ("iduser"=>$iduser, "npsn_sekolah"=>$npsn, "order_id"=>$kodeacak, "iuran"=>$iuran);
+		$data = array ("iduser"=>$iduser, "npsn_sekolah"=>$npsn, "kd_prodi"=>$prodi, "order_id"=>$kodeacak, "iuran"=>$iuran);
 		if ($tanggalbatas!=null)
 			$data['tgl_berakhir'] = $tanggalbatas;
 		if ($feeagensy>0)
@@ -87,10 +87,10 @@ class M_payment extends CI_Model
 		$this->db->insert('tb_payment', $data);
 	}
 
-	public function insertkodeorderekskul($kodeacak,$iduser,$npsn,$iuran,$tglakhir,
+	public function insertkodeorderekskul($kodeacak,$iduser,$npsn,$prodi,$iuran,$tglakhir,
 									$feeagensy=null,$feeam=null,$idagency=null,$idsiam=null,$feever=null,$idver=null)
 	{
-		$data = array ("iduser"=>$iduser, "npsn_sekolah"=>$npsn, "order_id"=>$kodeacak, "iuran"=>$iuran,
+		$data = array ("iduser"=>$iduser, "npsn_sekolah"=>$npsn, "kd_prodi"=>$prodi, "order_id"=>$kodeacak, "iuran"=>$iuran,
 			"tgl_berakhir"=>$tglakhir);
 		if ($feeagensy>0)
 		{
@@ -403,7 +403,7 @@ class M_payment extends CI_Model
 	public function gettransaksi($opsi)
 	{
 		if ($opsi == null) {
-			$this->db->select('iduser as id_user,order_id,status,tgl_order,iuran,email,first_name,last_name,sekolah,npsn');
+			$this->db->select('iduser as id_user,order_id,status,tgl_order,iuran,email,first_name,last_name,sekolah,npsn,kd_prodi');
 			$this->db->from('tb_payment tp');
 			$this->db->where('(iuran<>0)');
 			$this->db->where('(tipebayar<>"donasi")');
@@ -412,7 +412,7 @@ class M_payment extends CI_Model
 //			$this->db->order_by('tp.id','asc');
 			$queryp1 = ($this->db->get_compiled_select());
 
-			$this->db->select('id_user,order_id,status_user as status,tgl_bayar as tgl_order,iuran,email,first_name,last_name,sekolah,ts.npsn');
+			$this->db->select('id_user,order_id,status_user as status,tgl_bayar as tgl_order,iuran,email,first_name,last_name,sekolah,ts.npsn,ts.kd_prodi');
 			$this->db->from('tb_userevent tu');
 			$this->db->join('tb_user ts', 'tu.id_user = ts.id', 'left');
 			$this->db->where('(tu.id_user<>1008)');
@@ -424,7 +424,7 @@ class M_payment extends CI_Model
 //			$this->db->order_by('tgl_order','asc');
 			$query = $this->db->query($queryp1 . ' UNION ' . $queryp2);
 
-			$this->db->select('id_user,kode_beli as order_id,status_beli as status,tgl_beli as tgl_order,rupiah as iuran,email,first_name,last_name,sekolah,ts.npsn');
+			$this->db->select('id_user,kode_beli as order_id,status_beli as status,tgl_beli as tgl_order,rupiah as iuran,email,first_name,last_name,sekolah,ts.npsn, ts.kd_prodi');
 			$this->db->from('tb_vk_beli tv');
 			$this->db->join('tb_user ts', 'tv.id_user = ts.id', 'left');
 			$this->db->where('(rupiah<>0)');
@@ -436,7 +436,7 @@ class M_payment extends CI_Model
 
 			$query = $query->result();
 		} else if ($opsi == "iuran") {
-			$this->db->select('iduser as id_user,order_id,status,tgl_order,tgl_bayar,iuran,email,first_name,last_name,sekolah,npsn');
+			$this->db->select('iduser as id_user,order_id,status,tgl_order,tgl_bayar,iuran,email,first_name,last_name,sekolah,npsn,kd_prodi');
 			$this->db->from('tb_payment tp');
 			$this->db->where('(iuran<>0)');
 			$this->db->where('(substring(order_id,1,3)="TVS")');
@@ -447,7 +447,7 @@ class M_payment extends CI_Model
 			$query = $this->db->get()->result();
 		} else if ($opsi == "donasi") {
 			$this->db->select('iduser as id_user,tp.order_id,status,tgl_order,tgl_bayar,iuran,email,first_name,
-			last_name,sekolah,npsn,nama_donatur,nama_lembaga');
+			last_name,sekolah,npsn,kd_prodinama_donatur,nama_lembaga');
 			$this->db->from('tb_payment tp');
 			$this->db->join('tb_eksekusi_ae ta', 'tp.order_id = ta.order_id', 'left');
 			$this->db->join('tb_donatur td', 'ta.id_donatur = td.id', 'left');
@@ -458,7 +458,7 @@ class M_payment extends CI_Model
 			$this->db->order_by('tgl_bayar','desc');
 			$query = $this->db->get()->result();
 		} else if ($opsi == "event") {
-			$this->db->select('id_user,order_id,status_user as status,tgl_bayar,iuran,email,first_name,last_name,sekolah,ts.npsn');
+			$this->db->select('id_user,order_id,status_user as status,tgl_bayar,iuran,email,first_name,last_name,sekolah,ts.npsn, ts.kd_prodi');
 			$this->db->from('tb_userevent tu');
 			$this->db->join('tb_user ts', 'tu.id_user = ts.id', 'left');
 			$this->db->where('(tu.id_user<>1008)');
@@ -468,7 +468,7 @@ class M_payment extends CI_Model
 			$this->db->order_by('tgl_bayar','desc');
 			$query = $this->db->get()->result();
 		} else if ($opsi == "vkelas") {
-			$this->db->select('id_user,kode_beli as order_id,status_beli as status,tgl_beli as tgl_bayar,rupiah as iuran,email,first_name,last_name,sekolah,ts.npsn');
+			$this->db->select('id_user,kode_beli as order_id,status_beli as status,tgl_beli as tgl_bayar,rupiah as iuran,email,first_name,last_name,sekolah,ts.npsn, ts.kd_prodi');
 			$this->db->from('tb_vk_beli tv');
 			$this->db->join('tb_user ts', 'tv.id_user = ts.id', 'left');
 			$this->db->where('(rupiah<>0)');
@@ -477,7 +477,7 @@ class M_payment extends CI_Model
 			$this->db->order_by('tgl_beli','desc');
 			$query = $this->db->get()->result();
 		} else if ($opsi == "bimbel") {
-			$this->db->select('id_user,kode_beli as order_id,status_beli as status,tgl_beli as tgl_bayar,rupiah as iuran,email,first_name,last_name,sekolah,ts.npsn');
+			$this->db->select('id_user,kode_beli as order_id,status_beli as status,tgl_beli as tgl_bayar,rupiah as iuran,email,first_name,last_name,sekolah,ts.npsn,ts.kd_prodi');
 			$this->db->from('tb_vk_beli tv');
 			$this->db->join('tb_user ts', 'tv.id_user = ts.id', 'left');
 			$this->db->where('(rupiah<>0)');
@@ -539,10 +539,11 @@ class M_payment extends CI_Model
 		$this->db->delete('tb_vk_keranjang');
 	}
 
-	public function getlastpaymentsekolah($npsn)
+	public function getlastpaymentsekolah($npsn, $prodi)
 	{
 		$this->db->from('tb_payment');
 		$this->db->where('npsn_sekolah', $npsn);
+		$this->db->where('kd_prodi', $prodi);
 		$this->db->where('(tipebayar<>"auto")');
 		$this->db->order_by('status','asc');
 		$query = $this->db->get();
@@ -562,10 +563,11 @@ class M_payment extends CI_Model
 		return $ret;
 	}
 
-	public function getlastpaymentmou($npsn)
+	public function getlastpaymentmou($npsn, $prodi)
 	{
 		$this->db->from('tb_payment');
 		$this->db->where('npsn_sekolah', $npsn);
+		$this->db->where('kd_prodi', $prodi);
 		$this->db->where('(SUBSTRING(order_id,1,3) = "MO1")');
 		$this->db->order_by('status','asc');
 		$query = $this->db->get();
@@ -573,10 +575,11 @@ class M_payment extends CI_Model
 		return $ret;
 	}
 
-	public function getlastordermou($npsn)
+	public function getlastordermou($npsn, $prodi)
 	{
 		$this->db->from('tb_mou');
 		$this->db->where('npsn_sekolah', $npsn);
+		$this->db->where('kd_prodi', $prodi);
 		$this->db->order_by('id','asc');
 		$query = $this->db->get();
 		$ret = $query->last_row();
@@ -600,7 +603,7 @@ class M_payment extends CI_Model
 		return $ret;
 	}
 
-	public function ceksiap25modulbeli($npsn)
+	public function ceksiap25modulbeli($npsn, $prodi)
 	{
 		$timezone = new DateTimeZone('Asia/Jakarta');
 		$date = new DateTime();
@@ -612,6 +615,7 @@ class M_payment extends CI_Model
 		$this->db->from('tb_vk_beli tb');
 		$this->db->join('tb_user tu','tb.id_user = tu.id','left');
 		$this->db->where('npsn', $npsn);
+		$this->db->where('kd_prodi', $prodi);
 		$this->db->where('jenis_paket', 1);
 		$this->db->where('strata_paket>=', 2);
 		$this->db->where('status_beli', 2);
@@ -622,10 +626,11 @@ class M_payment extends CI_Model
 		return $ret;
 	}
 
-	public function ceksudah25modul($npsnuser, $tglorderbaru)
+	public function ceksudah25modul($npsnuser, $prodi, $tglorderbaru)
 	{
 		$this->db->from('tb_payment');
 		$this->db->where('npsn_sekolah', $npsnuser);
+		$this->db->where('kd_prodi', $prodi);
 		$this->db->where('order_id', "TVS-FREE-OF-MODUL");
 		$this->db->where('tgl_order', $tglorderbaru);
 		$query = $this->db->get();
@@ -633,7 +638,7 @@ class M_payment extends CI_Model
 		return $ret;
 	}
 
-	public function cekpremium($npsn)
+	public function cekpremium($npsn, $prodi)
 	{
 
 		$now = new DateTime();
@@ -648,6 +653,7 @@ class M_payment extends CI_Model
 		OR SUBSTRING(order_id,1,3)="TF1" OR SUBSTRING(order_id,1,3)="TF2" OR SUBSTRING(order_id,1,3)="TP2")');
 		$this->db->where('status', 3);
 		$this->db->where('npsn_sekolah',$npsn);
+		$this->db->where('kd_prodi',$prodi);
 		//$this->db->where('(month(`tgl_order`) = '.$bulanskr.' AND year(`tgl_order`) = '.$tahunskr.')');
 		$this->db->where('(tgl_bayar<="' . $tglsekarang . '")');
 		$this->db->where('(tgl_berakhir>="' . $tglsekarang . '")');
@@ -656,12 +662,13 @@ class M_payment extends CI_Model
 		return $ret;
 	}
 
-	public function getFirst_T0($npsn, $kodeearly)
+	public function getFirst_T0($npsn, $prodi, $kodeearly)
 	{
 		$this->db->from('tb_payment');
 		$this->db->where('SUBSTRING(order_id,1,3)="'.$kodeearly.'"');
 		$this->db->where('status', 3);
 		$this->db->where('npsn_sekolah',$npsn);
+		$this->db->where('kd_prodi',$prodi);
 		$this->db->where('status', 3);
 		$this->db->order_by('tgl_order','asc');
 		$query = $this->db->get();
@@ -771,7 +778,7 @@ class M_payment extends CI_Model
 		return $result;
 	}
 
-	public function getbayarEkskul($npsn,$iduser=null,$status=null,$pakaibatas=null)
+	public function getbayarEkskul($npsn,$prodi, $iduser=null,$status=null,$pakaibatas=null)
 	{
 		$now = new DateTime();
 		$now->setTimezone(new DateTimezone('Asia/Jakarta'));
@@ -779,6 +786,7 @@ class M_payment extends CI_Model
 		$this->db->from('tb_payment tp');
 		$this->db->join('tb_user tu', 'tp.iduser = tu.id', 'left');
 		$this->db->where('npsn_sekolah', $npsn);
+		$this->db->where('tp.kd_prodi', $prodi);
 		if ($iduser!=null)
 			$this->db->where('iduser', $iduser);
 		if ($status==null)
@@ -797,7 +805,7 @@ class M_payment extends CI_Model
 			return "error";
 	}
 
-	public function getbayarEkskulSekolah($npsn,$status=null,$pakaibatas=null)
+	public function getbayarEkskulSekolah($npsn,$prodi,$status=null,$pakaibatas=null)
 	{
 		$now = new DateTime();
 		$now->setTimezone(new DateTimezone('Asia/Jakarta'));
@@ -806,6 +814,8 @@ class M_payment extends CI_Model
 		$this->db->from('tb_payment tp');
 		$this->db->join('tb_user tu', 'tp.iduser = tu.id', 'left');
 		$this->db->where('npsn_sekolah', $npsn);
+		if ($status==null)
+		$this->db->where('kd_prodi', $prodi);
 		if ($status==null)
 			$this->db->where('(status>0)');
 		else

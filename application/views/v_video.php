@@ -460,7 +460,7 @@ if (!isset($sudahdicekagency))
 </center>
 
 <!----------------------------- SCRIPT DATATABLE  -------------------------------->
-<?php require_once('layout/calljs.php'); ?>
+<script src="<?php echo base_url();?>js/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript"
 		src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
@@ -496,7 +496,10 @@ if (!isset($sudahdicekagency))
 		$bulan = $datesekarang->format('m');
 		$tahun = $datesekarang->format('Y');
 
+		
+
 		foreach ($dafvideo as $datane) {
+			
 		$jml_video++;
 		$nomor = $jml_video;
 		$id_video = $datane->id_video;
@@ -538,8 +541,12 @@ if (!isset($sudahdicekagency))
 		$judule = str_replace('"', "'", $datane->judul);
 		if (($statusvideo != 'modul' && ($statusvideo != 'bimbel')) || $this->session->userdata('bimbel') == 4) {
 			$ipengirim = '"' . $datane->first_name . ' ' . $datane->last_name . '", ';
+			
 		} else
-			$ipengirim = "";
+			{
+				$ipengirim = "";
+			
+			}
 
 		if (isset($datane->sebagai))
 			$isebagai = $datane->sebagai;
@@ -724,12 +731,12 @@ if (!isset($sudahdicekagency))
 			if ($statustayang <= 1) {
 				if (($this->session->userdata('bimbel') >= 3 || $this->session->userdata('a01')) && ($statusvideo == "bimbel")) {
 					$iedit1 = '<button onclick=\"window.location.href=\'' . base_url() .
-						$linkdari . '/edit/' . $kode_event . $datane->id_video . $asal . '/bimbel' . '\'\"' .
+						$linkdari . '/edit/' . $kode_event . $datane->kode_video . $asal . '/bimbel' . '\'\"' .
 						' id=\"btn-show-all-children\" type=\"button\" ' .
 						'class=\"myButtongreen\">Edit</button>';
 				} else if ($statusvideo == 'videosaya') {
 					$iedit1 = '<button onclick=\"window.location.href=\'' . base_url() .
-						$linkdari . '/edit/' . $kode_event . $datane->id_video . $asal . '/saya' . '\'\"' .
+						$linkdari . '/edit/' . $kode_event . $datane->kode_video . $asal . '/saya' . '\'\"' .
 						' id=\"btn-show-all-children\" type=\"button\" ' .
 						'class=\"myButtongreen\">Edit</button>';
 				} else if ($linkdari == "calver" && $this->session->userdata('verifikator') == 2) {
@@ -740,14 +747,14 @@ if (!isset($sudahdicekagency))
 					if ($opsi=="calvermentor")
 					{
 						$iedit1 = '<button onclick=\"window.location.href=\'' . base_url() .
-						'event/mentor/video/edit/'. $datane->id_video . '/' . $kodevent . '\'\"' .
+						'event/mentor/video/edit/'. $datane->kode_video . '/' . $kodevent . '\'\"' .
 						' id=\"btn-show-all-children\" type=\"button\" ' .
 						'class=\"myButtongreen\">Edit</button>';
 					}
 					else
 					{
 						$iedit1 = '<button onclick=\"window.location.href=\'' . base_url() .
-						$linkdari . '/edit/' . $kode_event . $datane->id_video . $asal . '\'\"' .
+						$linkdari . '/edit/' . $kode_event . $datane->kode_video . $asal . '\'\"' .
 						' id=\"btn-show-all-children\" type=\"button\" ' .
 						'class=\"myButtongreen\">Edit</button>';
 					}
@@ -760,22 +767,22 @@ if (!isset($sudahdicekagency))
 					|| ($linkdari == "event" || $linkdari == "calver"))) {
 				if ($linkdari == "calver")
 				{
-					$iedit2 = '<button onclick=\"return mauhapuscal(\'' . $datane->id_video . '\')\" id=\"btn-show-all-children\" ' .
+					$iedit2 = '<button onclick=\"return mauhapuscal(\'' . $datane->kode_video . '\')\" id=\"btn-show-all-children\" ' .
 					'type=\"button\" class=\"myButtonred\">Hapus</button>';
 				}	
 				else
 				{
 					$iedit2 = '<button onclick=\"return mauhapus(\'' . $kodehapus .
-					$datane->id_video . '\')\" id=\"btn-show-all-children\" ' .
+					$datane->kode_video . '\')\" id=\"btn-show-all-children\" ' .
 					'type=\"button\" class=\"myButtonred\">Hapus</button>';
 				}	
 				
 			} else if ($datane->dilist == 0 && $datane->dilist2 == 0 && $statusvideo == "videosaya") {
 				$iedit2 = '<button onclick=\"return mauhapussaya(\'' . $kodehapus .
-					$datane->id_video . '\')\" id=\"btn-show-all-children\" ' .
+					$datane->kode_video . '\')\" id=\"btn-show-all-children\" ' .
 					'type=\"button\" class=\"myButtonred\">Hapus</button>';
 			} else if ($datane->dilist == 0 && $datane->dilist2 == 0 && ($this->session->userdata('bimbel') >= 3 || $this->session->userdata('a01')) && ($statusvideo == "bimbel")) {
-				$iedit2 = '<button onclick=\"return mauhapusbimbel(\'' . $datane->id_video . '\')\" id=\"btn-show-all-children\" ' .
+				$iedit2 = '<button onclick=\"return mauhapusbimbel(\'' . $datane->kode_video . '\')\" id=\"btn-show-all-children\" ' .
 					'type=\"button\" class=\"myButtonred\">Hapus</button>';
 			} else
 				$iedit2 = '';
@@ -802,7 +809,7 @@ if (!isset($sudahdicekagency))
 		<?php }
 		}
 		?>
-
+	
 		$('#tbl_user').DataTable({
 			data: data,
 			deferRender: true,

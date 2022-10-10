@@ -11,7 +11,12 @@ if (!function_exists('getstatusverifikator')) {
 		$CI->load->library('session');
 
 		$npsn = $CI->session->userdata('npsn');
-		$iduser = $CI->session->userdata('id_user');
+		$iduserkode = $CI->session->userdata('id_user');
+	
+		$CI->load->model('M_login');
+		$getuser = $CI->M_login->getUser($iduserkode);
+		$iduser = $getuser['id'];
+		$prodi = $getuser['kd_prodi'];
 
 		$hasil = array();
 
@@ -23,7 +28,7 @@ if (!function_exists('getstatusverifikator')) {
 		/////////////////////// CEK DIBAYAR OLEH DONATUR /////////////////////////////
 		$jumlahbulandibayar = 0;
 		$CI->load->model('M_eksekusi');
-		$vkbayar = $CI->M_eksekusi->getdibayardonatur($npsn);
+		$vkbayar = $CI->M_eksekusi->getdibayardonatur($npsn, $prodi);
 
 //		echo "<pre>";
 //		echo var_dump($vkbayar);
@@ -579,12 +584,19 @@ if (!function_exists('getstatusbelivk')) {
 }
 
 if (!function_exists('ceksekolahpremium')) {
-	function ceksekolahpremium($npsn = null)
+	function ceksekolahpremium($npsn = null, $prodi=null)
 	{
 		$CI = get_instance();
 		$CI->load->library('session');
 		if ($npsn==null)
-		$npsn = $CI->session->userdata('npsn');
+		{
+			$npsn = $CI->session->userdata('npsn');
+			$iduser = $CI->session->userdata('id_user');
+			$CI->load->model('M_login');
+			$getuser = $CI->M_login->getUser($iduser);
+			$iduserid = $getuser['id'];
+			$prodi = $getuser['kd_prodi'];
+		}
 
 		$statuspremium = "non";
 		$minimalekskul = 3;
@@ -596,7 +608,7 @@ if (!function_exists('ceksekolahpremium')) {
 
 		$hasil = array();
 		$CI->load->model("M_channel");
-		$cekstatus = $CI->M_channel->getpaymentsekolah($npsn, 'semua');
+		$cekstatus = $CI->M_channel->getpaymentsekolah($npsn, $prodi, 'semua');
 
 		if ($cekstatus) {
 			if (substr($cekstatus->order_id,0,2)=="TP")

@@ -380,6 +380,7 @@ class Login extends CI_Controller
 		$this->session->set_userdata('level', $row->level);
 		$this->session->set_userdata('oauth_provider', $row->oauth_provider);
 		$this->session->set_userdata('npsn', $rnpsn);
+		$this->session->set_userdata('prodi', $row->kd_prodi);
 
 		$this->session->set_userdata('activate', $row->activate);
 		$this->session->set_userdata('sebagai', $row->sebagai);
@@ -1215,7 +1216,7 @@ class Login extends CI_Controller
 				$data['logosekolah'] = $this->M_login->getLogo($this->session->userdata('npsn'));
 				$data['kotasekolah'] = $this->M_login->getKotaSekolah($this->session->userdata('npsn'));
 			}
-			
+
 			$data['dafnegara'] = $this->M_login->dafnegara();
 			if($data['userData']['kd_negara']==0)
 				$data['dafpropinsi'] = $this->M_login->dafpropinsi(1);
@@ -1225,6 +1226,7 @@ class Login extends CI_Controller
 			//$data['dafpropinsi'] = $this->M_login->dafpropinsi(1);
 			// $data['dafkelas'] = $this->M_login->dafprodi();
 			$data['dafkota'] = $this->M_login->dafkota($data['userData']['kd_provinsi']);
+			$data['daftarprodi'] = $this->M_login->dafprodi($this->session->userdata('npsn'));
 			$data['jmllike'] = $this->M_login->hitunglike($this->session->userdata('id_user'));
 			$data['jmlkomen'] = $this->M_login->hitungkomen($this->session->userdata('id_user'));
 			$data['jmlshare'] = $this->M_login->hitungshare($this->session->userdata('id_user'));
@@ -1493,7 +1495,7 @@ class Login extends CI_Controller
 		$data['alamat'] = $this->input->post('ialamat');
 		$data['gender'] = $this->input->post('genderpil');
 		$data['npwp'] = $this->input->post('inpwp');
-		$data['kd_prodi'] = $this->input->post('ikelas');
+		$data['kd_prodi'] = $this->input->post('iprodi');
 		$data['vlog'] = $this->input->post('ivlog');
 		$data['thumb_vlog'] = $this->input->post('ytube_thumbnail');
 
@@ -1561,7 +1563,7 @@ class Login extends CI_Controller
 			$data['nomor_nasional'] = $this->input->post('inomor2');
 		else
 			$data['nomor_nasional'] = $this->input->post('inomor');
-		$data['sekolah'] = $this->input->post('isekolah');
+		$data['sekolah'] = $this->input->post('isearch');
 		$data['npsn'] = $this->input->post('inpsn');
 		$data['bidang'] = $this->input->post('ibidang');
 		$data['pekerjaan'] = $this->input->post('ikerja');
@@ -1896,6 +1898,13 @@ class Login extends CI_Controller
 		echo json_encode($isi);
 	}
 
+	public function daftarprodi()
+	{
+		$npsn = $_GET['kodekampus'];
+		$isi = $this->M_login->dafprodi($npsn);
+		echo json_encode($isi);
+	}
+
 	public function getsekolah()
 	{
 		$npsn = $_GET['npsn'];
@@ -1913,11 +1922,6 @@ class Login extends CI_Controller
 		$isi = $this->M_login->getkampus($namasekolah);
 		$error = array('nama_sekolah' => 'gaknemu');
 		if ($isi) {
-			$datasek2['idkota'] = $isi[0]->id_kota;
-			$datasek2['npsn'] = $isi[0]->npsn;
-			$datasek2['idjenjang'] = $isi[0]->id_jenjang;
-			$datasek2['nama_sekolah'] = $isi[0]->nama_sekolah;
-			$this->M_login->addchnsekolah($datasek2);
 			echo json_encode($isi);
 		} else
 			echo json_encode($error);
@@ -2298,8 +2302,14 @@ class Login extends CI_Controller
 				'namabank' => "", 'rektujuan' => "", 'status' => 3);
 			$this->load->model("M_payment");
 
-			$this->M_payment->insertkodeorder($kodeacak, $this->session->userdata('id_user'), $this->session->userdata('npsn'), 0);
-			$this->M_payment->tambahbayar($datapay, $kodeacak, $this->session->userdata('id_user'));
+			$iduser = $this->session->userdata('id_user');
+			$npsn = $this->session->userdata('npsn');
+			$getuser = $this->M_login->getUser($iduser);
+			$prodi = $getuser['kd_prodi'];
+			$id = $getuser['id'];
+
+			$this->M_payment->insertkodeorder($kodeacak, $id, $npsn, $prodi, 0);
+			$this->M_payment->tambahbayar($datapay, $kodeacak, $id);
 			$this->session->set_userdata('a02', true);
 			$this->session->set_userdata('statusbayar', 3);
 			if (substr($kodeversekarang,1,1)==1)
@@ -2397,8 +2407,11 @@ class Login extends CI_Controller
 
 	private function premiumaktif()
 	{
-		$npsn = $this->session->userdata('npsn');
 		$iduser = $this->session->userdata('id_user');
+		$npsn = $this->session->userdata('npsn');
+		$getuser = $this->M_login->getUser($iduser);
+		$prodi = $getuser['kd_prodi'];
+		$id = $getuser['id'];
 		$this->load->model("M_payment");
 		$cekpremium = $this->M_payment->cekpremium($npsn);
 //		echo "<pre>";
@@ -2445,8 +2458,8 @@ class Login extends CI_Controller
 			$datapay = array('npsn_user' => $npsn, 'tgl_order' => $tgl_order, 'tipebayar' => "TV-Premium", 'tgl_bayar' => $tglsekarang,
 				'namabank' => "", 'rektujuan' => "", 'status' => 3);
 			$this->load->model("M_payment");
-			$this->M_payment->insertkodeorder($kodeacak, $iduser, $npsn, $iuran);
-			$this->M_payment->tambahbayar($datapay, $kodeacak, $iduser);
+			$this->M_payment->insertkodeorder($kodeacak, $id, $npsn, $prodi, $iuran);
+			$this->M_payment->tambahbayar($datapay, $kodeacak, $id);
 			$this->session->set_userdata('a02', true);
 			$this->session->set_userdata('statusbayar', 3);
 			return true;

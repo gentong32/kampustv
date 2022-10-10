@@ -66,8 +66,11 @@ class User extends CI_Controller
 		}
 
 		$data['premium'] = "";
+		$npsn = $this->session->userdata('npsn');
+		$getuser = getstatususer();
+		$prodi = $getuser['kelasku'];
 		$this->load->model("M_payment");
-		if ($this->M_payment->cekpremium($this->session->userdata['npsn']))
+		if ($this->M_payment->cekpremium($npsn,$prodi))
 		{
 			$data['premium'] = " [PREMIUM]";
 		}
@@ -314,7 +317,7 @@ class User extends CI_Controller
 	public function detil($id = null, $asal = null)
 	{
 		if (!$this->session->userdata('a01') && !$this->session->userdata('a02') &&
-			!$this->session->userdata('siag')==3 && $this->session->userdata('verifikator')!=1)
+			$this->session->userdata('siag')!=3 && $this->session->userdata('verifikator')!=1)
 			redirect('/');
 
 		$data = array();
@@ -467,24 +470,24 @@ class User extends CI_Controller
 		// $data['kd_provinsi'] = $idpropinsi;
 
 
-		$data2['id_user'] = $id;
-		$data2['kd_otoritas'] = "a02";
+		// $data2['id_user'] = $id;
+		// $data2['kd_otoritas'] = "a02";
 
-		$data3['npsn'] = $npsn;
-		//$data3['kode_sekolah'] = "ch".base_convert(microtime(false), 10, 36);
-		$data3['nama_sekolah'] = $sekolah;
-		$data3['idkota'] = $idkota;
-		$data3['status'] = 1;
+		// $data3['npsn'] = $npsn;
+		// //$data3['kode_sekolah'] = "ch".base_convert(microtime(false), 10, 36);
+		// $data3['nama_sekolah'] = $sekolah;
+		// $data3['idkota'] = $idkota;
+		// $data3['status'] = 1;
 
-		$data4['npsn'] = $npsn;
-		//$data3['kode_sekolah'] = "ch".base_convert(microtime(false), 10, 36);
-		$data4['nama_sekolah'] = $sekolah;
-		$data4['id_kota'] = $idkota;
-		$data4['status'] = 1;
+		// $data4['npsn'] = $npsn;
+		// //$data3['kode_sekolah'] = "ch".base_convert(microtime(false), 10, 36);
+		// $data4['nama_sekolah'] = $sekolah;
+		// $data4['id_kota'] = $idkota;
+		// $data4['status'] = 1;
 
-		$this->M_user->tambahsekolah($data3,$data4);
 		$this->M_user->updateStaf($data, $id);
-		$this->M_user->updateOtoritas($data2);
+		// $this->M_user->tambahsekolah($data3,$data4);
+		// $this->M_user->updateOtoritas($data2);
 		$this->load->view('layout/wrapper', $data);
 
 		//redirect($_SERVER['HTTP_REFERER']);
@@ -534,14 +537,14 @@ class User extends CI_Controller
 				$data['kontributor'] = 0;
 				$data2['id_user'] = $id;
 				$data2['kd_otoritas'] = "a03";
-				$this->M_user->delOtoritas($data2);
+				// $this->M_user->delOtoritas($data2);
 				$tujuan = "kontributor";
 			} else if ($kondisi == 5 || $kondisi == 3 || $kondisi == 9) {
 				$data['tgl_verifikasi'] = $datesekarang->format('Y-m-d H:i:s');
 				$data['kontributor'] = 3;
 				$data2['id_user'] = $id;
 				$data2['kd_otoritas'] = "a03";
-				$this->M_user->updateOtoritas($data2);
+				// $this->M_user->updateOtoritas($data2);
 				$tujuan = "kontributor";
 			}
 
@@ -553,10 +556,10 @@ class User extends CI_Controller
 		// die();
 
 
-		$data3['npsn'] = $npsn;
-		//$data3['kode_sekolah'] = "ch".base_convert(microtime(false), 10, 36);
-		$data3['nama_sekolah'] = $sekolah;
-		$data3['idkota'] = $idkota;
+		// $data3['npsn'] = $npsn;
+		// //$data3['kode_sekolah'] = "ch".base_convert(microtime(false), 10, 36);
+		// $data3['nama_sekolah'] = $sekolah;
+		// $data3['idkota'] = $idkota;
 
 		$this->M_user->updateStaf($data, $id);
 
@@ -566,7 +569,7 @@ class User extends CI_Controller
 		$this->M_user->updateKonfirmUser("VER");
 		$this->M_user->updateKonfirmUser("KONTRI");
 
-		$this->M_user->tambahsekolah($data3);
+		// $this->M_user->tambahsekolah($data3);
 		$this->load->view('layout/wrapper', $data);
 		if ($asal != null)
 			$tujuan = $tujuan."/".$asal;
