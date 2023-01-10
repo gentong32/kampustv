@@ -45,11 +45,12 @@ class M_user extends CI_Model
 		return $result;
 	}
 
-	public function getAllVer($ver)
+	public function getAllVer($ver=null)
 	{
-		$this->db->select("tu.*,dk.nama_kota");
+		$this->db->select("tu.*,dk.nama_kota, dp.nama_prodi, dp.jenjang");
 		$this->db->from('tb_user tu');
 		$this->db->join('daf_kota dk', 'tu.kd_kota = dk.id_kota');
+		$this->db->join('daf_prodi dp', 'tu.kd_prodi = dp.kd_prodi');
 		$this->db->where('tu.id!=1');
 		$this->db->where('sebagai!=10');
 		$this->db->where('npsn<>"10000010"');
@@ -57,9 +58,14 @@ class M_user extends CI_Model
 		$this->db->where('activate=1');
 		$this->db->where('golongan=0');
 		$this->db->where('sebagai!=4');
-
-		$this->db->where('verifikator',$ver);
-
+		if ($ver!=null)
+		$this->db->where('verifikator', $ver);
+		else 
+		$this->db->where('(verifikator>=2)');
+		$this->db->order_by("verifikator", "asc");
+		$this->db->order_by("first_name", "asc");
+		$this->db->order_by("npsn", "asc");
+		$this->db->order_by("kd_prodi", "asc");
 		$this->db->order_by("modified", "desc");
 //		$this->db->limit(100,0);
 		$result = $this->db->get()->result();
@@ -86,6 +92,53 @@ class M_user extends CI_Model
 		
 		}
 
+		$this->db->order_by("modified", "desc");
+//		$this->db->limit(100,0);
+		$result = $this->db->get()->result();
+		return $result;
+	}
+
+	public function getAllDosen($npsn,$kd_prodi)
+	{
+		$this->db->select("tu.*,dk.nama_kota, dp.nama_prodi, dp.jenjang");
+		$this->db->from('tb_user tu');
+		$this->db->join('daf_kota dk', 'tu.kd_kota = dk.id_kota','left');
+		$this->db->join('daf_prodi dp', 'tu.kd_prodi = dp.kd_prodi','left');
+		$this->db->where('tu.id!=1');
+		$this->db->where('activate=1');
+		$this->db->where('sebagai=1');
+		$this->db->where('kontributor>=2');
+		if ($this->session->userdata('verifikator')==3)
+		{
+			$this->db->where('npsn',$npsn);
+			$this->db->where('tu.kd_prodi',$kd_prodi);
+			$this->db->where('verifikator<>3');
+		}
+		$this->db->order_by("verifikator", "asc");
+		$this->db->order_by("npsn", "asc");
+		$this->db->order_by("tu.kd_prodi", "asc");
+		$this->db->order_by("modified", "desc");
+//		$this->db->limit(100,0);
+		$result = $this->db->get()->result();
+		return $result;
+	}
+
+	public function getAllMahasiswa($npsn,$kd_prodi)
+	{
+		$this->db->select("tu.*,dk.nama_kota, dp.nama_prodi, dp.jenjang");
+		$this->db->from('tb_user tu');
+		$this->db->join('daf_kota dk', 'tu.kd_kota = dk.id_kota','left');
+		$this->db->join('daf_prodi dp', 'tu.kd_prodi = dp.kd_prodi','left');
+		$this->db->where('tu.id!=1');
+		$this->db->where('activate=1');
+		$this->db->where('sebagai=2');
+		if ($this->session->userdata('verifikator')==3)
+		{
+			$this->db->where('npsn',$npsn);
+			$this->db->where('tu.kd_prodi',$kd_prodi);
+		}
+		$this->db->order_by("npsn", "asc");
+		$this->db->order_by("kd_prodi", "asc");
 		$this->db->order_by("modified", "desc");
 //		$this->db->limit(100,0);
 		$result = $this->db->get()->result();
@@ -297,12 +350,13 @@ class M_user extends CI_Model
 	function tambahsekolah($data,$data2=null)
 	{
 		$this->db->from('daf_sekolah');
-		$this->db->where('npsn',$data['npsn']);
+		$this->db->where('npsn_sekolah',$data['npsn_sekolah']);
 		if (!$this->db->get()->result())
 			$this->db->insert('daf_sekolah', $data2);
 
         $this->db->from('daf_chn_sekolah');
-        $this->db->where('npsn',$data['npsn']);
+        $this->db->where('npsn_sekolah',$data['npsn_sekolah']);
+        $this->db->where('kd_prodi',$data['kd_prodi']);
         if (!$this->db->get()->result()) {
 			$this->db->insert('daf_chn_sekolah', $data);
 		}
@@ -488,7 +542,7 @@ class M_user extends CI_Model
 		{
 			$namafield = 'bimbel';
 			$namafield2 = 'n_calon_tutor';
-		} else if ($tipe=="VER")
+		} else if ($tipe=="CALVER")
 		{
 			$namafield = 'verifikator';
 			$namafield2 = 'n_calon_ver';
@@ -497,16 +551,58 @@ class M_user extends CI_Model
 			$namafield = 'kontributor';
 			$tambahan = 'sebagai=1 AND verifikator<>3';
 			$namafield2 = 'n_calon_guru';
+		} else if ($tipe=="SISWA")
+		{
+			$namafield = 'sebagai';
+			$tambahan = '';
+			$namafield2 = 'n_siswa';
+		} else if ($tipe=="DOSEN")
+		{
+			$namafield = '';
+			$tambahan = 'sebagai=1 AND kontributor=3';
+			$namafield2 = 'n_guru';
+		} else if ($tipe=="VER")
+		{
+			$namafield = '';
+			$tambahan = 'sebagai=1 AND verifikator=3';
+			$namafield2 = 'n_ver';
 		}
 
 		$this->db->from('tb_user');
-		$this->db->where($namafield, 2);
+		if ($tipe!="DOSEN" && $tipe!="VER")
+			$this->db->where($namafield, 2);
 		if ($tambahan!="")
 			$this->db->where($tambahan);
 		$totaluser = $this->db->get()->num_rows();
 
 		$data = array($namafield2=>$totaluser);
 		$this->db->update('tb_dash_admin', $data);
+	}
+
+	public function updateSisaCalver($npsn, $kd_prodi, $kd_user)
+	{
+		$datesekarang = new DateTime('');
+		$datesekarang->setTimezone(new DateTimezone('Asia/Jakarta'));
+		$jangka1bulan = $datesekarang->modify('+1 month');
+		$jangka1bulan = $jangka1bulan->format('Y-m-d');
+		
+		$data['kd_verifikator'] = $kd_user;
+		$data['kadaluwarsa'] = $jangka1bulan;
+		$this->db->where('npsn_sekolah', $npsn);
+		$this->db->where('kd_prodi', $kd_prodi);
+		$this->db->update('daf_chn_sekolah', $data);
+
+		$data2['verifikator'] = 0;
+		// $data2['kontributor'] = 3;
+		$this->db->where('npsn', $npsn);
+		$this->db->where('kd_prodi', $kd_prodi);
+		$this->db->where('sebagai', 1);
+		$this->db->update('tb_user', $data2);
+
+		$data2['verifikator'] = 3;
+		$data2['kontributor'] = 0;
+		$this->db->where('kd_user', $kd_user);
+		$this->db->update('tb_user', $data2);
 	}
 
 	public function updateDashAdmin($data)

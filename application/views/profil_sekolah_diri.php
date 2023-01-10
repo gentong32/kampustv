@@ -32,17 +32,24 @@
 																	  echo base_url()."assets/images/tutwuri.png";?>" alt="#"/></div>
 									<div class="profile_contant">
 										<div class="contact_inner">
+											<?php if ($this->session->userdata('siag')!=3){?>
 											<h3><?php echo $profilku->prodi.$statussekolah;?></h3>
+											<?php } ?>
 											<h4><span style="color: #808080"><?php echo $profilku->sekolah;?></span></h4>
 											<ul class="list-unstyled">
 												<li><i class="fa fa-home"></i> : <?php
-													echo $profilku->alamat_sekolah.'<br>'.$namakota.", ".$namapropinsi.
-														'<br>Kode Kampus: '.$profilku->npsn;?> </li>
-												<li><i class="fa fa-info"></i> :<br> <?php
+													echo $profilku->nama_propinsi.'<br>
+													<i class="fa fa-info"></i> :
+													<br>Kode Kampus: '.$profilku->npsn.
+													'<br>Kode Prodi: '.$profilku->kodeprodiusulan;?> </li> <?php
+												if ($this->session->userdata('siag')!=3){
+													?>
+													<li> <?php
 													if ($this->session->userdata('sebagai')==1)
 													echo 'NIDN / NUP : '.$profilku->nomor_nasional;
 													else
-													echo 'NIM / NISN : '.$profilku->nomor_nasional;?>
+													echo 'NIM / NISN : '.$profilku->nomor_nasional;
+												}?>
 													<?php if($this->session->userdata('verifikator')!=3){ 
 														if ($this->session->userdata('verifikator')==2 && $namaverifikator=="-")
 														{
@@ -51,14 +58,18 @@
 														else 
 														{
 														?>
-													<hr>
-													<br>Verifikator Sekolah:<br>
-													<i class="fa fa-user"></i> <?php echo $namaverifikator;?><br>
-													<i class="fa fa-envelope"></i> <?php echo $emailverifikator;?><br>
-													<i class="fa fa-phone"></i> <?php echo $telpverifikator;?><br>
-													<?php }
+													
+													<?php if ($this->session->userdata('siag')!=3){
+														?>
+														<hr>
+														<br>Verifikator Prodi Kampus:<br>
+														<i class="fa fa-user"></i> <?php echo $namaverifikator;?><br>
+														<i class="fa fa-envelope"></i> <?php echo $emailverifikator;?><br>
+														<i class="fa fa-phone"></i> <?php echo $telpverifikator;?><br>
+														<?php }
+														}
 													}
-													if ($this->session->userdata('sebagai')!=4) {
+													if ($this->session->userdata('sebagai')==4) {
 														if ($this->session->userdata('bimbel')==3) {
 															if ($namaverbimbel != "-" && $namaverbimbel == $namaag) { ?>
 																<br>
@@ -117,7 +128,7 @@
 														}
 														else
 														{
-															if ($this->session->userdata('sebagai')!=2) {
+															if ($this->session->userdata('sebagai')!=2 && $this->session->userdata('siag')!=3) {
 																if ($namaag != "-") { ?>
 																	<br>
 																	<hr>Agency<br>

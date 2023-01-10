@@ -283,7 +283,7 @@ if ($jmldaf_list > 0) {
 
 
 <div style="text-align: center;background-color:#8cbdac;padding-top: 20px;padding-bottom: 20px">
-    <span style="font-weight: bold;font-size: 18px;color:black;padding-bottom: 10px;">PANGGUNG SEKOLAH</span>
+    <span style="font-weight: bold;font-size: 18px;color:black;padding-bottom: 10px;">CHANNEL TV PRODI</span>
     <div class="regular slider" style="margin-top: 20px;">
         <?php if ($jml_channelku && !$this->session->userdata('a01')) { ?>
             <div style="vertical-align: text-top; display: inline-block; padding-left: 10px;padding-right: 10px;">

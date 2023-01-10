@@ -236,6 +236,7 @@ header .logo-2 {
 	color: #fff;
 	font-size: 40px;
 	font-weight: 300;
+	width: 200px;
 }
 
 header .logo-2 {
@@ -14867,7 +14868,7 @@ img {
 		position: absolute;
 		height: 30px;
 		top: 15px;
-		left: 40px;
+		left: 20px;
 	}
 
 	header.side-header #menu-btn {
@@ -15950,6 +15951,6 @@ img {
 	height: auto;
 	width: auto;
 	max-width: 300px;
-	max-height: 300px;
+	max-height: 200px;
 	display: none;
 }

@@ -41,8 +41,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</button>
 				</div>
 				<hr style="margin-top: 10px;">
-				
+
                 <div style="max-width:900px;margin:auto">
+                    <?php if ($this->session->userdata('siag')==3) {?>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4">
+                                    Nama Kampus
+                                </div>
+                                <div class="col-lg-8 col-md-8">
+                                    <input readonly type="text" class="form-control"
+                                        value="<?php echo $namakampus;?>">
+                                </div>
+                            </div>
+                        </div>
+                    <input type="hidden" id="ikampus" name="ikampus" value="<?php 
+                        echo $this->session->userdata('npsn');?>">
+                    <?php } ?>
+
                     <div class="form-group">
 						<div class="row">
 							<div class="col-lg-4 col-md-4">
@@ -51,6 +67,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<div class="col-lg-8 col-md-8">
 								<input type="text" class="form-control"
 								id="ikode" name="ikode" maxlength="11" value="">
+                                <label class="text-danger"><span><div id="kode_result"></div>
+            				</span></label>
 							</div>
 						</div>
                     </div>
@@ -65,28 +83,31 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							</div>
 						</div>
                     </div>
-                    <div class="form-group">
-						<div class="row">
-							<div class="col-lg-4 col-md-4">
-								Kampus
-							</div>
-							<div class="col-lg-8 col-md-8">
-                                <select class="form-control" name="ikampus" id="ikampus">
-                                    <option value="0">-- Pilih --</option>
-                                    <?php
-                                    foreach ($dafkampus as $datarow) {
-                                        echo '<option value="' . $datarow->npsn_sekolah . '">' . $datarow->nama_sekolah . '</option>';
-                                    }
-                                    ?>
-                                </select>
-							</div>
-						</div>
-                    </div>
+
+                    <?php if ($this->session->userdata('a01')) {?>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4">
+                                    Kampus
+                                </div>
+                                <div class="col-lg-8 col-md-8">
+                                    <select class="form-control" name="ikampus" id="ikampus">
+                                        <option value="0">-- Pilih --</option>
+                                        <?php
+                                        foreach ($dafkampus as $datarow) {
+                                            echo '<option value="' . $datarow->npsn_sekolah . '">' . $datarow->nama_sekolah . '</option>';
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    <?php } ?>
                     
                     
                     <center>
                     <div>
-                        <button class="btn-main" type="submit">SUBMIT</button>
+                        <button onclick="return ceksubmit()" class="btn-main">SUBMIT</button>
                     </div>
                     </center>
 
@@ -100,3 +121,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
     </section>
 </div>
+
+<script>
+$(document).on('blur', '#ikode', function () {
+    var kode = $('#ikode').val();
+    var $result = $("#kode_result");
+    var npsn = "<?php echo $this->session->userdata('npsn');?>";
+    $result.text("");
+    $.ajax({
+        url: "<?php echo base_url(); ?>channel/cekprodi",
+        method: "POST",
+        data: {kode: kode, npsn: npsn},
+        success: function (data) {
+            $('#kode_result').html(data);
+        }
+    });
+});
+
+function ceksubmit() {
+        if ($('#kode_result').html() == "" && $('#ikode').val()!="" && $('#iprodi').val()!="")
+        {
+            document.getElementById('myform').submit();
+        } else {
+            alert("Periksa kembali data anda!");
+            return false;
+        }
+    }
+</script>

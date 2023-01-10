@@ -68,7 +68,7 @@ if ($this->session->userdata('a01'))
 			<div class="container">
 				<div class="row">
 					<div class="col-md-12 text-center wow fadeInRight" data-wow-delay=".5s">
-						<h1>Panggung Sekolah</h1>
+						<h1>Channel TV Prodi</h1>
 					</div>
 					<div class="clearfix"></div>
 				</div>

@@ -1,3 +1,70 @@
+.kartuchannel {
+	text-align: center;
+	position: relative;
+	padding-top:10px;
+	margin:10px;
+	width:200px;
+	height:140px;
+	background:#ffffff;
+	border:1px solid rgb(216, 219, 222);
+    line-height:17px;
+    text-align:center;
+	font-size:13px;
+}
+
+.kartuchannel img {
+	margin-bottom:5px;
+	height:80px;
+	width:auto
+}
+
+.tb_hijau {
+	font-size:15px;
+	font-family:Arial;
+	width:133px;
+	height:37px;
+	border-width:1px;
+	color:#757d6f;
+	border-color:#b2b8ad;
+	font-weight:bold;
+	border-top-left-radius:6px;
+	border-top-right-radius:6px;
+	border-bottom-left-radius:6px;
+	border-bottom-right-radius:6px;
+	box-shadow:inset 0px 0px 14px -3px #f2fadc;
+	text-shadow:inset 0px 1px 0px #ced9bf;
+	background:#dbe6c4;
+  }
+  
+  .tb_hijau:hover {
+	background: rgba(226, 236, 218, 1)
+  }
+
+  .tb_oren {
+	font-size:15px;
+	font-family:Arial;
+	width:133px;
+	height:37px;
+	border-width:1px;
+	color:rgba(125, 120, 111, 1);
+	border-color:rgba(184, 180, 173, 1);
+	font-weight:bold;
+	border-top-left-radius:6px;
+	border-top-right-radius:6px;
+	border-bottom-left-radius:6px;
+	border-bottom-right-radius:6px;
+	box-shadow:inset 0px 0px 14px -3px rgba(250, 237, 220, 1);
+	text-shadow:inset 0px 1px 0px rgba(217, 207, 191, 1);
+	background:rgba(230, 219, 196, 1);
+  }
+  
+  .tb_oren:hover {
+	background: rgba(236, 230, 218, 1)
+  }
+				
+				
+				
+
 .text-wrap {
 	white-space: initial;
 	word-break: break-word;

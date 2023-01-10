@@ -67,6 +67,11 @@ class Video extends CI_Controller
 		$npsn = $this->session->userdata('npsn');
 		$getuser = getstatususer();
 		$prodi = $getuser["kelasku"];
+
+		$this->load->Model('M_channel');
+		$getsekolah = $this->M_channel->getSekolahKu($npsn, $prodi);
+		$stratasekolah = $getsekolah->strata_sekolah;
+		$data['stratasekolah'] = $stratasekolah;
 		
 		if ($this->session->userdata('a01')) {
 			$data['dafvideo'] = $this->M_video->getVideoAll();
@@ -95,7 +100,7 @@ class Video extends CI_Controller
 	{
 		$data = array();
 		$data['konten'] = "v_video";
-
+		$data['asal'] = "saya";
 		$data['sudahdicekagency'] = false;
 		$data['sudahdicekverifikator'] = false;
 
@@ -115,13 +120,27 @@ class Video extends CI_Controller
 
 		$getstatus = getstatusverifikator();
 		$data['status_verifikator'] = $getstatus['status_verifikator'];
+		$npsn = $this->session->userdata('npsn');
 		$getuser = getstatususer();
 		$prodi = $getuser['kelasku'];
+
+		$this->load->Model('M_channel');
+		$getsekolah = $this->M_channel->getSekolahKu($npsn, $prodi);
+		$stratasekolah = $getsekolah->strata_sekolah;
+
+		////////// KHUSUS KAMPUS MERDEKA ///////////////////////
+		if ($this->session->userdata('npsn')=='200101')
+		{
+			$stratasekolah = 2;
+		}
+		//----------------------------------------------------//
+
+		$data['stratasekolah'] = $stratasekolah;
 
 		$data['opsi'] = $opsi;
 
 		if ($this->session->userdata('sebagai') == 1) {
-			$data['dafvideo'] = $this->M_video->getVideoSekolah($this->session->userdata('npsn'),$prodi,"saya",0,null,null,null,$prodi);
+			$data['dafvideo'] = $this->M_video->getVideoSekolah($npsn,$prodi,"saya",0,null,null,null,$prodi);
 			if ($this->session->userdata('verifikator') == 3)
 				$data['statusvideo'] = 'sekolahsaya';
 			else if ($this->session->userdata('kontributor') == 3)
@@ -165,6 +184,11 @@ class Video extends CI_Controller
 			}
 		}
 
+		if ($this->session->userdata('verifikator')==3)
+		{
+			$data['sudahdicekverifikator'] = "sudah";
+		}
+
 		$this->load->view('layout/wrapper_tabel', $data);
 	}
 
@@ -178,21 +202,46 @@ class Video extends CI_Controller
 		$data['statusvideo'] = 'semua';
 		$data['linkdari'] = "video";
 		$data['opsi'] = $opsi;
+		$data['asal'] = "kontributor";
 
 		$getstatus = getstatusverifikator();
 		$data['status_verifikator'] = $getstatus['status_verifikator'];
+		
+		$npsn = $this->session->userdata('npsn');
+		$getuser = getstatususer();
+		$prodi = $getuser['kelasku'];
 
+		if (!$this->session->userdata('a01'))
+		{
+			$this->load->Model('M_channel');
+			$getsekolah = $this->M_channel->getSekolahKu($npsn, $prodi);
+			$stratasekolah = $getsekolah->strata_sekolah;
+		}
+		else
+		{
+			$stratasekolah = 10;
+		}
+
+		////////// KHUSUS KAMPUS MERDEKA ///////////////////////
+		if ($this->session->userdata('npsn')=='200101')
+		{
+			$stratasekolah = 2;
+		}
+		//----------------------------------------------------//
+
+		$data['stratasekolah'] = $stratasekolah;
+
+		
 		if ($this->session->userdata('sebagai') == 1) {
-			$data['dafvideo'] = $this->M_video->getVideoSekolah($this->session->userdata('npsn'),"kontributor",0);
+			$data['dafvideo'] = $this->M_video->getVideoSekolah($npsn, $prodi, "kontributor",0);
 			$data['statusvideo'] = 'sekolahkontri';
 		} else if ($this->session->userdata('a01')) {
 
-			$data['dafvideo'] = $this->M_video->getVideoAll(null,0);
+			$data['dafvideo'] = $this->M_video->getVideoAll(null,'0');
+			// echo "CODE010101";
+			// echo var_dump($data['dafvideo']);
+
 			$data['statusvideo'] = 'admin';
-//			echo "<pre>";
-//			echo var_dump($data['dafvideo']);
-//			echo "</pre>";
-//			die();
 		}
 		else
 			redirect("/");
@@ -351,7 +400,7 @@ class Video extends CI_Controller
 		$this->load->view('layout/wrapper', $data);
 	}
 
-	public function edit($id_video = null, $asal = null)
+	public function edit($id_video = null, $asal = null, $dari = null)
 	{
 		if ($id_video == null) {
 			redirect("/");
@@ -365,7 +414,12 @@ class Video extends CI_Controller
 		$data['datavideo'] = $this->M_video->getVideo($id_video);
 
 		$iduservideo = $data['datavideo']['id_user'];
-		if ($iduservideo!=$this->session->userdata("id_user"))
+		// $getkontributor = $this->M_login->getUser($iduservideo);
+		// $npsnkontri = $getkontributor->npsn;
+
+
+		
+		if ($iduservideo!=$this->session->userdata("id_user") && !$this->session->userdata("a02"))
 		redirect("/");
 		
 		if ($data['datavideo']) {
@@ -854,6 +908,7 @@ class Video extends CI_Controller
 
 		$statusverifikasi = $this->input->post('status_ver');
 
+		if (!$this->session->userdata('a02'))
 		$data['status_verifikasi'] = 0;
 
 		if ($this->input->post('addedit') == "add") {
@@ -896,6 +951,10 @@ class Video extends CI_Controller
 		{
 			$data['status_verifikasi'] = 0;
 		}
+		else
+		{
+			$data['status_verifikasi'] = 2;
+		}
 
 
 		$data['id_kategori'] = 0;
@@ -937,6 +996,8 @@ class Video extends CI_Controller
 				redirect('video/saya/dashboard');
 			else if ($asal=='evm')
 				redirect('video/lihat/modul/'.$kodeevent.'/'.$bulan.'/'.$tahun);
+			else if ($asal=='kontributor')
+				redirect('video/kontributor/dashboard');
 			else
 				redirect('video');
 		}
@@ -1014,7 +1075,28 @@ class Video extends CI_Controller
 	{
 		$getstatus = getstatusverifikator();
 
-		if ($getstatus['status_verifikator']=="oke" || $this->session->userdata('bimbel')==4 || $this->session->userdata('a01')
+		$npsn = $this->session->userdata('npsn');
+		$getuser = getstatususer();
+		$prodi = $getuser['kelasku'];
+
+		if (!$this->session->userdata('a01'))
+		{
+			$this->load->Model('M_channel');
+			$getsekolah = $this->M_channel->getSekolahKu($npsn, $prodi);
+			$stratasekolah = $getsekolah->strata_sekolah;
+		}
+		else
+		{
+			$stratasekolah = 10;
+		}
+		////////// KHUSUS KAMPUS MERDEKA ///////////////////////
+		if ($this->session->userdata('npsn')=='200101')
+		{
+			$stratasekolah = 2;
+		}
+		//----------------------------------------------------//
+
+		if ($stratasekolah>0 || $this->session->userdata('bimbel')==4 || $this->session->userdata('a01')
 		|| ($this->session->userdata('siam') == 3 && substr($asal,0,6)=="calver") || $this->session->userdata('verifikator') == 1 ) {
 
 			$data = array();
@@ -1033,7 +1115,7 @@ class Video extends CI_Controller
 					&& $this->session->userdata('verifikator') == 3)) {
 				$datav['no_verifikator'] = 2;
 				$data['no_verifikator'] = 2;
-			} else if ($this->session->userdata('verifikator')==1)
+			} else if ($this->session->userdata('a02'))
 			{
 				$datav['no_verifikator'] = 1;
 				$data['no_verifikator'] = 1;
@@ -1076,7 +1158,7 @@ class Video extends CI_Controller
 				redirect('video/bimbel/dashboard');
 			else if (substr($asal,0,6)=="calver")
 				redirect('marketing/calver/video/'.substr($asal,6));
-			else if ($asal=="dashboard" && $this->session->userdata('verifikator')==1)
+			else if (($asal=="dashboard" && $this->session->userdata('verifikator')==1) || $asal=="admindashboard")
 				redirect('video/kontributor/dashboard');
 			else
 				redirect('video');
@@ -1099,7 +1181,7 @@ class Video extends CI_Controller
 		$lulusgak = $this->input->post('lulusgak');
 		// echo 'Total:'.$total_isian;
 		// echo '<br>Diisi:'.$jml_diisi;
-		//echo $lulusgak
+		// echo "VER:".$verifikator."---";
 		//die();
 		/////////////// GANTI LULUS DENGAN INPUTAN LULUSGAK, BUKAN LENGKAP ATAU TIDAKNYA///////////////////////////////////////////////////
 		if ($verifikator == 1 || $verifikator == 3)
@@ -1164,11 +1246,15 @@ class Video extends CI_Controller
 				}
 
 				
-				// die();
+				
 
 				$this->M_video->updatenilai($data1, $id_video);
 				$this->M_video->addlogvideo($data2);
 				$this->M_video->simpanverifikasi($data3, $id_video);
+
+				// echo "EEX";
+				// die();
+
 				if (substr($asal,0,4)=="mntr")
 					redirect('event/mentor/video/'.substr($asal,4));
 				else if ($asal=="ekskulprofil")
@@ -1189,7 +1275,7 @@ class Video extends CI_Controller
 					redirect('video/bimbel/dashboard');
 				else if (substr($asal,0,6)=="calver")
 					redirect('marketing/calver/video/'.substr($asal,6));
-				else if ($this->session->userdata('verifikator')==1)
+				else if ($this->session->userdata('verifikator')==1 || $asal=="admindashboard")
 					redirect('video/kontributor/dashboard');
 				else
 					redirect('video');

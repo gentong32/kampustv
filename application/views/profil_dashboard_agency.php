@@ -15,7 +15,25 @@
 		<div class="row column2 graph margin_bottom_30">
 			<div class="col-md-l2 col-lg-12">
 				<div class="row">
-					<?php if ($totalmentor>0) {?>
+					<div class="col-md-6 col-lg-3">
+						<a href="<?php echo $linkprodi;?>">
+							<div class="full counter_section margin_bottom_30">
+								<div class="couter_icon">
+									<div>
+										<i class="fa fa-book green_color"></i>
+									</div>
+								</div>
+								<div class="counter_no">
+									<div>
+										<p class="total_no"><?php echo $totalprodi;?></p>
+										<p class="head_couter">Jumlah Prodi</p>
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+
+					<?php if ($totalmentor>100) {?>
 					<div class="col-md-6 col-lg-3">
 						<a href="<?php echo $linkmentor;?>">
 							<div class="full counter_section margin_bottom_30">
@@ -35,7 +53,7 @@
 					</div>
 					<?php } ?>
 
-					<?php if ($jmlcalontutor>0) { ?>
+					<?php if ($jmlcalontutor>100) { ?>
 						<div class="col-md-6 col-lg-3">
 							<a href="<?php echo $linktutor;?>">
 								<div class="full counter_section margin_bottom_30">
@@ -53,7 +71,7 @@
 								</div>
 							</a>
 						</div>
-					<?php } else {?>
+					<?php } else if ($jmlcalontutor>100){?>
 					<div class="col-md-6 col-lg-3">
 						<a href="<?php echo $linktutor;?>">
 							<div class="full counter_section margin_bottom_30">
@@ -75,9 +93,9 @@
 
 
 
-					<?php if ($jmlvideoperluver>0) { ?>
+					<!-- <?php if ($jmlvideoperluver>0) { ?>
 						<div class="col-md-6 col-lg-3">
-							<a href="<?php echo $linkvideo;?>">
+							<a href="<?php //echo $linkvideo;?>">
 								<div class="full counter_section margin_bottom_30">
 									<div class="couter_icon">
 										<div>
@@ -86,7 +104,7 @@
 									</div>
 									<div class="counter_no">
 										<div>
-											<p class="total_no"><?php echo $jmlvideoperluver.' / '.$totalvideo;?></p>
+											<p class="total_no"><?php //echo $jmlvideoperluver.' / '.$totalvideo;?></p>
 											<p class="head_couter">Video perlu diverifikasi</p>
 										</div>
 									</div>
@@ -95,7 +113,7 @@
 						</div>
 					<?php } else {?>
 						<div class="col-md-6 col-lg-3">
-							<a href="<?php echo $linkvideo;?>">
+							<a href="<?php //echo $linkvideo;?>">
 								<div class="full counter_section margin_bottom_30">
 									<div class="couter_icon">
 										<div>
@@ -104,14 +122,14 @@
 									</div>
 									<div class="counter_no">
 										<div>
-											<p class="total_no"><?php echo $totalvideo;?></p>
+											<p class="total_no"><?php //echo $totalvideo;?></p>
 											<p class="head_couter">Jumlah Seluruh Video Bimbel</p>
 										</div>
 									</div>
 								</div>
 							</a>
 						</div>
-					<?php } ?>
+					<?php } ?> -->
 
 					
 				</div>

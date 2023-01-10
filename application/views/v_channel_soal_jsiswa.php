@@ -31,7 +31,7 @@ foreach ($dafuser as $datane) {
 					<div class="col-1">
 						<center>
 							<div style="font-size: 16px;font-weight: bold;">
-								Daftar Nilai Siswa<br>
+								Daftar Nilai Mahasiswa<br>
 								<?php echo "<span style='font-size:18px;'>".$judul."</span>";?>
 							</div>
 							<hr>

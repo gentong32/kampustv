@@ -32,7 +32,7 @@
 							<br>
 							<div class="row">
 								<div class="col-lg-6 col-md-6" style="margin-bottom: 25px;">
-										<a href="<?php echo base_url(); ?>login/register/guru" class="aguru">
+										<a href="<?php echo base_url(); ?>login/register/dosen" class="aguru">
 										<img class="profile-img"
 															   style="max-width: 200px;max-height: 200px"
 															   src="<?php echo base_url(); ?>assets/images/ikon-guru.png"
@@ -41,7 +41,7 @@
 										</a>
 								</div>
 								<div class="col-lg-6 col-md-6" style="margin-bottom: 25px;">
-										<a href="<?php echo base_url(); ?>login/register/siswa" class="asiswa">
+										<a href="<?php echo base_url(); ?>login/register/mahasiswa" class="asiswa">
 											<img class="profile-img"
 												 style="max-width: 200px;max-height: 200px"
 												 src="<?php echo base_url(); ?>assets/images/ikon-siswa.png"

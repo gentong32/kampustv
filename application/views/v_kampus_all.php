@@ -39,25 +39,23 @@ $stratasekolah = Array('-', 'Lite', 'Pro', 'Premium','','','','Free Lite','Free 
 					</button>
 				</div>
 				<hr style="margin-top: 10px;">
-				<div style="margin-bottom: 10px;">
+				<!-- <div style="margin-bottom: 10px;">
 					<button type="button"
-							onclick="window.location.href='<?php echo base_url();?>channel/tambahkampus'"
+							onclick="window.location.href='<?php //echo base_url();?>channel/tambahkampus'"
 							class="btn-main"
 							style="float:right;margin-right:0px;margin-top:-20px;">Tambah
 					</button>
-				</div>
+				</div> -->
 				<div id="tabel1" style="font-size:1em;margin-left:1px;margin-right:1px;">
 					<table id="tbl_user" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
 						<thead>
 						<tr>
 							<th style="width:3%;text-align:center">No</th>
-							<th style='width:5%;text-align:center'>NPSN</th>
+							<th style='width:8%;text-align:center'>Kode Kampus</th>
 							<th style='width:20%;text-align:center'>Nama Kampus</th>
-							<th style='width:5%;text-align:center'>Prodi</th>
-							<th style='width:20%;text-align:center'>Alamat Kampus</th>
-							<th style='width:20%;text-align:center'>Kota</th>
-							<th style='width:10%;text-align:center'>Agency</th>
-							<!-- <th>Aksi</th> -->
+							<th style='width:5%;text-align:center'>Jml Prodi</th>
+							<th style='text-align:center'>Propinsi</th>
+							<th style='text-align:center'>LLDIKTI</th>
 						</tr>
 						</thead>
 					</table>
@@ -86,15 +84,33 @@ $stratasekolah = Array('-', 'Lite', 'Pro', 'Premium','','','','Free Lite','Free 
 		foreach ($dafchannel as $datane) {
 			$jml_user++;
 
-			$tombol = "";
+			if(trim($datane->first_name)=="")
+			{
+				if(trim($datane->email)=="")
+					{
+						$tombol = "<button onclick='bukalink(`".base_url()."channel/inputagency/".
+						$datane->npsn."/".$datane->kd_prodi."`, `_self`)' type='button'>Input Agency</button>";
+					}
+				else
+					{
+						$tombol = "<button onclick='bukalink(`".base_url()."channel/inputagency/".
+						$datane->npsn."/".$datane->kd_prodi."`, `_self`)' type='button'>Ubah Agency</button>";
+					}
+			}
+			else
+			{
+				$tombol = "<button onclick='bukalink(`".base_url()."channel/inputagency/".
+				$datane->npsn."/".$datane->kd_prodi."`, `_self`)' type='button'>Ubah Agency</button>";
+			}
+			
+
+			$namasekolah = str_replace(['"',"'"], "'", $datane->nama_sekolah);
 			
 			echo "data.push([ " . $jml_user . ", \"" . $datane->npsn .
-				"\", \"" . $datane->nama_sekolah .
+				"\", \"" . $namasekolah .
 				"\", \"" . $datane->jml_prodi .
-				"\", \"" . $datane->alamat_sekolah .
-				"\", \"" . $datane->nama_kota .
-				"\", \"" . $datane->first_name . " " . $datane->last_name .
-				"\", \"" . $tombol . "\"]);\n\r";
+				"\", \"" . $datane->nama_propinsi .
+				"\", \"" . $datane->nama_lembaga . "\"]);\n\r";
 		}
 		?>
 
@@ -117,7 +133,7 @@ $stratasekolah = Array('-', 'Lite', 'Pro', 'Premium','','','','Free Lite','Free 
 					render: function (data, type, full, meta) {
 						return "<div class='text-wrap width-50'>" + data + "</div>";
 					},
-					targets: [0, 1, 2]
+					targets: [0, 1, 2, 4]
 				},
 				{
 					render: function (data, type, full, meta) {
@@ -128,5 +144,10 @@ $stratasekolah = Array('-', 'Lite', 'Pro', 'Premium','','','','Free Lite','Free 
 			]
 		});
 	});
+
+	function bukalink(url)
+	{	
+		window.open(url, '_self');
+	}
 
 </script>

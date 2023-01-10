@@ -134,21 +134,17 @@ class M_video extends CI_Model
 
     public function getVideoAll($tipevideo=null,$event=null)
     {
-    	if ($this->session->userdata('a01'))
-			$this->db->select('tv.*,tu.*,tu.created as createduser');
-    	else
-        	$this->db->select('tv.*,tu.*,tu.created as createduser');
+    	$this->db->select('tv.*,tu.*,tu.created as createduser');
 
         $this->db->from('tb_video tv');
-        $this->db->join('tb_user tu', 'tu.id = tv.id_user', 'left');
+        $this->db->join('tb_user tu', 'tu.kd_user = tv.id_user', 'left');
 
 		if ($tipevideo!=null)
 			$this->db->where('tv.tipe_video', $tipevideo);
 
 		if ($this->session->userdata('a01'))
 		{
-//			$this->db->join('tb_payment tp', 'tu.npsn = tp.npsn_sekolah AND tp.status=3', 'left');
-//			$this->db->group_by('tv.id_video');
+			
 			$this->db->order_by('tv.modified', 'desc');
 			$this->db->order_by('tv.status_verifikasi', 'asc');
 			if ($event=="semua")
@@ -215,8 +211,7 @@ class M_video extends CI_Model
 		return $result;
 	}
 
-    public function getVideoSekolah($npsn=null, $prodi=null, $opsi = null, $tipevideo = null, $statusverifikasi = null,
-									$sifat = null, $kodekotaku = null)
+    public function getVideoSekolah($npsn=null, $prodi=null, $opsi = null, $tipevideo = null, $statusverifikasi = null,$sifat = null, $kodekotaku = null)
     {
         $this->db->select('tv.*,tu.first_name as namadepan,tu.*,tu.created as createduser');
         $this->db->from('tb_video tv');
@@ -1063,6 +1058,14 @@ class M_video extends CI_Model
 		$this->db->join('tb_event te', 'te.code_event = tp.nama_paket','left');
 		$this->db->where('(tp.nama_paket="'.$code.'" AND durasi_paket<>"00:00:00" AND status_paket>=1 
 		AND jenis_paket=2 AND iduser='.$iduser.')');
+		$result = $this->db->get()->result();
+		return $result;
+	}
+
+	public function getMatkul($iduser)
+	{
+		$this->db->from('daf_mapel');
+		$this->db->where('kd_user="'.$iduser.'"');
 		$result = $this->db->get()->result();
 		return $result;
 	}

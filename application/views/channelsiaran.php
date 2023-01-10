@@ -119,7 +119,7 @@ foreach ($dafchannelguru as $datane) {
 				<div class="row">
 
 					<div class="col-md-12 text-center wow fadeInRight" data-wow-delay=".5s">
-						<h1>MCR SIARAN TV SEKOLAH</h1>
+						<h1>MCR SIARAN TV KAMPUS</h1>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -270,7 +270,13 @@ foreach ($dafchannelguru as $datane) {
 	var totalseluruhdurasi = 0;
 	var siaranaktif = <?php echo $siaranaktif;?>;
 
-	var jammulaitayang =<?php echo substr($tgl_tayang[1], 0, 2);?>;
+	var jammulaitayang = <?php 
+	if (substr($tgl_tayang[1], 0, 2)!="")
+	echo substr($tgl_tayang[1], 0, 2);
+	else
+	{
+		redirect(site_url()."channel/nosiaran");
+	} ?>;
 	var jumlahjudul = <?php echo $jml_list;?>;
 	var posisijudul = 1;
 	var jambulatawal = 0;
@@ -487,7 +493,6 @@ foreach ($dafchannelguru as $datane) {
 
 	<?php
 	$totaldurasi = 0;
-
 	echo "var idvideo2 = youtube_parser('" . $urllive . "'); \r\n";
 
 	for ($q = 1; $q <= $jml_list; $q++) {
@@ -584,8 +589,13 @@ foreach ($dafchannelguru as $datane) {
 		// $('#layartancap2').hide();
 		//document.getElementById('isivideoyoutube').style.display = "block";
 		loadplayer();
-		loadplayer2();
-		loadplayer3();
+		<?php
+		if ($urllive!="")
+		{ ?>
+			loadplayer2();
+			loadplayer3();
+		<?php }
+		?>
 	}
 
 	function loadplayer() {

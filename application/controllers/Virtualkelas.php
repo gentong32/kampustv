@@ -60,6 +60,13 @@ class Virtualkelas extends CI_Controller
 		setcookie('basis', "dashboard", time() + (86400), '/');
 		$npsn = $this->session->userdata('npsn');
 		$iduser = $this->session->userdata('id_user');
+		$getuser = getstatususer();
+		$prodi = $getuser['kelasku'];
+
+		$this->load->Model("M_channel");
+		$ceknpsn = $this->M_channel->getSekolahKu($npsn, $prodi);
+		
+
 		$data = array();
 
 		$cekmodul = hitungmodulke();
@@ -69,16 +76,8 @@ class Virtualkelas extends CI_Controller
 		$data['bln_skr'] = $cekmodul['bulannya'];
 		$data['thn_skr'] = $cekmodul['tahunnya'];
 		$data['rentang_tgl'] = $cekmodul['rentangtanggal'];
-
-		if($this->session->userdata('sebagai')==2)
-		{
-			$getkelas = $this->M_login->dafjenjangkelas($statususer['kelasku']);
-			$data['namakelas'] = $getkelas->nama_pendek." - ".$getkelas->nama_kelas;
-		}
-		else
-		{
-			$data['namakelas'] = "";
-		}
+		$data['namasekolah'] = $ceknpsn->nama_sekolah;
+		$data['namaprodi'] = $ceknpsn->nama_prodi;
 
 		$nmodul = $cekmodul['nmodul'];
 		$data['modulke'] = $nmodul;
@@ -112,7 +111,11 @@ class Virtualkelas extends CI_Controller
 			// echo "</pre>";
 
 		} else {
+			
 			$ambilmodul = $this->M_vksekolah->getDafModulSaya($iduser, $nmodul, null, $semester);
+			// echo "<pre>";
+			// echo var_dump($ambilmodul);
+			// echo "</pre>";
 			$cekgurumodul = $this->M_vksekolah->cekGuruModul($iduser);
 			$data['jmlgurupilih'] = sizeof($cekgurumodul);
 
@@ -128,6 +131,7 @@ class Virtualkelas extends CI_Controller
 			$jmlmodulbulanini = 0;
 			foreach ($cekgurumodul as $row) {
 				$adamentor = 0;
+				
 				$cekuser = $this->M_login->getUser($row->id_guru);
 				if ($cekuser['referrer'] != "")
 					$adamentor = 1;
@@ -161,9 +165,13 @@ class Virtualkelas extends CI_Controller
 
 			$this->load->Model('M_login');
 			$datauser = $this->M_login->getUser($iduser);
-			$idkelas = $datauser['kelas_user'];
+			// echo "<pre>";
+			// echo var_dump($datauser);
+			// echo "</pre>";
+			// die();
+			// $idkelas = $datauser['kelas_user'];
 			$this->load->Model('M_channel');
-			$mapelaktif = $this->M_channel->getDafPlayListMapel($npsn, $idkelas);
+			$mapelaktif = $this->M_channel->getDafPlayListMapel($npsn, $prodi);
 
 			// echo "<pre>";
 			// echo var_dump($mapelaktif);
@@ -173,7 +181,7 @@ class Virtualkelas extends CI_Controller
 			$data['jmlmapelaktif'] = $jmlmapelaktif;
 
 			// echo $jmlmodulbulanini;
-			// echo "-".$data['jmlgurupilih'];
+			// echo "CC11122-".$data['jmlgurupilih'];
 			// echo "-".$jmlmapelaktif;
 
 
@@ -1060,6 +1068,7 @@ class Virtualkelas extends CI_Controller
 			$data['modullengkap'] = false;
 			if ($jmlmodulbulanini == $jmlmapelaktif * 4)
 				$data['modullengkap'] = true;
+			
 
 			$data['statusbelipaket'] = 0;
 			$data['keteranganbayar'] = "";
@@ -1246,6 +1255,11 @@ class Virtualkelas extends CI_Controller
 			$data = array();
 			$data['konten'] = 'virtual_kelas_modul_ver';
 			$data['dafpaket'] = $this->M_vksekolah->getPaketSekolah($npsn);
+
+			// echo $npsn;
+			// echo "<pre>";
+			// echo var_dump($data['dafpaket']);
+			// echo "</pre>";
 
 			$this->load->view('layout/wrapper_tabel', $data);
 		} else if ($this->session->userdata('sebagai') == 1) {
@@ -1679,6 +1693,8 @@ class Virtualkelas extends CI_Controller
 		$data['dafkurikulum'] = $this->M_video->getKurikulum();
 		$data['dafjenjang'] = $this->M_video->getAllJenjang();
 		$data['dafkategori'] = $this->M_video->getAllKategori();
+		$data['dafmapel'] = $this->M_video->getMatkul($this->session->userdata('id_user'));
+		// echo var_dump($data['dafmapel']);
 		$data['sudahdibeli'] = 0;
 
 		$this->load->view('layout/wrapper_tabel', $data);
@@ -1697,6 +1713,7 @@ class Virtualkelas extends CI_Controller
 		$data['dafkurikulum'] = $this->M_video->getKurikulum();
 		$data['dafjenjang'] = $this->M_video->getAllJenjang();
 		$data['dafkategori'] = $this->M_video->getAllKategori();
+		$data['dafmapel'] = $this->M_video->getMatkul($this->session->userdata('id_user'));
 
 		$this->load->view('layout/wrapper_tabel', $data);
 	}
@@ -1741,9 +1758,9 @@ class Virtualkelas extends CI_Controller
 			$id_user = $this->session->userdata('id_user');
 			$npsn = $this->session->userdata('npsn');
 			$this->load->Model('M_login');
-			$datauser = $this->M_login->getUser($id_user);
-			$idkelas = $datauser['kelas_user'];
-			$data['dafmapel'] = $this->M_vksekolah->getModulAda($npsn, $id_user, $idkelas);
+			$getuser = getstatususer();
+			$prodi = $getuser['kelasku'];
+			$data['dafmapel'] = $this->M_vksekolah->getModulAda($npsn, $id_user, $prodi);
 
 			// echo "<pre>";
 			// echo var_dump($data['dafmapel']);
@@ -1790,13 +1807,9 @@ class Virtualkelas extends CI_Controller
 
 		$idjenjang = $data['datapaket']->id_jenjang;
 		$this->load->model('M_bimbel');
-		$data['dafjenjang'] = $this->M_bimbel->getJenjangAll();
-		$data['dafkelas'] = $this->M_bimbel->getKelasJenjang($idjenjang);
-		$data['dafmapel'] = $this->M_bimbel->getMapelJenjang($idjenjang);
 		$this->load->model('M_video');
-		$data['dafjurusan'] = $this->M_video->dafJurusan();
-		$data['dafjurusanpt'] = $this->M_video->dafJurusanPT();
-
+		$data['dafmapel'] = $this->M_video->getMatkul($this->session->userdata('id_user'));
+		
 		$cekbelimodul = $this->M_channel->getmodultb_virtual($kodepaket);
 	
 		if(sizeOf($cekbelimodul)>0)
@@ -1815,21 +1828,37 @@ class Virtualkelas extends CI_Controller
 
 		$data = array();
 		$data['nama_paket'] = $_POST['ipaket'];
-		$data['id_jenjang'] = $_POST['ijenjang'];
-		if ($data['id_jenjang'] == 5 || $data['id_jenjang'] == 6)
-			$data['id_jurusan'] = $_POST['ijurusan'];
-		else
-			$data['id_jurusan'] = 0;
-		$data['id_kelas'] = $_POST['ikelas'];
-		$data['id_mapel'] = $_POST['imapel'];
 		$data['modulke'] = $_POST['imingguke'];
 		$data['semester'] = $_POST['isemester'];
+		$data['id_mapel'] = $_POST['imapel'];
+
+		$this->load->model('M_channel');
+
+		/////////////////// MAPEL BARU
+		if ($data['id_mapel']=="baru")
+		{
+			$getuser = getstatususer();
+			$npsn = $this->session->userdata('npsn');
+			$kd_prodi = $getuser['kelasku'];
+			$namamatkulbaru = $_POST['imatkulbaru'];
+			$datamatkul['npsn_sekolah']=$npsn;
+			$datamatkul['kd_prodi']=$kd_prodi;
+			$datamatkul['nama_mapel']=$namamatkulbaru;
+			$datamatkul['kd_user']=$this->session->userdata('id_user');
+			$mikro = str_replace(".", "", microtime(false));
+			$mikro = str_replace(" ", "", $mikro);
+			$mikro = base_convert($mikro, 10, 36);
+			$datamatkul['kode_mapel'] = "mk_".$mikro;
+
+			$idmapelbaru = $this->M_channel->addMatkulBaru($datamatkul);
+			$data['id_mapel'] = $idmapelbaru;
+		}
 
 		$tgtyg = $_POST['datetime'];
 		if ($tgtyg != "")
 			$data['tanggal_tayang'] = $tgtyg;
 
-		$this->load->model('M_channel');
+		
 
 		if ($_POST['addedit'] == "add") {
 			$mikro = str_replace(".", "", microtime(false));
@@ -1872,15 +1901,11 @@ class Virtualkelas extends CI_Controller
 		$this->load->model('M_channel');
 		$data['datapaket'] = $this->M_channel->getInfoPaket($kodepaket);
 		$data['kodepaket'] = $kodepaket;
+		$this->load->model('M_video');
+		$data['dafmapel'] = $this->M_video->getMatkul($this->session->userdata('id_user'));
 
 		$idjenjang = $data['datapaket']->id_jenjang;
 		$this->load->model('M_bimbel');
-		$data['dafjenjang'] = $this->M_bimbel->getJenjangAll();
-		$data['dafkelas'] = $this->M_bimbel->getKelasJenjang($idjenjang);
-		$data['dafmapel'] = $this->M_bimbel->getMapelJenjang($idjenjang);
-		$this->load->model('M_video');
-		$data['dafjurusan'] = $this->M_video->dafJurusan();
-		$data['dafjurusanpt'] = $this->M_video->dafJurusanPT();
 
 		$this->load->view('layout/wrapper_tabel', $data);
 	}
@@ -1891,14 +1916,8 @@ class Virtualkelas extends CI_Controller
 			redirect("/");
 		}
 		$data = array();
-		$data['id_jenjang'] = $_POST['ijenjang'];
-		if ($data['id_jenjang'] == 5 || $data['id_jenjang'] == 6)
-			$data['id_jurusan'] = $_POST['ijurusan'];
-		else
-			$data['id_jurusan'] = 0;
-		$data['id_kelas'] = $_POST['ikelas'];
-		$data['id_mapel'] = $_POST['imapel'];
 		$data['semester'] = $_POST['isemester'];
+		$data['id_mapel'] = $_POST['imapel'];
 		if ($_POST['ipaket'] == "1") {
 			$data['nama_paket'] = "UTS";
 			$data['modulke'] = 17;
@@ -1912,6 +1931,28 @@ class Virtualkelas extends CI_Controller
 			$data['nama_paket'] = "REMEDIAL UAS";
 			$data['modulke'] = 20;
 		}
+
+		//////////////// MATKUL BARU ------------------------------
+		if ($data['id_mapel']=="baru")
+		{
+			$getuser = getstatususer();
+			$npsn = $this->session->userdata('npsn');
+			$kd_prodi = $getuser['kelasku'];
+			$namamatkulbaru = $_POST['imatkulbaru'];
+			$datamatkul['npsn_sekolah']=$npsn;
+			$datamatkul['kd_prodi']=$kd_prodi;
+			$datamatkul['nama_mapel']=$namamatkulbaru;
+			$datamatkul['kd_user']=$this->session->userdata('id_user');
+			$mikro = str_replace(".", "", microtime(false));
+			$mikro = str_replace(" ", "", $mikro);
+			$mikro = base_convert($mikro, 10, 36);
+			$datamatkul['kode_mapel'] = "mk_".$mikro;
+			$this->load->Model('M_channel');
+			$idmapelbaru = $this->M_channel->addMatkulBaru($datamatkul);
+			$data['id_mapel'] = $idmapelbaru;
+		}
+
+		/////////////---------------------------------------------
 
 		$tgtyg = $_POST['datetime'];
 		if ($tgtyg != "")
@@ -1928,6 +1969,9 @@ class Virtualkelas extends CI_Controller
 			$data['status_paket'] = '2';
 			$data['id_user'] = $this->session->userdata('id_user');
 			$data['npsn_user'] = $this->session->userdata('npsn');
+			$getuser = getstatususer();
+			$prodi = $getuser['kelasku'];
+			$data['kd_prodi_user'] = $prodi;
 			$this->M_channel->addplaylist($data);
 			redirect('virtualkelas/modul');
 		} else {
@@ -1952,7 +1996,7 @@ class Virtualkelas extends CI_Controller
 			$cekmodul = $this->M_vksekolah->cekModulbyLink($id_user, $kodepaket);
 			$namapaket = $cekmodul->nama_paket;
 			$modulkepaket = $cekmodul->modulke;
-			$data['namapaket'] = "";
+			$data['namapaket'] = $namapaket;
 			if ($modulkepaket == 17 || $modulkepaket ==18 || $modulkepaket == 19 || $modulkepaket == 20) {
 				if($tahun!=null)
 					redirect("virtualkelas/soal/buat/" . $kodepaket . '/evm/'.$bulan.'/'.$tahun);
@@ -1965,6 +2009,7 @@ class Virtualkelas extends CI_Controller
 		$this->load->model('M_channel');
 
 		$data['dafvideo'] = $this->M_channel->getVideoUser($id_user, $kodepaket);
+		// echo var_dump($data['dafvideo']);
 		
 		$data['bulan'] = $bulan;
 		$data['tahun'] = $tahun;
@@ -2657,9 +2702,9 @@ class Virtualkelas extends CI_Controller
 			$data['kodeevent'] = $kodeevent;
 			$data['asal'] = "menu";
 
-			$cekmodulsaya = $this->M_vksekolah->getModulSaya($linklist);
-			if (!$cekmodulsaya)
-				redirect("/virtualkelas/sekolah_saya");
+			// $cekmodulsaya = $this->M_vksekolah->getModulSaya($linklist);
+			// if (!$cekmodulsaya)
+			// 	redirect("/virtualkelas/sekolah_saya");
 
 			$sudahujian = 0;
 			$siapujian = true;
@@ -2797,23 +2842,28 @@ class Virtualkelas extends CI_Controller
 		$npsn = $this->session->userdata('npsn');
 
 		$this->load->Model('M_login');
-		$datauser = $this->M_login->getUser($id_user);
-		$idkelas = $datauser['kelas_user'];
+		$getuser = getstatususer();
+		$prodi = $getuser['kelasku'];
 		$this->load->Model('M_channel');
-		$jmlmapelaktif = sizeof($this->M_channel->getDafPlayListMapel($npsn, $idkelas));
+		$jmlmapelaktif = sizeof($this->M_channel->getDafPlayListMapel($npsn, $prodi));
+		// echo "ca23131:".$jmlmapelaktif;
+		// die();
 		$this->load->Model('M_vksekolah');
-		$jmlgurupilih = sizeof($this->M_vksekolah->cekGuruModul($iduser));
+		$jmlgurupilih = sizeof($this->M_vksekolah->cekGuruModul($id_user));
 
-		if ($pertemuanke>1 && $jmlmapelaktif==$jmlgurupilih)
-			redirect("/virtualkelas/pilih_modul");
+		// if ($pertemuanke>1 && $jmlmapelaktif==$jmlgurupilih)
+		// 	redirect("/virtualkelas/pilih_modul");
 
 		
 		$cekPilihan = $this->M_vksekolah->cekModulPilihan($id_user, $npsn, $idmapel, $idguru);
 		if ($cekPilihan) {
+			// echo var_dump($cekPilihan);
 			$this->M_vksekolah->updateModulPilihan($id_user, $npsn, $idmapel, $idguru);
 		} else {
+			// echo "ca48888:".$cekPilihan;
 			$this->M_vksekolah->addModulPilihan($id_user, $npsn, $idmapel, $idguru);
 		}
+		// die();
 		$this->cekmapelsudahdipilih();
 		redirect("/virtualkelas/pilih_modul");
 	}

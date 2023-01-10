@@ -169,6 +169,8 @@ if ($jabatan == "Guru")
 						   value="<?php echo $referrer; ?>"/>
 					<input type="hidden" id="npsn" name="npsn"
 						   value="<?php echo $npsn; ?>"/>
+					<input type="hidden" id="prodi" name="prodi"
+						   value="<?php echo $prodi; ?>"/>
 					<input type="hidden" id="jabatan" name="jabatan" value="<?php echo $jabatan; ?>"/>
 
 					<div class="form-group">

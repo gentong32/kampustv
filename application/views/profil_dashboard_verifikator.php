@@ -110,10 +110,21 @@
 											</div>
 										<?php } ?>
 									</li>
+									<li><strong>Event Terbaru</strong><br>
+										Belum ada event
+									</li>
+									<li><strong>Link Pendaftaran untuk Mahasiswa</strong><br>
+										<div id="linkdafmhs" style="width:100%;font-size:12px;word-wrap:break-word;display:inline-block;"><?php echo $linkdaftarmahasiswa; ?></div>
+										<?php if ($npsn=="200101") { ?>
+											<div>
+												<input type="button" value="Copy Link" onclick="CopyLinkMhs();"/>
+											</div>
+										<?php } ?>
+									</li>
 								</ul>
 							</div>
 
-							<?php if ($keteranganstatus!="Sekolah Lite Gratis dari Siswa Ekskul") { ?>
+							<?php if ($keteranganstatus=="Sekolah Gratis dari Siswa Ekskul") { ?>
 							<div class="task_list_main">
 								<ul class="task_list">
 									<li>
@@ -145,29 +156,16 @@
 						<div class="white_shd full margin_bottom_30">
 							<div class="full graph_head">
 								<div class="heading1 margin_0">
-									<h4>Ekskul & Kelas Virtual</h4>
+									<h4>Kelas Virtual</h4>
 								</div>
 							</div>
 							<div class="task_list_main">
 								<ul class="task_list">
-									<li><a href="<?php echo base_url().'ekskul/daftar_bayar_verifikator/dashboard';?>"><strong>Pembayaran Ekskul</strong><br>
-											<?php echo "Tanggung Jawab ".$pembayar;?><br>
+									<li><a href="<?php echo base_url().'ekskul/daftar_bayar_verifikator/dashboard';?>"><strong>Modul yang Tersedia</strong><br>
+											0 modul
 										</a>
 									</li>
-									<li><a href="<?php echo base_url().'ekskul/daftar_peserta/dashboard';?>"><strong>Ekstrakurikuler</strong><br>
-											Peserta ekskul aktif : <?php echo $jumlah_siswaeks;?> orang<br>
-										</a>
-									</li>
-									<li><strong>Kampus</strong><br>
-											Paket lite : <?php echo $jumlah_lite;?> orang<br>
-											Paket pro : <?php echo $jumlah_pro;?> orang<br>
-											Paket premium : <?php echo $jumlah_premium;?> orang<br>
-									</li>
-									<li><strong>Bimbel</strong><br>
-											Paket lite : <?php echo $jumlah_lite_bimbel;?> orang<br>
-											Paket pro : <?php echo $jumlah_pro_bimbel;?> orang<br>
-											Paket premium : <?php echo $jumlah_premium_bimbel;?> orang<br>
-									</li>
+									
 								</ul>
 							</div>
 						</div>
@@ -589,5 +587,15 @@
 		console.log(Url.innerHTML)
 		Url.select();
 		document.execCommand("copy");
+	}
+
+	function CopyLinkMhs() {
+		var Url = document.getElementById("linkdafmhs");
+		var inp =document.createElement('input');
+		document.body.appendChild(inp)
+		inp.value =Url.textContent
+		inp.select();
+		document.execCommand('copy',false);
+		inp.remove();
 	}
 </script>

@@ -28,24 +28,23 @@
 							<div class="col-lg-12" style="font-size: 18px;">
 								<?php if($verifikator_aktif==0)
 									{?>
-										Prodi Anda belum memiliki Verifikator. Apakah Anda bersedia menjadi Verifikator?
+										Prodi Anda belum memiliki Verifikator. Apakah Anda bersedia menjadi Verifikator? <br>(Abaikan jika Tidak)
 										<br>
-										<button class="btn-danger" style="padding: 5px;" onclick="window.open('<?php
-										echo base_url();?>','_self')">Tidak</button>
+										
 										<button class="btn-primary" style="padding: 5px;" onclick="jadiver();">Ya</button>
 										<div style='margin-top:30px;font-size:13px;'>
 											Tugas verifikator antara lain sbb:<br>
 											<ul style='list-style-type: circle; margin-left:15px;'>
-												<li>Melakukan pembayaran sekolah setiap bulan</li>
-												<li>Memverifikasi video yang disusun oleh guru dan siswa ekskul</li>
+												<li>Melakukan pembayaran prodi kampus setiap bulan</li>
+												<li>Memverifikasi video yang disusun oleh dosen dan mahasiswa</li>
 												<li>Menentukan jadwal ujian pada kelas virtual</li>
-												<li>Memantau aktivitas guru</li>
+												<li>Memantau aktivitas dosen</li>
 											</ul>
 										</div>
 									<?php }
 									else if($verifikator_aktif==1 && $this->session->userdata('verifikator')!=3)
 									{?>
-										Verifikator Sekolah anda tidak aktif. Apakah Anda bersedia menjadi Verifikator baru?
+										Verifikator Prodi Kampus anda tidak aktif. Apakah Anda bersedia menjadi Verifikator?
 										<br>
 										<button class="btn-danger" style="padding: 5px;" onclick="window.open('<?php
 										echo base_url();?>','_self')">Tidak</button>
@@ -53,23 +52,23 @@
 										<div style='margin-top:30px;font-size:13px;'>
 											Tugas verifikator antara lain sbb:<br>
 											<ul style='list-style-type: circle; margin-left:15px;'>
-												<li>Melakukan pembayaran sekolah setiap bulan</li>
-												<li>Memverifikasi video yang disusun oleh guru dan siswa ekskul</li>
+												<li>Melakukan pembayaran prodi kampus setiap bulan</li>
+												<li>Memverifikasi video yang disusun oleh dosen dan mahasiswa</li>
 												<li>Menentukan jadwal ujian pada kelas virtual</li>
-												<li>Memantau aktivitas guru</li>
+												<li>Memantau aktivitas dosen</li>
 											</ul>
 										</div>
 									<?php }
 									else if($verifikator_aktif==2 && $this->session->userdata('kontributor')==2)
 										{ ?>
-								Status Anda masih sebagai Calon Guru, sehingga belum dapat mengunggah Video!<br>
+								Status Anda masih sebagai Calon Dosen, sehingga belum dapat mengunggah Video!<br>
 								Hubungi Verifikator berikut:<br>
 								<i class="fa fa-user"></i> <?php echo $namaverifikator;?><br>
 								<i class="fa fa-envelope"></i> <?php echo $emailverifikator;?><br>
 								<i class="fa fa-phone"></i> <?php echo $telpverifikator;?><br>
 										<?php } else if($verifikator_aktif==3)
 										{ ?>
-								Status Anda masih sebagai Calon Guru, sehingga belum dapat mengunggah Video!<br>
+								Status Anda masih sebagai Calon Dosen, sehingga belum dapat mengunggah Video!<br>
 								Verifikator akan memverifikasi segera.<br>
 										<?php } ?>
 
@@ -117,17 +116,17 @@
 												<li>
 													<hr>
 												</li>
-												<?php if ($this->session->userdata('sebagai')==2) { ?>
+												<?php if ($this->session->userdata('sebagai')==22) { ?>
 												<li>
-													<?php echo $profilku->namakelas;?>
+													Prodi: <?php echo $profilku->prodi;?>
 												</li>
 												<li>
 													<hr>
 												</li>
 												<?php } else if ($this->session->userdata('sebagai')==1 && 
-												$profilku->namamapel!="") { ?>
+												$profilku->prodi!="") { ?>
 												<li>
-													<?php echo $profilku->namamapel;?>
+													Prodi: <?php echo $profilku->prodi;?>
 												</li>
 												<li>
 													<hr>

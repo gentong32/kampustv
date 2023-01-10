@@ -43,22 +43,16 @@ $stratasekolah = Array('-', 'Lite', 'Pro', 'Premium','','','','Free Lite','Free 
 					</button>
 				</div>
 				<hr style="margin-top: 10px;">
-				<div style="margin-bottom: 10px;">
-					<button type="button"
-							onclick="window.location.href='<?php echo base_url();?>channel/tambahprodi'"
-							class="btn-main"
-							style="float:right;margin-right:0px;margin-top:-20px;">Tambah
-					</button>
-				</div>
+				
 
 				<div id="tabel1" style="font-size:1em;margin-left:1px;margin-right:1px;">
 					<table id="tbl_user" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
 						<thead>
 						<tr>
 							<th style="width:2%;text-align:center">No</th>
-							<th style='width:5%;text-align:center'>Kode</th>
-							<th style='width:20%;text-align:center'>Nama Prodi</th>
 							<th style='text-align:center'>Nama Kampus</th>
+							<th style='width:5%;text-align:center'>Kode Prodi</th>
+							<th style='width:20%;text-align:center'>Nama Prodi</th>
 							<th style='width:10%;text-align:center'>Verifikator</th>
 							<th style='width:10%;text-align:center'>Telp</th>
 							<th style='width:10%;text-align:center'>Email</th>
@@ -130,9 +124,10 @@ $stratasekolah = Array('-', 'Lite', 'Pro', 'Premium','','','','Free Lite','Free 
 			else
 				$tstrata =  $stratane . " [ " . namabulantahun_pendek($datane->kadaluwarsa)." ]";
 
-			echo "data.push([ " . $jml_user . ", \"" . $datane->kd_prodi .
-				"\", \"" . $datane->nama_prodi .
-				"\", \"" . $datane->nama_sekolah .
+			echo "data.push([ " . $jml_user . 
+				", \"" . $datane->nama_sekolah .
+				"\", \"" . $datane->kd_prodi .
+				"\", \"" . $datane->nama_prodi . " (".$datane->jenjang.")".
 				"\", \"" . $datane->first_name . " " . $datane->last_name .
 				"\", \"" . $datane->hp .
 				"\", \"" . $datane->email .

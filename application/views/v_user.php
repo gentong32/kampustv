@@ -1,8 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$txt_sebagai = Array('', 'Guru', 'Siswa', 'Umum', 'Staf Fordorum');
-$nama_verifikator = Array('-', 'Calon', 'Verifikator', 'Verifikator', '', '', '', '', '', '-');
+$txt_sebagai = Array('', 'Dosen', 'Mahasiswa', 'Umum', 'Staf Fordorum');
+$nama_verifikator = Array('-', 'Calon Verifikator', 'Verifikator', 'Verifikator', '', '', '', '', '', '-');
 
 if (!isset($sebagai))
 	$sebagai = "";
@@ -37,30 +37,24 @@ if (!isset($premium))
 			<div class="row">
 				<center>
 					<?php if ($this->session->userdata('a02') && $this->session->userdata('sebagai') == 1) {
-						echo $sekolahku . $premium;
+						echo "<h4>".$judul."</h4>";
+						echo "<span style='color:black;font-size:24px;'>".$prodiku."</span><br>";
+						echo "<span style='font-size:20px;'>".$sekolahku."</span>";
 					}
 					if ($this->session->userdata("a01") || ($this->session->userdata("sebagai") == 4
-							&& $this->session->userdata("verifikator") == 3)) { ?>
-						<br><br>
+							&& $this->session->userdata("verifikator") == 3)) { 
+								echo "<h4>".$judul."</h4>";
+								?>
+						<br>
 						<span style="font-size: 14px;">
-				<button onclick="window.open('<?php echo base_url() . "user/"; ?>','_self');"
-						style="padding:5px;margin-bottom: 5px;" class="">Daftar User</button>
-				<button onclick="window.open('<?php echo base_url() . "user/calver"; ?>','_self');"
-						style="padding:5px;margin-bottom: 5px;" class="">Daftar Calon Ver</button>
-				<button onclick="window.open('<?php echo base_url() . "user/calkontri"; ?>','_self');"
-						style="padding:5px;margin-bottom: 5px;" class="">Daftar Calon Kontri</button>
-				<button onclick="window.open('<?php echo base_url() . "user/kontributorsekolah/dashboard"; ?>','_self');"
-						style="padding:5px;margin-bottom: 5px;" class="">Daftar Guru Modul</button>
-				<button onclick="window.open('<?php echo base_url() . "user/narsum"; ?>','_self');"
-						style="padding:5px;margin-bottom: 5px;" class="">Daftar Narsum</button>
-				<button onclick="window.open('<?php echo base_url() . "user/ae"; ?>','_self');"
-						style="padding:5px;margin-bottom: 5px;" class="">Daftar AE</button>
-				<button onclick="window.open('<?php echo base_url() . "user/am"; ?>','_self');"
-						style="padding:5px;margin-bottom: 5px;" class="">Daftar AM</button>
-				<button onclick="window.open('<?php echo base_url() . "user/agency"; ?>','_self');"
-						style="padding:5px;margin-bottom: 5px;" class="">Daftar Agency</button>
-				<button onclick="window.open('<?php echo base_url() . "user/bimbel"; ?>','_self');"
-						style="padding:5px;margin-bottom: 5px;" class="">Daftar Tutor</button>
+				<!-- <button onclick="window.open('<?php //echo base_url() . "user/"; ?>','_self');"
+						style="padding:5px;margin-bottom: 5px;" class="">Daftar User</button> -->
+				<button class="tb_hijau" onclick="window.open('<?php echo base_url() . "user/verifikator"; ?>','_self');"
+						style="padding:5px;margin-bottom: 5px;" class="">Verifikator</button>
+				<button class="tb_hijau" onclick="window.open('<?php echo base_url() . "user/dosen"; ?>','_self');"
+						style="padding:5px;margin-bottom: 5px;" class="">Dosen</button>
+				<button class="tb_hijau" onclick="window.open('<?php echo base_url() . "user/mahasiswa"; ?>','_self');"
+						style="padding:5px;margin-bottom: 5px;" class="">Mahasiswa</button>
 			</span>
 					<?php }
 					?>
@@ -108,15 +102,21 @@ if (!isset($premium))
 						<tr>
 							<th style='width:5px;text-align:center'>No</th>
 							<th style='width:20%;text-align:center'>Nama</th>
+							<?php if ($judul!="MAHASISWA") { ?>
 							<th style='width:15%;text-align:center'>Sebagai</th>
-							<?php if ($this->session->userdata('a01')) { ?>
-								<th style='text-align:center'>Paket Bulan Ini</th>
-							<?php } else { ?>
-								<th style='text-align:center'>Nama Sekolah</th>
 							<?php } ?>
-							<?php if($this->session->userdata('a01')) { ?>
-								<th>Kab/Kota</th>
-							<?php }
+							<?php if ($this->session->userdata('a01')) { ?>
+							<th style='width:15%;text-align:center'>Kampus</th>
+							<th style='width:15%;text-align:center'>Prodi</th>
+							<?php } ?>
+							<!-- <?php //if ($this->session->userdata('a01')) { ?>
+								<th style='text-align:center'>Paket Bulan Ini</th>
+							<?php //} else { ?>
+								<th style='text-align:center'>Nama Sekolah</th>
+							<?php //} ?> -->
+							<?php //if($this->session->userdata('a01')) { ?>
+								<!-- <th>Kab/Kota</th> -->
+							<?php //}
 							?>
 							<th>Email</th>
 							<th>HP</th>
@@ -174,33 +174,43 @@ if (!isset($premium))
 			else
 				$level = "-";
 
-			if ($this->session->userdata('a02') && !$this->session->userdata('a01')) {
-				$cekpaket = $datane->strata;
-				if ($cekpaket == 1)
-					$datapaketsekolah = "Lite";
-				else if ($cekpaket == 2)
-					$datapaketsekolah = "Pro";
-				else if ($cekpaket == 3)
-					$datapaketsekolah = "Premium";
-				else
-					$datapaketsekolah = "-";
-			} else {
-				$datapaketsekolah = $datane->sekolah;
-			}
+			// if ($this->session->userdata('a02') && !$this->session->userdata('a01')) {
+			// 	$cekpaket = $datane->strata;
+			// 	if ($cekpaket == 1)
+			// 		$datapaketsekolah = "Lite";
+			// 	else if ($cekpaket == 2)
+			// 		$datapaketsekolah = "Pro";
+			// 	else if ($cekpaket == 3)
+			// 		$datapaketsekolah = "Premium";
+			// 	else
+			// 		$datapaketsekolah = "-";
+			// } else {
+			// 	$datapaketsekolah = $datane->sekolah;
+			// }
 
 			$jml_user++;
 //			if($jml_user>58)
 //				continue;
 
 			if($this->session->userdata('a01')) {
+				if ($judul=="MAHASISWA")
 				echo "data.push([ " . $jml_user . ", \"" . $datane->first_name . " " .
-					$datane->last_name . "\", \"" . $level . "\", \"" . $datapaketsekolah . "\", \"" . $datane->nama_kota . "\", \"" . $datane->email . "\", \"" . $datane->hp .
+					$datane->last_name . "\", \"" . $datane->sekolah . "\", \"" . $datane->nama_prodi . " (".$datane->jenjang.")". "\", \"" . $datane->email . "\", \"" . $datane->hp .
+					"\",\"<button onclick='detil(`" . $datane->kd_user . "`);'>Detil</button>\"]);";
+				else
+				echo "data.push([ " . $jml_user . ", \"" . $datane->first_name . " " .
+					$datane->last_name . "\", \"" . $level . "\", \"" . $datane->sekolah . "\", \"" . $datane->nama_prodi . " (".$datane->jenjang.")". "\", \"" . $datane->email . "\", \"" . $datane->hp .
 					"\",\"<button onclick='detil(`" . $datane->kd_user . "`);'>Detil</button>\"]);";
 			}
 			else if ($sebagai != "siswa") {
+				if ($judul=="MAHASISWA")
 				echo "data.push([ " . $jml_user . ", \"" . $datane->first_name . " " .
-					$datane->last_name . "\", \"" . $txtsebagai[$datane->sebagai] . "\", \"" .
-					$level . "\", \"" . $datapaketsekolah . "\", \"" . $datane->email . "\", \"" . $datane->hp .
+					$datane->last_name . "\", \"" . $datane->email . "\", \"" . $datane->hp .
+					"\",\"<button onclick='detil(`" . $datane->kd_user . "`);'>Detil</button>\"]);";
+				else
+				echo "data.push([ " . $jml_user . ", \"" . $datane->first_name . " " .
+					$datane->last_name . "\", \"" . 
+					$level . "\", \"" . $datane->email . "\", \"" . $datane->hp .
 					"\",\"<button onclick='detil(`" . $datane->kd_user . "`);'>Detil</button>\"]);";
 			}
 			else

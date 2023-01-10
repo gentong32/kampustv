@@ -471,6 +471,20 @@ class Login extends CI_Controller
 
 	public function register($sebagai = null, $referal = null, $npsn = null)
 	{
+		$kampusmerdeka="0";
+		$prodi=0;
+		if (isset($_GET["kampus"]))
+		{
+			$kampusmerdeka=$_GET["kampus"];
+			$prodimerdeka=$_GET["prodi"];
+		}
+
+		if ($kampusmerdeka=="merdeka_2023")
+		{
+			$npsn="200101";
+			$prodi=$prodimerdeka;
+		}
+
 		setcookie('mentor', '--', time() + (86400), '/');
 		if ($referal == null)
 			$referal = "";
@@ -478,13 +492,13 @@ class Login extends CI_Controller
 		if ($npsn == null)
 			$npsn = "";
 
-		if ($sebagai == "guru" || $sebagai == "siswa" || $sebagai == "umum" || $sebagai == "staf") {
+		if ($sebagai == "dosen" || $sebagai == "mahasiswa" || $sebagai == "umum" || $sebagai == "staf") {
 			$data = array();
 			$data['konten'] = 'v_register';
 
-			if ($sebagai == "guru")
+			if ($sebagai == "dosen")
 				$this->session->set_userdata('sebagai', 1);
-			else if ($sebagai == "siswa")
+			else if ($sebagai == "mahasiswa")
 				$this->session->set_userdata('sebagai', 2);
 			else if ($sebagai == "umum")
 				$this->session->set_userdata('sebagai', 3);
@@ -497,6 +511,7 @@ class Login extends CI_Controller
 			$data['jabatan'] = ucfirst($sebagai);
 			$data['referrer'] = $referal;
 			$data['npsn'] = $npsn;
+			$data['prodi'] = $prodi;
 			$data['message'] = $this->session->flashdata('message');
 			$data['authURL'] = $this->facebook->login_url();
 			$data['loginURL'] = $this->google->loginURL();
@@ -701,41 +716,50 @@ class Login extends CI_Controller
 		$jabatan = $this->input->post('jabatan');
 		$data['referrer'] = $this->input->post('referrer');
 		$npsn = $this->input->post('npsn');
+		$prodi = $this->input->post('prodi');
+		
+		// echo "Prodi".$prodi;
+		// die();
 		$data['kontributor'] = 0;
 		$data['verifikator'] = 0;
 
-		if ($jabatan == "Guru") {
+		if ($jabatan == "Dosen") {
 			$data['sebagai'] = 1;
 			$data['kontributor'] = 2;
 			if ($npsn!=null && $npsn!="")
 			{
 				$data['npsn'] = $npsn;
+				$data['kd_prodi'] = $prodi;
 				$this->session->set_userdata('npsn',$npsn);
 				$this->load->Model('M_channel');
-				$sekolahku = $this->M_channel->getSekolahKu($npsn);
-				$data['kd_kota'] = $sekolahku[0]->idkota;
-				$data['sekolah'] = $sekolahku[0]->nama_sekolah;
-				$kotaku = $this->M_channel->getNamaKota($sekolahku[0]->idkota);
-				// echo "AAA:".$sekolahku[0]->idkota.",".var_dump($kotaku);
-				$data['kd_provinsi'] = $kotaku->id_propinsi;
+				// if ($prodi==null || $prodi=="")
+				$sekolahku = $this->M_channel->getSekolahNpsn($npsn);
+				// else
+				// $sekolahku = $this->M_channel->getSekolahKu($npsn, $prodi);
+				// $data['kd_kota'] = $sekolahku->id_wilayah;
+				$data['sekolah'] = $sekolahku->nama_sekolah;
+				$kotaku = $this->M_channel->getNamaKota($sekolahku->idkota);
+				// echo "AAA:".$sekolahku->idkota.",".var_dump($kotaku);
+				$data['kd_provinsi'] = $sekolahku->id_propinsi;
 			}
 			// echo "DISINI0";
 		} else if ($jabatan == "calver") {
 			$data['sebagai'] = 1;
 			$data['verifikator'] = 1;
 			// echo "DISINI0:NPSN".$npsn;
-		} else if ($jabatan == "Siswa") {
+		} else if ($jabatan == "Mahasiswa") {
 			$data['sebagai'] = 2;
 			if ($npsn!=null && $npsn!="")
 			{
 				$data['npsn'] = $npsn;
+				$data['kd_prodi'] = $prodi;
 				$this->load->Model('M_channel');
-				$sekolahku = $this->M_channel->getSekolahKu($npsn);
-				$data['kd_kota'] = $sekolahku[0]->idkota;
-				$data['sekolah'] = $sekolahku[0]->nama_sekolah;
-				$kotaku = $this->M_channel->getNamaKota($sekolahku[0]->idkota);
+				$sekolahku = $this->M_channel->getSekolahNpsn($npsn);
+				// $data['kd_kota'] = $sekolahku->id_kota;
+				$data['sekolah'] = $sekolahku->nama_sekolah;
+				// $kotaku = $this->M_channel->getNamaKota($sekolahku[0]->idkota);
 				// echo "AAA:".$sekolahku[0]->idkota.",".var_dump($kotaku);
-				$data['kd_provinsi'] = $kotaku->id_propinsi;
+				$data['kd_provinsi'] = $sekolahku->id_propinsi;
 			}
 			// echo "DISINI0";
 		} else if ($jabatan == "Umum") {
@@ -1138,11 +1162,6 @@ class Login extends CI_Controller
 		if (!$this->session->userdata('loggedIn')) {
 			redirect ("/");
 		}
-//		$data['message'] = $this->session->flashdata('message');
-//		$data['authURL'] = $this->facebook->login_url();
-//		$data['loginURL'] = $this->google->loginURL();
-
-		
 
 		if ($opsi == "siae" || $this->session->userdata('siae') >= 1)
 			$linkprofil = 'v_profile_ae';
@@ -1171,9 +1190,9 @@ class Login extends CI_Controller
 
 			// if ($opsi=="tes")
 			// {
-			// 	echo "<pre>";
-			// 	echo var_dump($ambiluserdata);
-			// 	echo "</pre>";
+				// echo "<pre>";
+				// echo var_dump($ambiluserdata);
+				// echo "</pre>";
 			// }
 			$statususer = getstatususer();
 			if (!$statususer)
@@ -1186,16 +1205,18 @@ class Login extends CI_Controller
 			$data['npsn_sekolah'] = "";
 			$data['kota_sekolah'] = "";
 			$data['nama_sekolah'] = "";
+			$data['namapropinsi'] = "";
 			$data['negara_sekolah'] = $ambiluserdata["kd_negara"];
 
 			if ($ambiluserdata["npsn"]!="" && $ambiluserdata["npsn"]!=null)
 			{
+				
 				$this->load->model('M_channel');
 				$getNamaKota = $this->M_channel->getNamaKota($ambiluserdata["kd_kota"]);
-				$data['kota_sekolah'] = $getNamaKota->nama_kota;
+				$getKampus = $this->M_channel->getInfoKampus($ambiluserdata["npsn"]);
+				$data['namapropinsi'] = $getKampus->nama_propinsi;
 			}
 			
-
 			$data['referrer'] = $cekref;
 			if ($cekref != "" && $cekref != null) {
 				$this->load->model('M_user');
@@ -1211,11 +1232,14 @@ class Login extends CI_Controller
 					}
 				}
 			}
+			
+
 			$data['logosekolah'] = "";
 			if (isset($this->session->userdata['npsn'])) {
 				$data['logosekolah'] = $this->M_login->getLogo($this->session->userdata('npsn'));
-				$data['kotasekolah'] = $this->M_login->getKotaSekolah($this->session->userdata('npsn'));
+				// $data['kotasekolah'] = $this->M_login->getKotaSekolah($this->session->userdata('npsn'));
 			}
+
 
 			$data['dafnegara'] = $this->M_login->dafnegara();
 			if($data['userData']['kd_negara']==0)
@@ -1454,9 +1478,6 @@ class Login extends CI_Controller
 	public function updateuser()
 	{
 
-		// echo "WAIT:".$this->session->userdata('sebagai');
-		// die();
-
 		$datesekarang = new DateTime();
 		$datesekarang->setTimezone(new DateTimezone('Asia/Jakarta'));
 
@@ -1467,6 +1488,29 @@ class Login extends CI_Controller
 			redirect('login');
 		}
 
+		$idpropinsi = $this->input->post('ajuanbaru');
+		
+		// $getwilayah->nama_lembaga;
+
+		if ($idpropinsi > 0) {
+			$kodekampus = $this->input->post('inpsn');
+			$namakampus = $this->input->post('isearch');
+			$kdprodi = $this->input->post('ikodeprodi');
+			$this->load->Model("M_login");
+			$getwilayah = $this->M_login->getlldikti($idpropinsi);
+			$idwilayah = $getwilayah->id_wilayah;
+			$datachn=[];
+			$datachn['npsn_sekolah'] = $kodekampus;
+			$datachn['kd_prodi'] = $kdprodi;
+			$datasekolah=[];
+			$datasekolah['id_propinsi'] = $idpropinsi;
+			$datasekolah['id_wilayah'] = $idwilayah;
+			$datasekolah['npsn_sekolah'] = $kodekampus;
+			$datasekolah['nama_sekolah'] = $namakampus;
+			$this->load->Model("M_user");
+			$getwilayah = $this->M_user->tambahsekolah($datachn, $datasekolah);
+		}
+	
 		$passlama = md5($this->input->post('ipasslama'));
 		$cekpass = $this->M_login->cekpass($this->session->userdata('email'));
 		$passbaru = md5($this->input->post('ipassbaru1'));
@@ -1495,7 +1539,7 @@ class Login extends CI_Controller
 		$data['alamat'] = $this->input->post('ialamat');
 		$data['gender'] = $this->input->post('genderpil');
 		$data['npwp'] = $this->input->post('inpwp');
-		$data['kd_prodi'] = $this->input->post('iprodi');
+		$data['kd_prodi'] = $this->input->post('ikodeprodi');
 		$data['vlog'] = $this->input->post('ivlog');
 		$data['thumb_vlog'] = $this->input->post('ytube_thumbnail');
 
@@ -1538,7 +1582,6 @@ class Login extends CI_Controller
 			$data['tgl_pengajuan'] = $datesekarang->format('Y-m-d H:i:s');
 		}
 
-
 		if ($this->session->userdata('siae') == 1) {
 			$this->M_login->tambahuserassesment();
 			$this->session->set_userdata('siae', 2);
@@ -1564,84 +1607,20 @@ class Login extends CI_Controller
 		else
 			$data['nomor_nasional'] = $this->input->post('inomor');
 		$data['sekolah'] = $this->input->post('isearch');
-		$data['npsn'] = $this->input->post('inpsn');
+		$datakampus = $this->M_login->getkampus($this->input->post('isearch'));
+		
+		$data['npsn'] = $datakampus[0]->npsn_sekolah;
+		$data['kd_provinsi'] = $datakampus[0]->id_propinsi;
 		$data['bidang'] = $this->input->post('ibidang');
 		$data['pekerjaan'] = $this->input->post('ikerja');
 		$data['hp'] = $this->input->post('ihp');
 		$data['code'] = $code;
-		$data['kd_negara'] = $this->input->post('inegara');
-		$data['kd_kota'] = $this->M_login->getidkota($data['npsn']);
-		$data['kd_provinsi'] = $this->M_login->getidpropinsi($data['kd_kota']);
-		if (!$this->input->post('inpsn') || $this->session->userdata('sebagai') == 3 
-		|| $this->session->userdata('sebagai') == 1) {
-			$data['kd_kota'] = $this->input->post('ikota');
-			$data['kd_provinsi'] = $this->input->post('ipropinsi');
-		}
-		if ($data['kd_negara'] > 1) {
-			$data['kd_kota'] = $this->input->post('ipropinsi');
-			$data['kd_provinsi'] = $this->input->post('ipropinsi');
-		}
 
-
-		if ($pilsebagai == 1) {
-		//$datasek['kd_negara'] = $this->input->post('inegara');
-			if ($data['kd_negara'] > 1) {
-				$datasek['id_kota'] = $this->input->post('ipropinsi');
-				$datasek['idnegara'] = $data['kd_negara'];
-			} else {
-				$datasek['id_kota'] = $this->input->post('ikota');
-			}
-			$datasek['npsn'] = $this->input->post('inpsn');
-			$datasek['nama_sekolah'] = $this->input->post('isekolah');
-			$datasek['alamat_sekolah'] = $this->input->post('ialamatsekolah');
-			$datasek['kecamatan'] = $this->input->post('ikecamatansekolah');
-			$datasek['id_jenjang'] = $this->input->post('ijenjangsekolah');
-			$datasek['status'] = 1;
-
-			$datasek2 = array();
-			if ($data['kd_negara'] > 1) {
-				$datasek2['idkota'] = $this->input->post('ipropinsi');
-				$datasek2['idnegara'] = $data['kd_negara'];
-			} else {
-				$datasek2['idkota'] = $this->input->post('ikota');
-			}
-
-			$datasek2['npsn'] = $this->input->post('inpsn');
-			$datasek2['idjenjang'] = $this->input->post('ijenjangsekolah');
-			$datasek2['nama_sekolah'] = $this->input->post('isekolah');
-
-			if ($this->input->post('ikota')==0 || $this->input->post('ikota')=="" || $this->input->post('ikota')==null)
-			{
-				$this->load->Model('M_channel');
-				$sekolahku = $this->M_channel->getSekolahKu($datasek['npsn']);
-				$data['kd_kota'] = $sekolahku[0]->idkota;
-				$kotaku = $this->M_channel->getNamaKota($sekolahku[0]->idkota);
-				$data['kd_provinsi'] = $kotaku->id_propinsi;
-				$datasek['id_kota'] = $sekolahku[0]->idkota;
-				$datasek2['idkota'] = $sekolahku[0]->idkota;
-			}
-
-			if (($this->input->post('ikota') > 0 || $data['kd_negara'] > 1) &&
-				($this->session->userdata('siae') == 0 && $this->session->userdata('siam') == 0
-					&& $this->session->userdata('siag') == 0 && $this->session->userdata('bimbel') == 0)) {
-				$this->M_login->addsekolah($datasek);
-				$this->M_login->addchnsekolah($datasek2);
-			}
-		}
-
-		if ($this->input->post('ikelas')=="prodibaru")
-		{
-			$dataprodi = array();
-			$dataprodi['npsn'] = $this->input->post('inpsn');
-			$dataprodi['prodibaru'] = $this->input->post('iprodibaru');
-			$dataprodi['pengusul'] = $this->session->userdata('id_user');
-			$this->M_login->addusulanprodibaru($dataprodi);
-		}
-
-		$idjenjang = 0;
-		$dataarray = $this->M_login->getsekolah($this->input->post('inpsn'));
-		if ($dataarray)
-			$idjenjang = $dataarray[0]->idjenjang;
+		$dataprodi = array();
+		$dataprodi['npsn_sekolah'] = $this->input->post('inpsn');
+		$dataprodi['kd_prodi'] = $this->input->post('ikodeprodi');
+		$this->M_login->addprodibaru($dataprodi);
+		
 
 		$cekkikimentor = get_cookie('mentor');
 		if (substr($cekkikimentor,0,2) == "1-")
@@ -1664,10 +1643,20 @@ class Login extends CI_Controller
 		}
 
 		$this->M_login->updateuser($data);
+		// $datakampus = $this->M_login->getkampus($this->input->post('isearch'));
+		// echo $datakampus[0]->id_propinsi;
+		// echo $data['kd_provinsi'];
+		// echo var_dump($datakampus);
+		// die();
 
 		if ($this->session->userdata('kontributor') == 2)
 		{
 			$this->M_user->updateKonfirmUser("KONTRI");
+		}
+
+		if ($this->session->userdata('sebagai') == 2)
+		{
+			$this->M_user->updateKonfirmUser("SISWA");
 		}
 
 		$this->session->set_userdata('id_jenjang', $idjenjang);
@@ -1920,11 +1909,23 @@ class Login extends CI_Controller
 	{
 		$namasekolah = $_GET['namasekolah'];
 		$isi = $this->M_login->getkampus($namasekolah);
-		$error = array('nama_sekolah' => 'gaknemu');
+		$error = array(['nama_sekolah' => 'gaknemu']);
 		if ($isi) {
 			echo json_encode($isi);
 		} else
 			echo json_encode($error);
+	}
+
+	public function cekkodekampus()
+	{
+		$npsn = $_GET['kodekampus'];
+		$isi = $this->M_login->getsekolah($npsn);
+		$ada = array(['hasil' => 'ada']);
+		$aman = array(['hasil' => 'aman']);
+		if ($isi)
+			echo "ada";
+		else
+			echo "aman";
 	}
 
 	public function cekstatusbayar()
@@ -2549,6 +2550,23 @@ class Login extends CI_Controller
 					$arr_result[] = array(
 						"value" => $row->nama_sekolah,
 						"npsn" => $row->npsn
+					);
+				echo json_encode($arr_result);
+			}
+		}
+	}
+
+	public function get_autocomplete2()
+	{
+		if (isset($_GET['term'])) 
+		{
+			$result = $this->M_login->search_prodi($_GET['term']);
+			if (count($result) > 0) {
+				foreach ($result as $row)
+					$arr_result[] = array(
+						"value" => $row->nama_prodi." (".$row->jenjang.")",
+						"kode" => $row->kd_prodi,
+						"jenjang" => $row->jenjang
 					);
 				echo json_encode($arr_result);
 			}

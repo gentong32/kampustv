@@ -55,9 +55,10 @@ else
 						<?php if ($profilku->statususer == 3){?>
 						<li>
 							<a href="#element" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i
-									class="fa fa-youtube-play red_color"></i> <span>Video</span></a>
+									class="fa fa-youtube-play red_color"></i> <span>Channel Video</span></a>
 							<ul class="collapse list-unstyled" id="element" style="padding-top: 5px;padding-left:20px;">
 								<li><a href="<?php echo base_url()."video/saya/dashboard";?>">> <span>Video Saya</span></a></li>
+								<!-- <li><a href="<?php //echo //base_url()."channel/playlistkampus/dashboard";?>">> <span>Playlist Siaran</span></a></li> -->
 								<li><a href="<?php echo base_url()."video/event/dashboard";?>">> <span>Video Event</span></a></li>
 							</ul>
 						</li>
@@ -108,20 +109,24 @@ else
 							<?php }?>
 						<li><a href="<?php echo base_url() . 'profil/profil_diri'; ?>"><i
 									class="fa fa-user green_color"></i> <span>Profil Saya</span></a></li>
-						<li><a href="<?php echo base_url() . 'profil/pekerjaan'; ?>"><i
-									class="fa fa-university blue1_color"></i> <span>Pekerjaan Saya</span></a></li>
+						<!-- <li><a href="<?php //echo base_url() . 'profil/pekerjaan'; ?>"><i
+									class="fa fa-university blue1_color"></i> <span>Pekerjaan Saya</span></a></li> -->
 						<?php if ($this->session->userdata('kontributor') == 3){?>
 							<li>
 								<a href="#element" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i
 										class="fa fa-youtube-play red_color"></i> <span>Video</span></a>
 								<ul class="collapse list-unstyled" id="element">
 									<li><a href="<?php echo base_url()."video/saya/dashboard";?>">> <span>Video Saya</span></a></li>
-									<li><a href="<?php echo base_url()."video/event/dashboard";?>">> <span>Video Event</span></a></li>
+									<!-- <li><a href="<?php //echo base_url()."video/event/dashboard";?>">> <span>Video Event</span></a></li> -->
 								</ul>
 							</li>
 						<?php } ?>
 						<?php if($this->session->userdata('siag')==3)
 						{ ?>
+							<li><a href="<?php echo base_url() . 'profil/sekolah'; ?>"><i
+							class="fa fa-university blue1_color"></i> <span>Kampus Saya</span></a></li>
+							<li><a href="<?php echo base_url()."channel/daftarprodi";?>">
+							<i class="fa fa-book green_color"></i><span>Daftar Prodi</span></a></li>
 							<li>
 								<a href="#element2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i
 										class="fa fa-suitcase yellow_color"></i> <span>Agency</span></a>
@@ -135,7 +140,7 @@ else
 								</ul>
 							</li>
 						<?php } ?>
-						<?php if($this->session->userdata('bimbel')==4)
+						<?php if($this->session->userdata('bimbel')==4 && $this->session->userdata('siag')!=3)
 						{ ?>
 							<li>
 								<a href="#element" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i
@@ -216,7 +221,7 @@ else
 						<a href="#elementpla" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i
 									class="fa fa-television blue1_color"></i> <span>Playlist Kampus</span></a>
 							<ul class="collapse list-unstyled" id="elementpla">
-								<li><a href="<?php echo base_url()."channel/playlistsekolah/dashboard";?>">> <span>Daftar Playlist Kampus</span></a></li>
+								<li><a href="<?php echo base_url()."channel/playlistkampus/dashboard";?>">> <span>Daftar Playlist Kampus</span></a></li>
 								<li><a href="<?php echo base_url()."channel/pilihsiaran";?>">> <span>MCR Siaran TV Kampus</span></a></li>
 							</ul>
 						</li>
@@ -312,7 +317,23 @@ else
 						<!-- <li><a href="<?php //echo base_url() . 'login/profile/'; ?>"><i
 									class="fa fa-user yellow_color"></i> <span>Profil Saya</span></a></li> -->
 						<li><a href="<?php echo base_url() . 'profil/'; ?>"><i
-									class="fa fa-dashboard yellow_color"></i> <span>Dashboard</span></a></li>
+									class="fa fa-dashboard yellow_color"></i> <span>Dashboard</span></a>
+						</li>
+						<li>
+							<a href="#elementkmp" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i
+									class="fa fa-university orange_color"></i> <span>Agency - Kampus</span></a>
+							<ul class="collapse list-unstyled" id="elementkmp">
+								<li><a href="<?php echo base_url()."channel/daftaragency";?>">> <span>Daftar Agency</span></a></li>
+								<li><a href="<?php echo base_url()."channel/daftarkampus";?>">> <span>Daftar Kampus</span></a></li>
+								<li><a href="<?php echo base_url()."channel/daftarprodi";?>">> <span>Daftar Prodi</span></a></li>
+							</ul>
+						</li>
+						<li><a href="<?php echo base_url() . 'channel/daftarchannel'; ?>">
+							<i class="fa fa-tv red_color"></i><span>Channel Prodi</span></a>
+						</li>		
+						<li><a href="<?php echo base_url() . 'user/'; ?>">
+							<i class="fa fa-user green_color"></i><span>Daftar User</span></a>
+						</li>
 						<li>
 							<a href="#elementf" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i
 									class="fa fa-money green_color"></i> <span>Keuangan</span></a>
@@ -321,17 +342,7 @@ else
 								<li><a href="<?php echo base_url()."finance/transaksi_siplah";?>">> <span>Transaksi SIPLAH</span></a></li>
 							</ul>
 						</li>
-						<li><a href="<?php echo base_url() . 'user/'; ?>"><i
-									class="fa fa-user green_color"></i> <span>Daftar User</span></a></li>
 
-						<li>
-							<a href="#elementkmp" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i
-									class="fa fa-university orange_color"></i> <span>Kampus</span></a>
-							<ul class="collapse list-unstyled" id="elementkmp">
-								<li><a href="<?php echo base_url()."channel/daftarkampus";?>">> <span>Daftar Kampus</span></a></li>
-								<li><a href="<?php echo base_url()."channel/daftarprodi";?>">> <span>Daftar Prodi</span></a></li>
-							</ul>
-						</li>			
 									
 						<li><a href="<?php echo base_url() . 'event/spesial/admin/'; ?>"><i
 									class="fa fa-safari blue1_color"></i> <span>Lokakarya / Seminar</span></a></li>
@@ -422,7 +433,7 @@ else
 						</button>
 						<div class="logo_section">
 							<a href="<?php echo base_url(); ?>"><img class="img-responsive"
-																	 src="<?php echo base_url(); ?>images/logo/logo.png"
+																	 src="<?php echo base_url(); ?>images/logo-2.png"
 																	 alt="#"/></a>
 						</div>
 						<div class="right_topbar">

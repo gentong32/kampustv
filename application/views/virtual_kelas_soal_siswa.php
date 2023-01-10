@@ -408,18 +408,19 @@ else
 	}
 
 	function selesai() {
+		// alert ("jwbuser"+);
 		for (var n = 0; n < jmlsoalkeluar; n++) {
 			idjwbuser[n] = idsoal[acak[(n + 1)]];
 			jwbuser[n] = localStorage.getItem("jwb_" + (n + 1));
 		}
 
-		//console.log("Liunluis:<?php //echo $linklist;?>//");
 
 		$.ajax({
 			url: "<?php echo base_url();?>channel/cekjawaban",
 			method: "POST",
-			data: {jwbuser: jwbuser, idjwbuser: idjwbuser, linklistnya: "<?php echo $linklist;?>"},
+			data: {tes:"1", jwbuser: jwbuser, idjwbuser: idjwbuser, linklistnya: "<?php echo $linklist;?>"},
 			success: function (result) {
+				// alert ("sudah");
 				nilaiakhir = result;
 				localStorage.setItem("nilaiakhir", nilaiakhir);
 				hasilakhir();

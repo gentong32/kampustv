@@ -66,7 +66,7 @@ foreach ($dafmapel as $datane) {
 					</button>
 				</div>
 				<hr>
-				<span style="font-size: 16px;">Pilihan guru bisa diubah-ubah pada pertemuan pertama saja.</span>
+				<span style="font-size: 16px;">Pilihan dosen bisa diubah-ubah pada pertemuan pertama saja.</span>
 			</div>
 
 
@@ -75,8 +75,8 @@ foreach ($dafmapel as $datane) {
 					<thead>
 					<tr>
 						<th style='padding:5;width:5px;'>No</th>
-						<th>Mata Pelajaran</th>
-						<th>Nama Guru</th>
+						<th>Mata Kuliah</th>
+						<th>Nama Dosen</th>
 						<th>Status</th>
 						<th>Aksi</th>
 					</tr>
@@ -123,7 +123,7 @@ foreach ($dafmapel as $datane) {
 </center>
 
 <!----------------------------- SCRIPT DATATABLE  -------------------------------->
-<?php require_once('layout/calljs.php'); ?>
+<script src="<?php echo base_url();?>js/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript"
 		src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>

@@ -318,8 +318,10 @@ class M_login extends CI_Model
 
 	public function getUser($id)
 	{
+		$this->db->select('tu.kd_prodi as kd_prodi,tu.*,dc.*,dp.nama_prodi');
 		$this->db->from('tb_user tu');
-		$this->db->join('daf_chn_sekolah dc','dc.npsn_sekolah = tu.npsn','left');
+		$this->db->join('daf_chn_sekolah dc','dc.npsn_sekolah = tu.npsn AND tu.kd_prodi=dc.kd_prodi','left');
+		$this->db->join('daf_prodi dp','dp.kd_prodi = tu.kd_prodi','left');
 		$this->db->where('kd_user', $id);
 		$result = $this->db->get()->row_array();
 		return $result;
@@ -451,9 +453,10 @@ class M_login extends CI_Model
 
 	function getsekolah($npsn)
 	{
-		$this->db->select('dc.*,dk.nama_kota');
+		$this->db->select('dc.*,nama_propinsi, nama_lembaga');
 		$this->db->from('daf_sekolah dc');
-		$this->db->join('daf_kota dk', 'dk.id_kota = dc.id_kota', 'left');
+		$this->db->join('daf_propinsi dp', 'dp.id_propinsi = dc.id_propinsi', 'left');
+		$this->db->join('daf_lldikti dl', 'dl.id_wilayah = dc.id_wilayah', 'left');
 		$this->db->where('npsn_sekolah', $npsn);
 		$result = $this->db->get()->result();
 		return $result;
@@ -461,11 +464,22 @@ class M_login extends CI_Model
 
 	function getkampus($namasekolah)
 	{
-		$this->db->select('dc.*,dk.nama_kota');
+		$this->db->select('dc.*,dp.nama_propinsi');
 		$this->db->from('daf_sekolah dc');
-		$this->db->join('daf_kota dk', 'dk.id_kota = dc.id_kota', 'left');
+		$this->db->join('daf_propinsi dp', 'dp.id_propinsi = dc.id_propinsi', 'left');
 		$this->db->where('nama_sekolah', $namasekolah);
+		// $this->db->where('nama_sekolah<>', "Kampus Merdeka");
 		$result = $this->db->get()->result();
+		return $result;
+	}
+
+	function getlldikti($idpropinsi)
+	{
+		$this->db->select('dl.*');
+		$this->db->from('daf_propinsi dp');
+		$this->db->join('daf_lldikti dl', 'dl.id_wilayah = dp.id_lldikti', 'left');
+		$this->db->where('id_propinsi', $idpropinsi);
+		$result = $this->db->get()->row();
 		return $result;
 	}
 
@@ -548,7 +562,7 @@ class M_login extends CI_Model
 	public function getKotaSekolah($npsn)
 	{
 		$this->db->from('daf_sekolah ds');
-		$this->db->join('daf_kota dk', 'dk.id_kota = ds.id_kota', 'left');
+		$this->db->join('daf_propinsi dp', 'dp.id_propinsi = ds.id_propinsi', 'left');
 		$this->db->where('npsn_sekolah', $npsn);
 		$query = $this->db->get();
 		$result = $query->row();
@@ -585,9 +599,14 @@ class M_login extends CI_Model
 		}
 	}
 
-	public function addusulanprodibaru($data)
+	public function addprodibaru($data)
 	{
-		$this->db->insert('daf_chn_sekolah', $data);
+		$this->db->from('daf_chn_sekolah');
+        $this->db->where('npsn_sekolah',$data['npsn_sekolah']);
+        $this->db->where('kd_prodi',$data['kd_prodi']);
+        if (!$this->db->get()->result()) {
+			$this->db->insert('daf_chn_sekolah', $data);
+		}
 	}
 
 	public function updatekotapropinsi($data, $id)
@@ -656,11 +675,15 @@ class M_login extends CI_Model
 
 	public function getdatasiswa($email)
 	{
+		$this->db->select('tu.*,tu.kd_prodi as kode_prodi,ds.*,dcs.*,dd.*,
+		dcs.kd_prodi as kodeprodiusulan,dcs.status as status_prodi,dp.nama_propinsi');
 		$this->db->from('tb_user tu');
 		$this->db->where('email', $email);
 		$this->db->join('daf_sekolah ds', 'tu.npsn = ds.npsn_sekolah', 'left');
-		$this->db->join('daf_chn_sekolah dcs', 'ds.npsn_sekolah = dcs.npsn_sekolah', 'left');
-		$this->db->join('daf_kota dk', 'ds.id_kota = dk.id_kota', 'left');
+		$this->db->join('daf_chn_sekolah dcs', 'tu.npsn = dcs.npsn_sekolah AND 
+		tu.kd_prodi = dcs.kd_prodi', 'left');
+		$this->db->join('daf_propinsi dp', 'ds.id_propinsi = dp.id_propinsi', 'left');
+		$this->db->join('daf_prodi dd', 'tu.kd_prodi = dd.kd_prodi', 'left');
 		$result = $this->db->get()->last_row();
 		return $result;
 	}
@@ -693,9 +716,18 @@ class M_login extends CI_Model
 	}
 
 	public function search_kampus($title){
+		$this->db->where('nama_sekolah<>', "Kampus Merdeka");
 		$this->db->like('nama_sekolah', $title , 'both');
 		$this->db->order_by('nama_sekolah', 'ASC');
 		$this->db->limit(10);
 		return $this->db->get('daf_sekolah')->result();
+	}
+
+	public function search_prodi($title){
+		$this->db->like('nama_prodi', $title , 'both');
+		$this->db->order_by('jenjang', 'ASC');
+		$this->db->order_by('kd_prodi', 'ASC');
+		$this->db->limit(10);
+		return $this->db->get('daf_prodi')->result();
 	}
 }

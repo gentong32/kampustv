@@ -54,7 +54,7 @@ if ($dafuser != null)
 									<div>
 										<center>
 											<div style="font-size: 16px;font-weight: bold;">
-												Daftar Nilai Siswa<br>
+												Daftar Nilai Mahasiswa<br>
 												<?php echo "<span style='font-size:18px;'>" . $judul . "</span>"; ?>
 											</div>
 											<hr>
@@ -121,7 +121,7 @@ if ($dafuser != null)
 
 
 <!----------------------------- SCRIPT DATATABLE  -------------------------------->
-<?php require_once('layout/calljs.php'); ?>
+<script src="<?php echo base_url();?>js/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript"
 		src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>

@@ -802,18 +802,17 @@ class M_vksekolah extends CI_Model {
 
 	public function getPaketSekolah($npsn)
 	{
-		$this->db->select('*,IF(modulke=0,100,modulke) as modulke,dk.nama_kelas,dm.nama_mapel');
+		$this->db->select('*,IF(modulke=0,100,modulke) as modulke,dm.nama_mapel');
 		$this->db->from('tb_paket_channel tp');
-		$this->db->join('daf_kelas dk','dk.id = tp.id_kelas','left');
+		// $this->db->join('daf_kelas dk','dk.id = tp.id_kelas','left');
 		$this->db->join('daf_mapel dm','dm.id = tp.id_mapel','left');
-		$this->db->join('tb_user tu','tp.id_user = tu.id','left');
+		$this->db->join('tb_user tu','tp.id_user = tu.kd_user','left');
 		$this->db->where('npsn_user', $npsn);
-		$this->db->where('id_kelas<>', 0);
+		// $this->db->where('id_kelas<>', 0);
 		$this->db->where('tp.durasi_paket<>', "00:00:00");
 		$this->db->where('((tp.nama_paket="UTS" OR tp.nama_paket="UAS" OR tp.nama_paket="REMEDIAL UTS"
 		OR tp.nama_paket="REMEDIAL UAS") OR modulke>0)');
 		// $this->db->where('id_event', 0);
-		$this->db->order_by('id_kelas', 'asc');
 		$this->db->order_by('semester', 'asc');
 		$this->db->order_by('modulke', 'asc');
 		$this->db->order_by('id_mapel', 'asc');
@@ -927,7 +926,7 @@ class M_vksekolah extends CI_Model {
 		$this->db->insert('tb_vk_pilihguru', $data);
 	}
 
-	public function getModulAda($npsn, $iduser, $idkelas)
+	public function getModulAda($npsn, $iduser, $prodi)
 	{
 		$tglsekarang = new DateTime();
 		$tglsekarang->setTimezone(new DateTimeZone("Asia/Jakarta"));
@@ -947,15 +946,15 @@ class M_vksekolah extends CI_Model {
 		$joinnya = "te.id_user = '".$iduser."' AND te.id_guru = tp.id_user AND te.id_mapel = tp.id_mapel 
 		AND te.created>='$batas1' AND te.created<='$batas2'";
 
-		$this->db->select('tp.*, dm.id as idmapel,dm.nama_mapel,tu.id as idguru,tu.first_name,
+		$this->db->select('tp.*, dm.id as idmapel,dm.nama_mapel,tu.kd_user as idguru,tu.first_name,
 		tu.last_name,te.id_user as iduserpilih');
 		$this->db->from('tb_paket_channel tp');
 		$this->db->join('daf_mapel dm','dm.id = tp.id_mapel','left');
-		$this->db->join('tb_user tu','tu.id = tp.id_user','left');
+		$this->db->join('tb_user tu','tu.kd_user = tp.id_user','left');
 		$this->db->join('tb_vk_pilihguru te',$joinnya,'left');
 		$this->db->where('npsn_user', $npsn);
 		$this->db->where('modulke>', 0);
-		$this->db->where('tp.id_kelas', $idkelas);
+		$this->db->where('tp.kd_prodi_user', $prodi);
 //		$this->db->where('(te.created>="'.$batas1.'" AND te.created<="'.$batas2.'")');
 		$this->db->group_by(array("tp.id_mapel", "tp.id_user"));
 
@@ -1001,7 +1000,7 @@ class M_vksekolah extends CI_Model {
 		$this->db->join('tb_user tu2', 'tu2.id = te.id_guru', 'left');
 		if ($modulke>0)
 			$this->db->where('modulke',$modulke);
-		$this->db->where('(te.id_user=' . $idsaya . ')');
+		$this->db->where('(te.id_user="' . $idsaya . '")');
 		if ($linklist!=null)
 			$this->db->where('tpc.link_list=',$linklist);
 		if ($semester!="semua")
@@ -1046,7 +1045,7 @@ class M_vksekolah extends CI_Model {
 		$this->db->join('tb_video tv', 'tv.id_video = tcv.id_video', 'left');
 		$this->db->join('tb_user tu', 'tu.id = tpc.id_user', 'left');
 		$this->db->join('tb_user tu2', 'tu2.id = te.id_guru', 'left');
-		$this->db->where('(tk.id_user=' . $idsaya . ')');
+		$this->db->where('(tk.id_user="' . $idsaya . '")');
 		$this->db->group_by("tpc.link_list");
 		$this->db->order_by('tpc.id_kelas', 'desc');
 		$this->db->order_by('tpc.semester', 'desc');
@@ -1193,7 +1192,7 @@ class M_vksekolah extends CI_Model {
 		$this->db->join('tb_paket_channel tpc', 'tpc.link_list = ts.linklist', 'left');
 		$this->db->join('tb_vk_pilihguru te', $joinnya, 'both');
 		$this->db->join('daf_mapel dm','dm.id = te.id_mapel','left');
-		$this->db->where('(ts.iduser=' . $iduser . ')');
+		$this->db->where('(ts.iduser="' . $iduser . '")');
 		$this->db->where('(tpc.modulke>0)');
 		$this->db->where('(tpc.modulke<=' . $modulke . ')');
 		$this->db->where('(tpc.semester=' . $semester . ')');

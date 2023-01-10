@@ -193,7 +193,7 @@ if ($punyalist) {
 				<div class="row">
 
 					<div class="col-md-12 text-center wow fadeInRight" data-wow-delay=".5s">
-						<h1>Panggung Sekolah</h1>
+						<h1>Channel TV Prodi</h1>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -257,7 +257,7 @@ if ($punyalist) {
 
 
 <div style="text-align: center;background-color:#8cbdac;padding-top: 20px;padding-bottom: 20px">
-	<span style="font-weight: bold;font-size: 18px;color:black;padding-bottom: 10px;">PANGGUNG SEKOLAH</span>
+	<span style="font-weight: bold;font-size: 18px;color:black;padding-bottom: 10px;">CHANNEL TV PRODI</span>
 	<center>
 	<div class="regular slider" style="margin-top: 20px;">
 		<?php if ($jml_channelku && !$this->session->userdata('a01')) { ?>

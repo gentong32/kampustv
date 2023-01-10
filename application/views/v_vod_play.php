@@ -51,7 +51,7 @@ foreach ($dafkomentar as $datane) {
 				<div class="row">
 
 					<div class="col-md-12 text-center wow fadeInRight" data-wow-delay=".5s">
-						<h1>Perpustakaan Digital</h1>
+						<h1>Ensiklomedia</h1>
 					</div>
 					<div class="clearfix"></div>
 				</div>

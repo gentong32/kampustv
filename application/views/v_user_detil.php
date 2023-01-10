@@ -241,7 +241,7 @@ if ($userData['sebagai'] == "" || $userData['sebagai'] == "99" ||
 													   maxlength="10"
 													   value="<?php
 													   if ($userData['verifikator'] == 0 && $userData['kontributor'] == 0)
-														   echo 'User Biasa';
+														   echo 'Mahasiswa';
 													   else if ($userData['verifikator'] == 3 && $userData['kontributor'] == 3)
 														   echo 'Verifikator dan kontributor';
 													   else if ($userData['verifikator'] == 1)
@@ -323,7 +323,8 @@ if ($userData['sebagai'] == "" || $userData['sebagai'] == "99" ||
 										   value="<?php echo $userData['sekolah']; ?>"/>
 									<input type="hidden" id="kt_sekolah" name="kt_sekolah"
 										   value="<?php echo $idkotasekolah; ?>"/>
-
+									<input type="hidden" id="kodeprodi" name="kodeprodi"
+										   value="<?php echo $userData['kd_prodi']; ?>"/>
 
 									<div class="form-group">
 										<div class="col-md-12">
@@ -345,10 +346,9 @@ if ($userData['sebagai'] == "" || $userData['sebagai'] == "99" ||
 													<!--                                <button class="btn btn-default" onclick="return openpdf()">Baca Pernyataan</button>-->
 												<?php } ?>
 												<button style="margin: 5px;" onclick="return gantikondisi(3)" type="submit"
-														class="btn btn-primary">Setujui
-													Menjadi Verifikator <?php
+														class="btn btn-primary">Setujui Menjadi Verifikator <?php
 													if ($userData['sebagai'] == 1)
-														echo 'Sekolah';
+														echo 'Prodi Kampus';
 													else
 														echo 'Fordorum';
 													?>
@@ -370,12 +370,12 @@ if ($userData['sebagai'] == "" || $userData['sebagai'] == "99" ||
 													</button>
 													<br><br>
 												<?php } ?> -->
-												<?php if ($userData['verifikator'] == 3) { ?>
+												<!-- <?php //if ($userData['verifikator'] == 3) { ?>
 													<button onclick="return gantikondisi(32)" type="submit"
 															class="btn btn-primary">Batalkan Verifikator
 													</button>
 													<br><br>
-												<?php } ?>
+												<?php// } ?> -->
 											<?php } ?>
 
 											<?php if ($this->session->userdata('a02') && $this->session->userdata('sebagai') != 4 ||
@@ -384,12 +384,12 @@ if ($userData['sebagai'] == "" || $userData['sebagai'] == "99" ||
 												<?php if ($userData['kontributor'] == 0 && $userData['sebagai'] !=2 &&
 												$userData['verifikator'] !=3) { ?>
 													<button onclick="return gantikondisi(5)" type="submit"
-															class="btn btn-primary">Jadikan Kontributor
+															class="btn btn-primary">Jadikan Dosen
 													</button>
 												<?php } ?>
 												<?php if ($userData['kontributor'] == 3 && $userData['verifikator'] != 3) { ?>
 													<button onclick="return gantikondisi(4)" type="submit"
-															class="btn btn-primary">Batalkan Kontributor
+															class="btn btn-primary">Batalkan Dosen
 													</button>
 												<?php } ?>
 											<?php } ?>
@@ -422,11 +422,10 @@ if ($userData['sebagai'] == "" || $userData['sebagai'] == "99" ||
 											<?php if ($this->session->userdata('a01') ||
 												($this->session->userdata('sebagai') == 4 && $this->session->userdata('verifikator') == 3)) { ?>
 												<div>
-													<br>
-													<button onclick="return tampilubah();" id="tbubahsebagai"
+													<!-- <button onclick="return tampilubah();" id="tbubahsebagai"
 															style="height: 33px;padding-left: 5px;padding-right: 5px;">
 														Ubah Sebagai
-													</button>
+													</button> -->
 													<?php if ($userData['bimbel'] == 0) { ?>
 														<!--									<button onclick="return masukbimbel();" id="tbbimbel" style="height: 33px;padding-left: 5px;padding-right: 5px;">--><?php
 //									if ($userData['bimbel']==0)
@@ -451,7 +450,6 @@ if ($userData['sebagai'] == "" || $userData['sebagai'] == "99" ||
 													</div>
 												</div>
 											<?php } ?>
-											<br><br>
 											<button class="btn btn-default" onclick="return takon()">Kembali</button>
 										</div>
 

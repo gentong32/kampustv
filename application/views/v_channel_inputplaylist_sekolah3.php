@@ -236,12 +236,12 @@ if ($jml_video == 0) { ?>
 						<h3>INPUT PAKET PLAYLIST HARI <?php echo strtoupper(namahari_panjang($harike)); ?></h3></center>
 					<br>
 					<div style="margin-bottom: 10px;">
-						<button onclick="window.location.href='<?php echo base_url(); ?>channel/playlistsekolah<?php echo $opsidashboard.$kodeevent;?>'"
+						<button onclick="window.location.href='<?php echo base_url(); ?>channel/playlistkampus<?php echo $opsidashboard.$kodeevent;?>'"
 								class="btn btn-main">Kembali
 						</button>
 
 						<button
-							onclick="window.location.href='<?php echo base_url(); ?>channel/urutanplaylist_sekolah/<?php echo $kodepaket.$opsidashboard.$kodeevent; ?>'"
+							onclick="window.location.href='<?php echo base_url(); ?>channel/urutanplaylist_kampus/<?php echo $kodepaket.$opsidashboard.$kodeevent; ?>'"
 							class="btn btn-main">Urutan Jam Tayang
 						</button>
 					</div>
@@ -267,6 +267,14 @@ if ($jml_video == 0) { ?>
 								</thead>
 							</table>
 						</div>
+						<div style="margin-left:10px;">
+						<hr style="margin-top:5px;margin-bottom:5px;">
+						<button class="btn-main" style="padding:5px;display:none" id="tbjadwal" onclick="refreshpage();" >Refresh Jadwal Siaran</button><br>
+						<i>Info:</i><br>
+						<img height="20px" width="auto" src="<?php echo base_url(); ?>images/ketvidfree.jpg" alt=""><span style="font-size:12px;"><i> : Video belum pernah digunakan</i><br>
+						<img height="20px" width="auto" src="<?php echo base_url(); ?>images/ketvidused.jpg" alt=""><span style="font-size:12px;"><i> : Video digunakan di tempat lain</i><br>
+						<img height="20px" width="auto" src="<?php echo base_url(); ?>images/ketvidin.jpg" alt=""><span style="font-size:12px;"><i> : Video masuk playlist hari ini</i><br>
+						</div>
 					</div>
 					<div class="col-md-4 col-lg-4">
 						<div id="jamsekarang"
@@ -284,6 +292,7 @@ if ($jml_video == 0) { ?>
 							</div>
 						</div>
 					</div>
+					
 				</div>
 			</div>
 		</section>
@@ -605,7 +614,8 @@ if ($jml_video == 0) { ?>
 			$namafile = $datane->file_video;
 			$dilist = $datane->dilist;
 			$sifat = $datane->sifat;
-			if ($kodepaket == $datane->link_list_paket)
+			// if ($kodepaket == $datane->link_list_paket)
+			if ($datane->masuklist==1)
 				$idchannel = "Masuk";
 			else
 				$idchannel = "---";
@@ -732,6 +742,7 @@ if ($jml_video == 0) { ?>
 		}
 
 		function gantisifat(idx) {
+			
 			statusnya = 0;
 			if ($('#bt1_' + idx).html() == "Publik") {
 				statusnya = 1;
@@ -755,6 +766,7 @@ if ($jml_video == 0) { ?>
 		}
 
 		function masukinlist(idx) {
+			$('#tbjadwal').show();
 			statusnya = 0;
 			if ($('#bt2_' + idx).html() == "---") {
 				statusnya = 1;
@@ -776,8 +788,11 @@ if ($jml_video == 0) { ?>
 					}
 				}
 			})
+		}
 
-
+		function refreshpage()
+		{
+			location.reload();
 		}
 
 	</script>

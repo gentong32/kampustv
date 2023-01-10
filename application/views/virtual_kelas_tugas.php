@@ -103,7 +103,7 @@ else
 									<div>
 										<center>
 											<div style="font-size: 16px;font-weight: bold;">
-												Daftar Jawaban Siswa<br>
+												Daftar Jawaban Mahasiswa<br>
 											</div>
 											<hr>
 										</center>

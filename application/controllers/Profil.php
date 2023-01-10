@@ -28,6 +28,7 @@ class Profil extends CI_Controller
 
 	public function index()
 	{
+		
 		$statususer = getstatususer();
 
 		$getdonasi = $this->M_login->getdonasi($this->session->userdata('id_user'));
@@ -43,7 +44,9 @@ class Profil extends CI_Controller
 			else
 				redirect("/login/sebagai");
 		} else if ($statususer['gender'] == null)
-			redirect("/login/profile");
+			{
+				redirect("/login/profile");
+			}
 		else if (($this->session->userdata('bimbel') == 2 || $this->session->userdata('siae') == 2
 			|| $this->session->userdata('siam') == 2)
 			&& $this->session->userdata('sebagai') == 3) {
@@ -60,6 +63,7 @@ class Profil extends CI_Controller
 			}
 		}
 		else if ( $this->session->userdata('siag') == 2 && $this->session->userdata('sebagai') == 3) {
+
 			if (base_url() == "http://localhost/tvsekolah2/")
 				$urltambahan = "/tvsekolah2";
 			else if (base_url() == "https://tvsekolah.id/")
@@ -76,16 +80,19 @@ class Profil extends CI_Controller
 			}
 
 		} else if ($this->session->userdata('a01'))
-			$this->dashboard_admin();
+			{
+				$this->dashboard_admin();
+			}
 		else if ($this->session->userdata('siag') == 3)
-			$this->dashboard_agency();
+			{
+				$this->dashboard_agency();
+			}
 		else if ($this->session->userdata('sebagai') == 1 && ($this->session->userdata('verifikator') == 3
 				|| $this->session->userdata('bimbel') == 4))
 			$this->dashboard_verifikator();
 		else if ($this->session->userdata('sebagai') == 1 && ($this->session->userdata('verifikator') == 2))
 			$this->dashboard_calonverifikator();
 		else if ($this->session->userdata('sebagai') == 1 && ($this->session->userdata('kontributor') == 2))
-			// $this->dashboard_calonkontributor();
 			$this->profil_diri();
 		else if ($this->session->userdata('sebagai') == 2 && $statususer['kelasku'] == "0")
 			redirect("/login/profile/kelasuser");
@@ -97,16 +104,26 @@ class Profil extends CI_Controller
 
 	public function profil_diri()
 	{
+		
 		if ($this->session->userdata('sebagai') == 1 && ($this->session->userdata('verifikator') == 2))
 			$this->dashboard_calonverifikator();
-		
+
 		$getstatus = getstatususer();
 		$data = array();
 		$data['konten'] = "profil_diri";
 		$data['profilku'] = $this->ambilprofil();
 
 		$npsn = $this->session->userdata('npsn');
-		$prodi = $this->session->userdata('prodi');
+
+		$getuser = getstatususer();
+		$prodi = $getuser['kelasku'];
+
+		if ($npsn=="")
+		{
+			$getuser = $this->M_login->getUser($this->session->userdata('id_user'));
+			$npsn = $getuser['npsn'];
+			$this->session->set_userdata('npsn', $npsn);
+		}
 
 		$kadaluwarsa = 0;
 		$telat2bulan = 0;
@@ -115,24 +132,47 @@ class Profil extends CI_Controller
 
 		if ($npsn==null)
 		$npsn = "9999099999";
+		
+		$cekstatus=cekstatusverprodikampus();
+
+		if ($cekstatus['stratakampus']==1)
+		{
+			$veraktif=2;
+		}
+		else
+		{
+			$veraktif=2;
+			$tglkadaluwarsa = new DateTime($cekstatus['kadaluwarsa']);
+			$tglkadaluwarsa = $tglkadaluwarsa->modify("+7 day");
+			$tglkadaluwarsa = $tglkadaluwarsa->format("Y-m-d H:i:s");
+			$tglsekarang = new DateTime();
+			$tglsekarang->setTimezone(new DateTimezone('Asia/Jakarta'));
+			$tglsekarang = $tglsekarang->format("Y-m-d H:i:s");
+
+			if(strtotime($tglkadaluwarsa)<strtotime($tglsekarang))
+			$veraktif=0;
+		}
+		$data['verifikator_aktif'] = $veraktif;
+
+		//////////////////// ambil verifikator ///////////////
+		$data['namaverifikator'] = "-";
+		$data['telpverifikator'] = "-";
+		$data['emailverifikator'] = "-";
+
 		$this->load->Model('M_eksekusi');
 		$dataverifikator = $this->M_eksekusi->getveraktif($npsn, $prodi);
-		$datacalonverifikator = $this->M_eksekusi->getcalonveraktif($npsn, $prodi, $referrer);
 
-		// echo "<br><br><br><br><br><pre>";
-		// echo var_dump ($dataverifikator);
-		// echo "</pre>";
-		// echo $dataverifikator->npsn;
+		// echo $npsn."-";
+		// echo $prodi."-";
+		// echo var_dump($dataverifikator);
+		// die();
+
+		$datacalonverifikator = $this->M_eksekusi->getcalonveraktif($npsn, $prodi, $referrer);
 
 		if ($dataverifikator) {
 			$veraktif = 2; //verifikator ditemukan aktif
 			$cekkadaluwarsa = $this->M_eksekusi->getchanelkadaluwarsa($npsn, $prodi);
 			$cekbayarakhir = $this->M_eksekusi->getlastverbayar($dataverifikator->id);
-
-			// echo $dataverifikator->id."--";
-			// echo "<pre>";
-			// echo var_dump ($cekkadaluwarsa);
-			// echo "</pre>";
 
 			$data['namaverifikator'] = $dataverifikator->first_name . " " . $dataverifikator->last_name;
 			$data['telpverifikator'] = $dataverifikator->hp;
@@ -189,6 +229,8 @@ class Profil extends CI_Controller
 
 		$data['verifikator_aktif'] = $veraktif;
 
+		///////////======================================/////
+
 		$this->load->view('layout/wrapper_profil', $data);
 	}
 
@@ -205,7 +247,9 @@ class Profil extends CI_Controller
 	{
 		$iduser = $this->session->userdata('id_user');
 		$npsn = $this->session->userdata('npsn');
-		$prodi = $this->session->userdata('prodi');
+		// $prodi = $this->session->userdata('prodi');
+		$getprodi = getstatususer();
+		$prodi = $getprodi['kelasku'];
 
 		$veraktif = 0;
 		$idverlama = 0;
@@ -279,8 +323,10 @@ class Profil extends CI_Controller
 				$this->M_user->updateStaf($data2, $idverlama);
 			}
 
-			$this->M_user->updateKonfirmUser("KONTRI");
+			$this->M_user->updateKonfirmUser("CALVER");
 			$this->M_user->updateKonfirmUser("VER");
+			$this->M_user->updateKonfirmUser("KONTRI");
+			$this->M_user->updateKonfirmUser("DOSEN");
 			echo "oke";
 		}
 
@@ -288,7 +334,7 @@ class Profil extends CI_Controller
 
 	public function dashboard_calonkontributor()
 	{
-		
+		// die();
 		$data = array();
 		$data['konten'] = "profil_calonkontributor";
 		$data['profilku'] = $this->ambilprofil();
@@ -375,12 +421,16 @@ class Profil extends CI_Controller
 
 	public function dashboard_verifikator()
 	{
+		
 		$getstatus = getstatusverifikator();
 
 		$data = array();
 		$data['konten'] = "profil_dashboard_verifikator";
 		$data['profilku'] = $this->ambilprofil();
 
+		$npsn = $this->session->userdata('npsn');
+		$getuser = getstatususer();
+		$prodi = $getuser['kelasku'];
 
 		$this->load->Model('M_payment');
 		$standarbayar = $this->M_payment->getstandar();
@@ -397,62 +447,78 @@ class Profil extends CI_Controller
 		$data['status_verifikator'] = $getstatus['status_verifikator'];
 		$data['keteranganpro'] = "-";
 		$keteranganekskul = "-";
-		$data['keteranganstatus'] = "-";
+		$data['keteranganstatus'] = "Belum bayar";
 
-		if ($getstatus['status_bayar4'] == "lunas") {
+		$tgl_sekarang = new DateTime();
+		$tgl_sekarang->setTimezone(new DateTimezone('Asia/Jakarta'));
+		$tglsekarang = $tgl_sekarang->format("Y-m-d H:i:s");
+
+		$this->load->Model('M_channel');
+		$getsekolah = $this->M_channel->getSekolahKu($npsn, $prodi);
+		$tglkadaluwarsa = $getsekolah->kadaluwarsa;
+
+		if (strtotime($tglsekarang)>strtotime($tglkadaluwarsa))
+		{
+			$stratasekolah = 0;
+		}
+		else
+		{
+			$stratasekolah = $getsekolah->strata_sekolah;
+		}
+		
+		$dafstratasekolah=array('-', 'Lite', 'Pro', 'Premium');
+		$statussekolahskr = " [".$dafstratasekolah[$stratasekolah]."]";
+		$kadaluwarsa = $getsekolah->kadaluwarsa;
+		$tglkadaluwarsa = namabulan_panjang($kadaluwarsa);
+		$data['statussekolah'] = $statussekolahskr;
+
+		if ($stratasekolah > 0) {
 			$data['keteranganbayar1'] = "-";
-			$data['keteranganbayar2'] = "Pembayaran Sekolah Premium Lunas";
-			$keteranganekskul = "Semua siswa mendapat ekskul gratis";
-		} else if ($getstatus['status_bayar3'] == "lunas") {
-			$data['keteranganbayar1'] = "-";
-			$data['keteranganbayar2'] = "Pembayaran Sekolah Pro Lunas";
-			$keteranganekskul = "10 siswa ekskul gratis";
-		} else if ($getstatus['status_dibayardonatur'] == "oke") {
-			$data['keteranganbayar1'] = "-";
-			$data['keteranganbayar2'] = "Pembayaran Bulan Ini Dibiayai oleh Donatur";
-			$data['keteranganstatus'] = "Sekolah Lite Gratis dari Donatur";
-		} else if ($getstatus['status_ekskul'] == "oke") {
-			$data['keteranganbayar1'] = "-";
-			$data['keteranganbayar2'] = "Pembayaran Bulan Ini Lunas oleh Siswa";
-			$data['keteranganstatus'] = "Sekolah Lite Gratis dari Siswa Ekskul";
-		} else if ($getstatus['status_virtualkelas'] == "oke") {
-			$data['keteranganbayar1'] = "-";
-			$data['keteranganbayar2'] = "Pembayaran Bulan Ini Lunas oleh Siswa";
-			$data['keteranganstatus'] = "Sekolah Lite Gratis dari Siswa Kelas Virtual";
-		} else if ($getstatus['status_bayar'] == "masatenggang") {
-			$data['keteranganbayar1'] = number_format($standarbayar->iuran, 0, ',', '.');
-			$data['keteranganbayar2'] = "Masuk Masa Tenggang";
-		} else if ($getstatus['status_bayar'] == "lunas") {
-			$data['keteranganpro'] = "";
-			if ($getstatus['selisih'] < 0)
-				$keterangan2 = "Lunas hingga " . substr(namabulan_pendek($getstatus['expired']), 3);
-			else
-				$keterangan2 = "Pembayaran bulan ini lunas";
-			$data['keteranganbayar1'] = "-";
-			$data['keteranganbayar2'] = $keterangan2;
-			$keteranganekskul = "3 siswa ekskul gratis";
-			$data['keteranganstatus'] = "Sekolah Lite";
-		} else if ($getstatus['status_bayar2'] == "lunas") {
-			$data['keteranganbayar1'] = "-";
-			$data['keteranganbayar2'] = "Pembayaran Pembayaran Ekskul oleh Sekolah Lunas";
+			$data['keteranganbayar2'] = "Tagihan Lunas";
+			$data['keteranganstatus'] = "<b>".$statussekolahskr."</b> aktif hingga ".$tglkadaluwarsa;
 		} else {
-			$data['keteranganbayar1'] = number_format($standarbayar->iuran, 0, ',', '.');
+			$data['keteranganbayar1'] = number_format($standarbayar->pro, 0, ',', '.');
 			$data['keteranganbayar2'] = "Tagihan Bulan Ini";
 		}
 
-		if ($getstatus['status_tunggu'] == "tunggu") {
-			$data['keteranganbayar1'] = number_format($getstatus['iuran'], 0, ',', '.');
-			$data['keteranganbayar2'] = "Menunggu Pembayaran";
+		if ($getstatus['status_bayar3'] == "lunas") {
+			if ($getstatus['kodeorder3'] == "TP2") {
+				$data['keteranganpro'] = "<b>Sekolah Pro</b>";
+				$data['keteranganstatus'] = "<b>Sekolah Pro</b>";
+			}
 		}
+
+		if ($getstatus['status_bayar4'] == "lunas") {
+			if ($getstatus['kodeorder4'] == "TF2") {
+				$data['keteranganpremium'] = "<b>Sekolah Premium</b>";
+				$data['keteranganstatus'] = "<b>Sekolah Premium</b>";
+			}
+		}
+
+		//////////// KHUSUS KAMPUS MERDEKA //////////////////////
+		if ($this->session->userdata('npsn')=='200101')
+		{
+			$data['keteranganbayar1'] = "-";
+			$data['keteranganbayar2'] = "Bebas Tagihan";
+			$data['keteranganstatus'] = "<b>Kampus Merdeka</b>";
+		}
+
+		//=====================================================//
+
+
+		// if ($getstatus['status_tunggu'] == "tunggu") {
+		// 	$data['keteranganbayar1'] = number_format($getstatus['iuran'], 0, ',', '.');
+		// 	$data['keteranganbayar2'] = "Menunggu Pembayaran";
+		// }
 
 		$jmlver = 0;
 		$jmlverevent = 0;
 		$jmlverekskul = 0;
 
 		$this->load->Model('M_video');
-		$getdafvideo = $this->M_video->getVideoSekolah($this->session->userdata('npsn'), "kontributor", 0, "0");
-		$getdafvideoekskul = $this->M_video->getVideoSekolah($this->session->userdata('npsn'), "kontributor", 2, "0");
-		$getdafvideoevent = $this->M_video->getVideoSekolah($this->session->userdata('npsn'), "kontributor", 1, "0");
+		$getdafvideo = $this->M_video->getVideoSekolah($npsn, $prodi, "kontributor", 0, "0");
+		$getdafvideoekskul = $this->M_video->getVideoSekolah($npsn, $prodi, "kontributor", 2, "0");
+		$getdafvideoevent = $this->M_video->getVideoSekolah($npsn, $prodi, "kontributor", 1, "0");
 
 		if ($getdafvideo)
 			$jmlver = sizeof($getdafvideo);
@@ -488,16 +554,25 @@ class Profil extends CI_Controller
 		}
 
 		$data['keterangansiswa1'] = $jmlsiswa;
-		$data['linksiswa'] = base_url() . "user/usersekolah/dashboard/siswa";
+		$data['linksiswa'] = base_url() . "user/mahasiswa/dashboard";
+		$data['npsn']=$npsn;
+		$data['linkdaftarmahasiswa']="";
+
+		if ($npsn=="200101")
+		{
+			$data['linkdaftarmahasiswa'] = base_url() . "login/register/mahasiswa?kampus=merdeka_2023&prodi=".$prodi;
+		}
+		
 
 		if ($jmlcalonkontri > 0) {
-			$data['keteranganguru1'] = $jmlcalonkontri;
-			$data['keteranganguru2'] = "Calon Dosen menunggu diverifikasi";
-			$data['linkguru'] = base_url() . "user/kontributor/dashboard";
+			$sisa = $totalguru - $jmlcalonkontri;
+			$data['keteranganguru1'] = $sisa." / ".$totalguru;
+			$data['keteranganguru2'] = "Dosen Prodi Kampus";
+			$data['linkguru'] = base_url() . "user/dosen/dashboard";
 		} else {
 			$data['keteranganguru1'] = $totalguru;
-			$data['keteranganguru2'] = "Jumlah Dosen";
-			$data['linkguru'] = base_url() . "user/usersekolah/dashboard/guru";
+			$data['keteranganguru2'] = "Dosen Prodi Kampus";
+			$data['linkguru'] = base_url() . "user/dosen/dashboard";
 		}
 
 //		if ($getstatus['status_bayar2'] == "lunas")
@@ -522,21 +597,6 @@ class Profil extends CI_Controller
 
 		$data['keteranganekskul'] = $keteranganekskul;
 
-
-		if ($getstatus['status_bayar3'] == "lunas") {
-			if ($getstatus['kodeorder3'] == "TP2") {
-				$data['keteranganpro'] = "<b>Sekolah Pro</b>";
-				$data['keteranganstatus'] = "<b>Sekolah Pro</b>";
-			}
-		}
-
-		if ($getstatus['status_bayar4'] == "lunas") {
-			if ($getstatus['kodeorder4'] == "TF2") {
-				$data['keteranganpremium'] = "<b>Sekolah Premium</b>";
-				$data['keteranganstatus'] = "<b>Sekolah Premium</b>";
-			}
-		}
-
 		$data['jumlah_siswaeks'] = $getstatus['jumlah_ekskul'];
 		$data['jumlah_lite'] = $getstatus['jumlah_lite'];
 		$data['jumlah_pro'] = $getstatus['jumlah_pro'];
@@ -556,21 +616,20 @@ class Profil extends CI_Controller
 		$data = array();
 		$data['konten'] = "profil_dashboard_admin";
 		$data['profilku'] = $this->ambilprofil();
-		
 
 		$this->load->Model('M_user');
 //		$getuser = $this->M_user->getAllUser();
 		$getuser = $this->M_user->getTabelDashboardAdmin();
+		$this->load->Model('M_channel');
 
+		$totalsemuachannel = sizeof($this->M_channel->getChannelSiap());
 		$totalkampus = $getuser['n_kampus'];
 		$totalprodi = $getuser['n_prodi'];
-		$totalguru = $getuser['n_guru'];
+		$totaldosen = $getuser['n_guru'];
+		$totalmahasiswa = $getuser['n_siswa'];
 		$jmlcalonver = $getuser['n_calon_ver'];
-		$jmlver = 10;
 		$jmlcalontutor = $getuser['n_calon_tutor'];
-		$jmltutor = 0;
 		$jmlcalonguru = $getuser['n_calon_guru'];
-		$jmlkontributor = 0;
 		$jmlcalonae = $getuser['n_calon_ae'];
 		$jmlcalonam = $getuser['n_calon_am'];
 		$jmlcalonag = $getuser['n_calon_agency'];
@@ -578,7 +637,7 @@ class Profil extends CI_Controller
 
 		$totalsiplahkonfirm = $getuser['n_verify_siplah'];
 
-		if ($totalguru==0)
+		if ($totaldosen<0)
 		{
 			$getuser = $this->M_user->getAllUser();
 			foreach ($getuser as $datane) {
@@ -620,7 +679,7 @@ class Profil extends CI_Controller
 			$totalsiplahkonfirm = $totalsiplahkonfirm;
 
 			$datasave = array();
-			$datasave['n_guru'] = $totalguru;
+			$datasave['n_guru'] = $totaldosen;
 			$datasave['n_calon_ver'] = $jmlcalonver;
 			$datasave['n_ver'] = $jmlver;
 			$datasave['n_calon_tutor'] = $jmlcalontutor;
@@ -660,27 +719,49 @@ class Profil extends CI_Controller
 			$data['keteranganuser2'] = "Calon Guru menunggu diverifikasi";
 			$data['linkguru'] = base_url() . "user/calkontri";
 		} else {
-			$data['keteranganuser1'] = $totalguru;
-			$data['keteranganuser2'] = "Jumlah Seluruh Guru";
+			$data['keteranganuser1'] = $totaldosen;
+			$data['keteranganuser2'] = "Total Dosen";
 			$data['linkguru'] = base_url() . "user/usersekolah/dashboard";
 		}
 
-		$totalfreechannel = 0;
-		$this->load->Model('M_channel');
-		$getchannel = $this->M_channel->getChannelSiap(0);
-		foreach ($getchannel as $datane) {
-			if ($datane->strata_sekolah >=7 ) {
-				$totalfreechannel++;
-			}
-		}
+		// $totalfreechannel = 0;
+		// $this->load->Model('M_channel');
+		// $getchannel = $this->M_channel->getChannelSiap(0);
+		// foreach ($getchannel as $datane) {
+		// 	if ($datane->strata_sekolah >=7 ) {
+		// 		$totalfreechannel++;
+		// 	}
+		// }
 		
-		$data['jmlkampus'] = $totalkampus;
+		// $data['jmlproditerdaftar'] = $totalfreechannel;
+
 		$data['linkkampus'] = base_url() . "channel/daftarkampus";
 
-		$data['jmlprodi'] = $totalprodi;
-		$data['linkprodi'] = base_url() . "channel/daftarprodi";
+		$data['jmlprodi'] = $totalsemuachannel;
+		$data['judulprodi'] = "Channel Prodi";
+		if ($totalprodi<$totalsemuachannel)
+		{
+			$perluver = $totalsemuachannel - $totalprodi;
+			$data['jmlprodi'] = $totalprodi." / ".$totalsemuachannel;
+			$data['judulprodi'] = "Channel Prodi";
+		}
+		
+		$data['linkprodi'] = base_url() . "channel/daftarchannel";
+		$data['jmlcalver'] = $jmlcalonver;
+		$data['linkcalver'] = base_url() . "user/verifikator";
+		$data['jmldosen'] = $totaldosen;
+		$data['juduldosen'] = "Dosen";
+		if ($jmlcalonguru>0)
+		{
+			$perluver = $totaldosen - $jmlcalonguru;
+			$data['jmldosen'] = $totaldosen." / ".($totaldosen+$jmlcalonguru);
+			$data['juduldosen'] = "Dosen";
+		}
+		$data['linkdosen'] = base_url() . "user/dosen";
+		$data['jmlmahasiswa'] = $totalmahasiswa;
+		$data['linkmahasiswa'] = base_url() . "user/mahasiswa";
 
-		$data['jmlfreechannel'] = $totalfreechannel;
+		// $data['jmlfreechannel'] = $totalfreechannel;
 		$data['linkchn'] = base_url() . "channel/daftarprodi";
 
 
@@ -707,6 +788,12 @@ class Profil extends CI_Controller
 		$data = array();
 		$data['konten'] = "profil_dashboard_agency";
 		$data['profilku'] = $this->ambilprofil();
+
+		//////////////////// DATA PRODI /////////////////////
+		$this->load->Model('M_channel');
+		$getprodi = $this->M_channel->getProdiKampus($this->session->userdata('npsn'));
+
+		$totalprodi = sizeof($getprodi);
 
 		//////////////////// DATA TUTOR /////////////////////
 		$this->load->Model('M_user');
@@ -737,9 +824,11 @@ class Profil extends CI_Controller
 		
 		$data['totalmentor'] = $totalmentor;
 		$data['totaltutor'] = $totaltutor;
+		$data['totalprodi'] = $totalprodi;
 		$data['jmlcalontutor'] = $jmlcalontutor;
 		$data['linkmentor'] = base_url() . "agency/daftar_am";
 		$data['linktutor'] = base_url() . "user/bimbel";
+		$data['linkprodi'] = base_url() . "channel/daftarchannel";
 
 		//////////////////// DATA VIDEO ////////////////////
 		$sifat = 2;
@@ -777,44 +866,22 @@ class Profil extends CI_Controller
 		$data['namaag'] = "-";
 		$data['namaam'] = "-";
 		$data['namaverbimbel'] = "-";
-
-		$statususer = getstatususer();
-		$kodekota = $statususer['kd_kota'];
-		if ($kodekota==0)
-		{
-			$this->load->Model("M_channel");
-			$sekolahku=$this->M_channel->getSekolahKu($this->session->userdata('npsn'),$this->session->userdata('prodi'));
-			$kodekota = $sekolahku[0]->id_kota;
-			$datapropkota = $this->M_login->getpropkota($kodekota);
-			$kodepropinsi = $datapropkota->id_propinsi;
-			$datakota = array ("kd_provinsi"=>$kodepropinsi, "kd_kota"=>$kodekota);
-			$this->M_login->updatekotapropinsi($datakota, $this->session->userdata('id_user'));
-		}
-			
 		
-		$datapropkota = $this->M_login->getpropkota($kodekota);
-		$data['namapropinsi'] = $datapropkota->nama_propinsi;
-		$data['namakota'] = $datapropkota->nama_kota;
-		
+		$npsn = $this->session->userdata('npsn');
+		$getprodi = getstatususer();
+		$prodi = $getprodi['kelasku'];
 
-		$this->load->Model("M_eksekusi");
-		$dataag = $this->M_eksekusi->getagaja($kodekota);
-		if ($dataag) {
-			$data['namaverbimbel'] = $dataag->first_name . " " . $dataag->last_name;
-			$data['telpverbimbel'] = $dataag->hp;
-			$data['emailverbimbel'] = $dataag->email;
-		}
+		// $this->load->Model("M_eksekusi");
+		// $dataag = $this->M_eksekusi->getagaja($kodekota);
+		// if ($dataag) {
+		// 	$data['namaverbimbel'] = $dataag->first_name . " " . $dataag->last_name;
+		// 	$data['telpverbimbel'] = $dataag->hp;
+		// 	$data['emailverbimbel'] = $dataag->email;
+		// }
 
 		$this->load->Model('M_login');
 		$datasaya = $this->M_login->getUser($this->session->userdata('id_user'));
 		$data['referrer'] = $datasaya['referrer'];
-
-		// echo $data['referrer'];
-		// die();
-
-		$npsn = $this->session->userdata('npsn');
-		$prodi = $this->session->userdata('prodi');
-
 
 		$this->load->Model('M_eksekusi');
 		$dataverifikator = $this->M_eksekusi->getveraktif($npsn, $prodi);
@@ -851,20 +918,12 @@ class Profil extends CI_Controller
 			}
 		}
 
-		$ceksekolahpremium = ceksekolahpremium();
+		$cekstatus=cekstatusverprodikampus();
+		
 		$data['statussekolah'] = " [ - ]";
-		if ($ceksekolahpremium['status_sekolah'] != "non")
-			{
-				$statussekolah = $ceksekolahpremium['status_sekolah'];
-				if ($statussekolah == "Lite Siswa")
-					$statussekolah = "Lite";
-				$data['statussekolah'] = " [ " . $statussekolah . " ] ";
-			}
-		else
-		{
-
-		}
-
+		$dafstratasekolah=array('-', 'Lite', 'Pro', 'Premium');
+		$data['statussekolah'] = " [".$dafstratasekolah[$cekstatus['stratakampus']]."]";
+			
 		$this->load->view('layout/wrapper_profil', $data);
 	}
 
@@ -921,7 +980,7 @@ class Profil extends CI_Controller
 		$tstatususer = array("", "Admin", "Verifikator Prodi", "Dosen", "Calon Dosen", "Mahasiswa", "Kontributor", "Umum", "Calon Verifikator");
 		$statustutorbimbel = "";
 		$data = $this->M_login->getdatasiswa($this->session->userdata('email'));
-		
+		// echo var_dump($data);
 		$fotouser = $data->picture;
 		if ($fotouser == null)
 			$fotouser = base_url() . "assets/images/profil_blank.jpg";
@@ -932,28 +991,35 @@ class Profil extends CI_Controller
 		$data->username = $data->first_name . " " . $data->last_name;
 		$data->logosekolah = base_url() . "uploads/sekolah/" . $data->logo;
 
+		// if (!$this->session->userdata('a01')) {
+		// 	if ($data->status_prodi==1)
+		// 		{
+		// 			$getprodi = $this->M_login->dafprodi($data->npsn, null, $data->kd_user);
+		// 			$data->prodi = $getprodi[0]->nama_prodi." (Usulan)";
+		// 			// echo "1";
+		// 			// echo "NPSN:".$data->npsn;
+		// 			// echo "KODEUSER:".$data->kd_user;
+		// 			// print_r($getprodi);
+		// 		}
+		// 		else
+		// 		{
+		// 			$getprodi = $this->M_login->dafprodi($data->npsn, $data->kode_prodi);
+		// 			$data->prodi = $getprodi[0]->nama_prodi;
+		// 			// echo "2";
+		// 			// print_r($getprodi);
+		// 		}
+		// }
+		
+
 		if ($this->session->userdata('a01')) {
 			$statususer = 1;
 		} else if ($this->session->userdata('sebagai') == 2) {
 			$statususer = 5;
-			if ($data->kd_prodi=="prodibaru")
-				{
-					$getprodi = $this->M_login->dafprodi($data->npsn, null, $data->kd_user);
-					// echo "1";
-					// echo "NPSN:".$data->npsn;
-					// echo "KODEUSER:".$data->kd_user;
-					// print_r($getprodi);
-				}
-			else
-				{
-					$getprodi = $this->M_login->dafprodi($data->npsn, $data->kd_prodi);
-					// echo "2";
-					// print_r($getprodi);
-				}
-			$data->namaprodi = $getprodi->nama_prodi;
 			
+
 		} else if ($this->session->userdata('sebagai') == 1) {
 			$statususer = 4;
+			
 			if ($this->session->userdata('verifikator') == 3) {
 				$statususer = 2;
 			} else if ($this->session->userdata('kontributor') != 3 &&
@@ -976,6 +1042,7 @@ class Profil extends CI_Controller
 		} else {
 			$statususer = 7;
 		}
+		
 
 		if ($this->session->userdata('bimbel') == 4)
 			$statustutorbimbel = " - Verifikator Bimbel";
@@ -998,7 +1065,7 @@ class Profil extends CI_Controller
 		$data->tstatususer = $tstatususer[$statususer] . $statustutorbimbel;
 
 		if ($this->session->userdata('siag') == 3) {
-			$data->tstatususer = "Agency - Verifikator Bimbel";
+			$data->tstatususer = "Agency";
 		}
 
 		return $data;
@@ -1309,14 +1376,18 @@ class Profil extends CI_Controller
 			$jmlvidevent = 0;
 			$jmlvidekskul = 0;
 
-			$this->load->Model('M_video');
-			$getdafvideoall = $this->M_video->getVideoSekolah($this->session->userdata('npsn'), "kontributor", 0);
-			$getdafvideoekskulall = $this->M_video->getVideoSekolah($this->session->userdata('npsn'), "kontributor", 2);
-			$getdafvideoeventall = $this->M_video->getVideoSekolah($this->session->userdata('npsn'), "kontributor", 1);
+			$npsn = $this->session->userdata('npsn');
+			$getprodi = getstatususer();
+			$prodi = $getprodi['kelasku'];
 
-			$getdafvideo = $this->M_video->getVideoSekolah($this->session->userdata('npsn'), "kontributor", 0, "0");
-			$getdafvideoekskul = $this->M_video->getVideoSekolah($this->session->userdata('npsn'), "kontributor", 2, "0");
-			$getdafvideoevent = $this->M_video->getVideoSekolah($this->session->userdata('npsn'), "kontributor", 1, "0");
+			$this->load->Model('M_video');
+			$getdafvideoall = $this->M_video->getVideoSekolah($npsn, $prodi, "kontributor", 0);
+			$getdafvideoekskulall = $this->M_video->getVideoSekolah($npsn, $prodi, "kontributor", 2);
+			$getdafvideoeventall = $this->M_video->getVideoSekolah($npsn, $prodi, "kontributor", 1);
+
+			$getdafvideo = $this->M_video->getVideoSekolah($npsn, $prodi, "kontributor", 0, "0");
+			$getdafvideoekskul = $this->M_video->getVideoSekolah($npsn, $prodi, "kontributor", 2, "0");
+			$getdafvideoevent = $this->M_video->getVideoSekolah($npsn, $prodi, "kontributor", 1, "0");
 
 			if ($getdafvideo)
 				$jmlver = sizeof($getdafvideo);

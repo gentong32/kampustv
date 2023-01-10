@@ -844,7 +844,7 @@ class Vksekolah extends CI_Controller
 		$kunci = str_replace("%20%20", "%20", $kunci);
 		$kunci = str_replace("%20", " ", $kunci);
 
-		$data = array('title' => 'PERPUSTAKAAN DIGITAL', 'menuaktif' => '3',
+		$data = array('title' => '', 'menuaktif' => '3',
 			'isi' => 'v_vksekolahall');
 
 		//////////////////////// buat hitung data

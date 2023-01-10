@@ -58,6 +58,18 @@
 						
 					</div>
 					<?php
+				} else if ($this->session->userdata("siag")==3) {
+					?>
+					<div style="font-weight:bold; font-size:22px;text-align: center">
+						<img class="profile-img"
+							 style="max-width: 200px;max-height: 200px"
+							 src="<?php echo base_url(); ?>assets/images/ikon-guru.png"
+							 alt=""><br>
+						<span style="font-weight: bold;font-size: 24px">AGENCY</span>
+						<br>
+						
+					</div>
+					<?php
 				} else if ($sebagai == 1 && $this->session->userdata("kontributor")==3) {
 					?>
 					<div style="font-weight:bold; font-size:22px;text-align: center">

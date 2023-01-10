@@ -124,7 +124,7 @@ foreach ($dafchannelguru as $datane) {
 				<div class="row">
 
 					<div class="col-md-12 text-center wow fadeInRight" data-wow-delay=".5s">
-						<h1>Panggung Sekolah</h1>
+						<h1>Channel TV Prodi</h1>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -136,7 +136,11 @@ foreach ($dafchannelguru as $datane) {
 
 	<section aria-label="section" class="pt30">
 		<div class="container">
-
+			<center>
+				<!-- <h5>Channel TV Prodi</h5> -->
+				<h4> <?=$namaprodi;?></h4>
+                    <h5><?=$namasekolah;?></h5>
+			</center>
 			<div class="row">
 				<div class="col-lg-12">
 					<div id="jamsekarang"
@@ -232,7 +236,7 @@ foreach ($dafchannelguru as $datane) {
 		<div style="background-color: #373635;padding: 10px;">
 			<center>
 				<button class="myButtongreen" onclick="window.open('<?php
-				echo base_url(); ?>channel/sekolah/','_self')">LIHAT SEMUA CHANNEL SEKOLAH
+				echo base_url(); ?>channel','_self')">PILIH CHANNEL LAIN
 				</button>
 			</center>
 		</div>

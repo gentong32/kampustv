@@ -21,27 +21,27 @@
 	<!-- section begin -->
 	<section aria-label="section">
 		<div class="container">
-			<h3>Pertanyaan Seputar TV Sekolah</h3>
+			<h3>Pertanyaan Seputar TV Kampus</h3>
 
 			<div class="accordion accordion-flush" id="accordionFlush1">
 				<div class="accordion-item">
 					<h2 class="accordion-header" id="flush-headingOne">
 						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-							<span style="font-size: 18px;"> Apakah TV Sekolah sama dengan upload YouTube? </span>
+							<span style="font-size: 18px;"> Apakah TV Kampus sama dengan upload YouTube? </span>
 						</button>
 					</h2>
 					<div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlush1">
-						<div class="accordion-body">Kita memanfaatkan YouTube sebagai Media Aset Management online untuk bahan siaran. Jadi semua konten harus ada di YouTube (diunggah ke YouTube dulu) baru linknya diunggah ke aplikasi. Di aplikasi konten tersebut harus disetujui oleh verifikator sekolah untuk bisa tampil di Perpustakaan Digital.</div>
+						<div class="accordion-body">Kita memanfaatkan YouTube sebagai Media Aset Management online untuk bahan siaran. Jadi semua konten harus ada di YouTube (diunggah ke YouTube dulu) baru linknya diunggah ke aplikasi. Di aplikasi konten tersebut harus disetujui oleh verifikator prodi untuk bisa tampil di Ensiklomedia.</div>
 					</div>
 				</div>
 				<div class="accordion-item">
 					<h2 class="accordion-header" id="flush-headingTwo">
 						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-							<span style="font-size: 18px;">Apakah kelebihan TV Sekolah dibanding dengan upload YouTube biasa?</span>
+							<span style="font-size: 18px;">Apakah kelebihan TV Kampus dibanding dengan upload YouTube biasa?</span>
 						</button>
 					</h2>
 					<div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlush1">
-						<div class="accordion-body">Kelebihannya adalah konten telah diverifikasi oleh pengelola/verifikator sekolah. Khusus untuk konten pembelajaran guru harus menyesuaikan KI/KD yang sudah ada di database.</div>
+						<div class="accordion-body">Kelebihannya adalah konten telah diverifikasi oleh pengelola/verifikator prodi. Khusus untuk konten pembelajaran dosen harus menyesuaikan silabus yang sudah ada di database.</div>
 					</div>
 				</div>
 				<div class="accordion-item">
@@ -51,12 +51,12 @@
 						</button>
 					</h2>
 					<div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlush1">
-						<div class="accordion-body">Ada 4 fitur utama di TV Sekolah:
+						<div class="accordion-body">Ada 4 fitur utama di TV Kampus:
 							<ol>
-								<li>Panggung Sekolah (TV Streaming) yang mengalir berdasarkan jadwal siaran.</li>
-								<li>Perpustakaan Digital (<i>video on demand</i>) yang bisa diputar kapan saja sesuai keinginan.</li>
+								<li>Channel TV Prodi (TV Streaming) yang mengalir berdasarkan jadwal siaran.</li>
+								<li>Ensiklomedia (<i>video on demand</i>) yang bisa diputar kapan saja sesuai keinginan.</li>
 								<li>Kelas Virtual dimana guru dapat membuat kelas virtual dengan menyusun beberapa video pembelajaran dalam sebuah <i>learning path</i> (playlist mini) yang dilengkapi dengan soal latihan dan fitur lainnya.</li>
-								<li>Ekstrakurikuler Majalah Dinding yaitu berisi kegiatan ekstrakurikuler yang dapat diikuti oleh siswa. Siswa mendapatkan fasilitas untuk mengunggah video dan kemudian disusun dalam sebuah playlist.</li>
+								<li>Ekstrakurikuler Majalah Dinding yaitu berisi kegiatan ekstrakurikuler yang dapat diikuti oleh mahasiswa. Mahasiswa mendapatkan fasilitas untuk mengunggah video dan kemudian disusun dalam sebuah playlist.</li>
 							</ol></div>
 					</div>
 				</div>
@@ -74,7 +74,7 @@
 				<div class="accordion-item">
 					<h2 class="accordion-header" id="flush-heading2a">
 						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse2a" aria-expanded="false" aria-controls="flush-collapse2a">
-							<span style="font-size: 18px;">Bagaimana Cara Menghubungi CS TV Sekolah?</span>
+							<span style="font-size: 18px;">Bagaimana Cara Menghubungi CS TV Kampus?</span>
 						</button>
 					</h2>
 					<div id="flush-collapse2a" class="accordion-collapse collapse" aria-labelledby="flush-heading2ae" data-bs-parent="#accordionFlush2">
@@ -84,7 +84,7 @@
 				<div class="accordion-item">
 					<h2 class="accordion-header" id="flush-heading2b">
 						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse2b" aria-expanded="false" aria-controls="flush-collapse2b">
-							<span style="font-size: 18px;">Bagaimana Cara Saya Menghubungi CS TV Sekolah di Hari Libur?</span>
+							<span style="font-size: 18px;">Bagaimana Cara Saya Menghubungi CS TV Kampus di Hari Libur?</span>
 						</button>
 					</h2>
 					<div id="flush-collapse2b" class="accordion-collapse collapse" aria-labelledby="flush-heading2b" data-bs-parent="#accordionFlush2">
@@ -108,7 +108,7 @@
 						</button>
 					</h2>
 					<div id="flush-collapse2d" class="accordion-collapse collapse" aria-labelledby="flush-heading2d" data-bs-parent="#accordionFlush2">
-						<div class="accordion-body">Hal pertama yang harus Anda pastikan adalah periksa kembali pengaturan koneksi internet Anda. Kami memberikan platform perbandingan secara gratis via internet, dan tidak memerlukan aplikasi khusus yang perlu di-instal pada perangkat Anda. Jika masih membutuhkan bantuan teknis lainnya, Anda juga dapat menghubungi Customer Service kami di di nomor: (021) 123 456 atau e-mail ke: info@tvsekolah.id</div>
+						<div class="accordion-body">Hal pertama yang harus Anda pastikan adalah periksa kembali pengaturan koneksi internet Anda. Kami memberikan platform perbandingan secara gratis via internet, dan tidak memerlukan aplikasi khusus yang perlu di-instal pada perangkat Anda. Jika masih membutuhkan bantuan teknis lainnya, Anda juga dapat menghubungi Customer Service kami di di nomor: 085890684191 atau e-mail ke: info@tvsekolah.id</div>
 					</div>
 				</div>
 

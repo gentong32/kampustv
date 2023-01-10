@@ -139,10 +139,6 @@ if ($userData['sebagai'] == 3 || $userData['sebagai'] == 4) {
 	$sekolahatauinstansi = "Instansi";
 }
 
-$namakota = "";
-if (isset($kotasekolah))
-	$namakota = $kotasekolah->nama_kota;
-
 $namanegara = "Indonesia";
 if ($negara_sekolah == "2")
 	$namanegara = "Malaysia";
@@ -154,11 +150,13 @@ if (($referrer != "" || $referrer != null) && $npsn_sekolah!="") {
 	$userData['npsn'] = $npsn_sekolah;
 	$userData['sekolah'] = $nama_sekolah;
 	$namakota = $kota_sekolah;
-
 }
 
 if ($namakota=="" && $kota_sekolah!="")
 $namakota = $kota_sekolah;
+
+if ($namakota=="")
+$namakota = $namapropinsi;
 
 $selected1="cd-tabs__item--selected";
 $selectedb1="cd-tabs__panel--selected";
@@ -282,7 +280,7 @@ else if ($opsiuser=="kelasuser")
 						}
 						?>
 
-						<?php if ($this->session->userdata('sebagai') != 4 && !$this->session->userdata('a01')
+						<?php if ($this->session->userdata('sebagai') == 4 && !$this->session->userdata('a01')
 							&& $this->session->userdata('activate') != 0) { ?>
 							<li>
 								<a href="#tab-info" class="cd-tabs__item <?php echo $selected2;?>">
@@ -442,48 +440,6 @@ else if ($opsiuser=="kelasuser")
 							</div>
 						</div>
 
-						<?php if ($this->session->userdata('sebagai')==3) {?>
-						<div class="form-group" id="dpropinsi">
-							<label for="select"
-								   class="col-md-12 control-label">Propinsi <span
-									style="color: #ff2222"> *</span></label>
-							<div class="col-md-12">
-								<select <?php echo $disabledawal; ?> class="form-control" name="ipropinsi" id="ipropinsi">
-									<option value="0">-- Pilih --</option>
-									<?php
-									for ($b2 = 1; $b2 <= $jml_propinsi; $b2++) {
-										$terpilihb2 = '';
-										if ($id_propinsi[$b2] == $userData['kd_provinsi']) {
-											$terpilihb2 = 'selected';
-										}
-										echo '<option ' . $terpilihb2 . ' value="' . $id_propinsi[$b2] . '">' . substr($nama_propinsi[$b2],8) . '</option>';
-									}
-									?>
-								</select>
-							</div>
-						</div>
-						<div id="dsekolahbaruindo">
-							<div class="form-group" id="dkota">
-								<label for="select" class="col-md-12 control-label">Kota/Kabupaten <span
-										style="color: #ff2222"> *</span></label>
-								<div class="col-md-12">
-									<select <?php echo $disabledawal; ?> class="form-control" name="ikota" id="ikota">
-										<option value="0">-- Pilih --</option>
-										<?php
-										for ($b3 = 1; $b3 <= $jml_kota; $b3++) {
-											$terpilihb3 = '';
-											if ($id_kota[$b3] == $userData['kd_kota']) {
-												$terpilihb3 = 'selected';
-											}
-											echo '<option ' . $terpilihb3 . ' value="' . $id_kota[$b3] . '">' . $nama_kota[$b3] . '</option>';
-										}
-										?>
-									</select>
-								</div>
-							</div>
-						</div>
-						<?php } ?>
-
 						<div class="form-group">
 							<label for="inputDefault" class="col-md-12 control-label">HP<span
 									style="color: #ff2222"> *</span>
@@ -611,23 +567,59 @@ else if ($opsiuser=="kelasuser")
 									</label>
 								<div class="col-md-12">
 										<div class="ui-widget">
-											<input type="text" name="isearch" class="form-control" id="isearch" 
+											<input <?php
+											if ($userData['sekolah']!="")
+											echo "readonly";
+											?> type="text" name="isearch" class="form-control" id="isearch" 
 											value="<?php echo $userData['sekolah']; ?>" placeholder="Nama Kampus"
 												style="height:35px">
 										</div>
 								</div>
 							</div>
 
+							<div class="form-group" id="ketsekolahbaru" style="display:none;">
+								<div id="ketsekolah" style="margin-left:30px;font-weight:bold;color: #ff2222">Nama kampus salah atau belum terdaftar</div>
+								<button style="margin-left: 30px;" class="btn btn-primary" onclick="return tambahkampus();">Ajukan Input Data Kampus
+								</button>
+							</div>
+
+							<div class="form-group" id="ketkampusmerdeka" style="display:none;">
+								<div id="ketsekolah" style="margin-left:30px;font-weight:bold;color: #ff2222">Dapatkan link pendaftaran Kampus Merdeka melalui masing-masing Verifikator Prodi</div>
+							</div>
+
+							<input type="hidden" id="ajuanbaru" name="ajuanbaru" value="0"/>
+
 							<div class="form-group">
-								<label for="inputDefault" class="col-md-12 control-label">Kode Kampus (NPSN)
-								<span style="color: #ff2222"> *</span>
-								<span style="color: red" id="npsnHasil"></span>
+								<label for="inputDefault" class="col-md-12 control-label">Kode Kampus
 								</label>
 								<div class="col-md-12">
 									<input readonly type="text" class="form-control" id="inpsn" name="inpsn"
 										   maxlength="100"
 										   value="<?php
-										   echo $userData['npsn']; ?>" placeholder="Kode">
+										   echo $userData['npsn']; ?>" placeholder="">
+								</div>
+							</div>
+
+							<div class="form-group" id="ketkodebaru" style="display:none;">
+								<div style="margin-left:30px;font-weight:bold;color: #ff2222">Kode kampus sudah terdaftar</div>
+							</div>
+
+							<div class="form-group" id="dpropinsi" style="display:none">
+								<label for="select"
+									class="col-md-12 control-label">Propinsi <?php //echo $userData['kd_provinsi'];?></label>
+								<div class="col-md-12">
+									<select class="form-control" name="ipropinsi" id="ipropinsi">
+										<option value="0">-- Pilih --</option>
+										<?php
+										for ($b2 = 1; $b2 <= $jml_propinsi; $b2++) {
+											$terpilihb2 = '';
+											if ($id_propinsi[$b2] == $userData['kd_provinsi']) {
+												$terpilihb2 = 'selected';
+											}
+											echo '<option ' . $terpilihb2 . ' value="' . $id_propinsi[$b2] . '">' . substr($nama_propinsi[$b2],9) . '</option>';
+										}
+										?>
+									</select>
 								</div>
 							</div>
 
@@ -637,12 +629,12 @@ else if ($opsiuser=="kelasuser")
 								echo "block";
 							else
 								echo "none"; ?>;">
-								<label for="inputDefault" class="col-md-12 control-label">Kota/Kab</label>
+								<label for="inputDefault" class="col-md-12 control-label">Propinsi</label>
 								<div class="col-md-12">
 									<input readonly type="text" class="form-control" id="ikotasekolah"
 										   name="ikotasekolah"
 										   maxlength="100"
-										   value="<?php echo $namakota; ?>" placeholder="Kota">
+										   value="<?php echo $namakota; ?>" placeholder="">
 								</div>
 							</div>
 
@@ -686,28 +678,32 @@ else if ($opsiuser=="kelasuser")
 							</div>
 
 							<div class="form-group">
-								<label for="inputDefault" class="col-md-12 control-label">Prodi Kampus
+								<label for="inputDefault" class="col-md-12 control-label">Nama Prodi
 									<span style="color: #ff2222"> *</span>
 									</label>
-								<div id="dprodi" class="col-md-12">
-									<select class="form-control" name="iprodi" id="iprodi">
-										<option value="0">-- Pilih --</option>
-										<?php
-											foreach ($daftarprodi as $datarow) {
-												$terpilihprodi = '';
-												if ($datarow->kd_prodi == $userData['kd_prodi'] && 
-												$datarow->npsn_sekolah == $userData['npsn']) 
-												{
-													$terpilihprodi = 'selected';
-												};
-												echo '<option ' . $terpilihprodi . ' value="' . $datarow->kd_prodi. '">' . $datarow->nama_prodi . '</option>';
-											}
-											?>
-									</select>
+								<div class="col-md-12">
+										<div class="ui-widget">
+											<input <?php
+											if ($userData['nama_prodi']!="")
+											echo "readonly";
+											?> type="text" name="isearch2" class="form-control" id="isearch2" 
+											value="<?php echo $userData['nama_prodi']; ?>" placeholder="Nama Prodi"
+												style="height:35px">
+										</div>
 								</div>
 							</div>
 
-
+							<div class="form-group">
+								<label for="inputDefault" class="col-md-12 control-label">Kode Prodi
+								</label>
+								<div class="col-md-12">
+									<input readonly type="text" class="form-control" id="ikodeprodi" name="ikodeprodi"
+										   maxlength="100"
+										   value="<?php
+										   echo $userData['kd_prodi']; ?>" placeholder="">
+								</div>
+							</div>
+							
 							<div class="form-group">
 								<?php if($userData['sebagai']==1)
 								{ ?>
@@ -752,17 +748,6 @@ else if ($opsiuser=="kelasuser")
 							</div>
 							<?php } ?>
 
-							<div id="dprodibaru" style="margin-left:25px;margin-top:-10px;display: none;" class="form-group">
-								<label for="inputDefault" class="col-md-12 control-label">Nama Prodi Baru<span
-										style="color: #ff2222"> *</span></label>
-								<div class="col-md-12">
-									<input type="text" class="form-control" id="iprodibaru"
-											name="iprodibaru"
-											maxlength="100" placeholder="Nama prodi baru">
-								</div>
-							</div>
-
-							
 
 							<span style="margin-left:20px;color: #ff2222;font-style: italic;font-size: 12px;">&nbsp;&nbsp;*) wajib diisi</span>
 
@@ -943,7 +928,6 @@ else if ($opsiuser=="kelasuser")
 				</div>
 			</div> <!-- cd-tabs -->
 
-
 			<?php
 			echo form_close() . '';
 			?>
@@ -983,19 +967,6 @@ else if ($opsiuser=="kelasuser")
 
 <script>
 
-	$(document).on('change', '#ipropinsi', function () {
-		getdaftarkota();
-	});
-
-	$(document).on('change', '#inegara', function () {
-		if ($('#inegara').val() == 2) {
-			document.getElementById('dsekolahbaruindo').style.display = "none";
-		} else {
-			document.getElementById('dsekolahbaruindo').style.display = "block";
-		}
-		getdaftarprop();
-	});
-
 	$(document).ready(function () {
 
 		$('#isearch').autocomplete({
@@ -1004,8 +975,16 @@ else if ($opsiuser=="kelasuser")
 			select: function (event, ui) {
 				$('#isearch').val(ui.item.value);
 				cekkampus();
-				//
-				//$('#description').val(ui.item.deskripsi);
+			}
+		});
+
+		$('#isearch2').autocomplete({
+			source: '<?php echo(site_url() . "login/get_autocomplete2");?>',
+			minLength: 1,
+			select: function (event, ui) {
+				$('#isearch2').val(ui.item.value);
+				$('#ikodeprodi').val(ui.item.kode);
+				cekprodi();
 			}
 		});
 
@@ -1060,88 +1039,47 @@ else if ($opsiuser=="kelasuser")
 
 	});
 
-	function getdaftarkota() {
-		isihtml0 = '<label for="select" class="col-md-12 control-label">Kota/Kabupaten</label><div class="col-md-12">';
-		isihtml1 = '<select class="form-control" name="ikota" id="ikota">' +
-			'<option value="0">-- Pilih --</option>';
-		isihtml3 = '</select></div>';
-		$.ajax({
-			type: 'GET',
-			data: {idpropinsi: $('#ipropinsi').val()},
-			dataType: 'json',
-			cache: false,
-			url: '<?php echo base_url();?>login/daftarkota',
-			success: function (result) {
-				//alert ($('#itopik').val());
-				isihtml2 = "";
-				$.each(result, function (i, result) {
-					isihtml2 = isihtml2 + "<option value='" + result.id_kota + "'>" + result.nama_kota + "</option>";
-				});
-				$('#dkota').html(isihtml0 + isihtml1 + isihtml2 + isihtml3);
-			}
-		});
-	}
 
-	function getdaftarprop() {
-		isihtml0 = '<label for="select" class="col-md-12 control-label">Propinsi/State</label><div class="col-md-12">';
-		isihtml1 = '<select class="form-control" name="ipropinsi" id="ipropinsi">' +
-			'<option value="0">-- Pilih --</option>';
-		isihtml3 = '</select></div>';
-		$.ajax({
-			type: 'GET',
-			data: {idnegara: $('#inegara').val()},
-			dataType: 'json',
-			cache: false,
-			url: '<?php echo base_url();?>login/daftarprop',
-			success: function (result) {
-				//alert ($('#itopik').val());
-				isihtml2 = "";
-				$.each(result, function (i, result) {
-					isihtml2 = isihtml2 + "<option value='" + result.id_propinsi + "'>" + result.nama_propinsi + "</option>";
-				});
-				$('#dpropinsi').html(isihtml0 + isihtml1 + isihtml2 + isihtml3);
-			}
-		});
-	}
+    // function getdaftarprodi() {
+    //     isihtml1 = '<select class="form-control" name="iprodi" id="iprodi"><option value="0">-- Pilih --</option>';
+    //     isihtml4 = '</select>';
+    //     $.ajax({
+    //         type: 'GET',
+    //         data: {
+    //             kodekampus: $('#inpsn').val()
+    //         },
+    //         dataType: 'json',
+    //         cache: false,
+    //         url: '<?php //echo base_url();?>login/daftarprodi',
+    //         success: function (result) {
+    //             isihtml2 = "";
+    //             $.each(result, function (i, result) {
+    //                 isihtml2 = isihtml2 + "<option value='" + result.kd_prodi + "'>" + result.nama_prodi + " [ " + result.kd_prodi + " ]" +
+    //                         "</option>";
+    //             });
+	// 			isihtml3 = '<option value="prodibaru">-- Usulan Prodi Baru --</option>';
+    //             $('#dprodi').html(isihtml1 + isihtml2 + isihtml3 + isihtml4);
+    //         }
+    //     });
+    // }
 
-    function getdaftarprodi() {
-        isihtml1 = '<select class="form-control" name="iprodi" id="iprodi"><option value="0">-- Pilih --</option>';
-        isihtml3 = '</select>';
-        $.ajax({
-            type: 'GET',
-            data: {
-                kodekampus: $('#inpsn').val()
-            },
-            dataType: 'json',
-            cache: false,
-            url: '<?php echo base_url();?>login/daftarprodi',
-            success: function (result) {
-                isihtml2 = "";
-                $.each(result, function (i, result) {
-                    isihtml2 = isihtml2 + "<option value='" + result.kd_prodi + "'>" + result.nama_prodi +
-                            "</option>";
-                });
-                $('#dprodi').html(isihtml1 + isihtml2 + isihtml3);
-            }
-        });
-    }
-
-
-	<?php //if ($userData['sebagai'] >= 1)
-	{?>
 
 	$(document).on('change', '#isearch', function () {
 		// alert ($('#inpsn').val());
+		// document.getElementById('dprodibaru').style.display = "none";
 		cekkampus();
 	});
-	<?php } ?>
 
-	// $(document).on('change', '#ikelas', function () {
-	// 	if ($('#ikelas').val()=="prodibaru")
-	// 	document.getElementById('dprodibaru').style.display = "block";
-	// });
+	$(document).on('change', '#iprodi', function () {
+		cekprodi();
+	});
+
+	$(document).on('change', '#inpsn', function () {
+		cekkodekampus();
+	});
 
 	function cekkampus() {
+		$('#inpsn').val("");
 		$.ajax({
 			type: 'GET',
 			data: {namasekolah: $('#isearch').val()},
@@ -1149,44 +1087,80 @@ else if ($opsiuser=="kelasuser")
 			cache: false,
 			url: '<?php echo base_url();?>login/cekkampus',
 			success: function (result) {
-
 				// isihtml2 = "";
 				$('#inpsn').prop('readonly', true);
 				$('#inpsn').val("");
 				$('#ikotasekolah').val("");
+				$('#ketkodebaru').hide();
+				$('#dkotasekolah').show();
+				$('#dpropinsi').hide();
 				$('#previewing2').attr('src', '<?php echo base_url() . "assets/images/school_blank.jpg";?>');
 				isihtml1 = '<select class="form-control" name="iprodi" id="iprodi"><option value="0">-- Pilih --</option>';
         		isihtml3 = '</select>';
 				$('#dprodi').html(isihtml1 + isihtml3);
 				$.each(result, function (i, result) {
-					//alert (result.nama_sekolah);
-					if (!result.nama_sekolah == "") {
+					if (result.nama_sekolah != "gaknemu") {
+						if (result.nama_sekolah != "Kampus Merdeka<?php
+						if ($this->session->userdata('sebagai')==1)
+						echo "khususdosen";?>")
+						{
+							$('#inpsn').prop('readonly', true);
+							$('#inpsn').val(result.npsn_sekolah);
+							$('#isekolah').val($('#isearch').val());
+							$('#ikotasekolah').val(result.nama_propinsi)
+							$('#previewing2').attr('src', '<?php echo base_url() . "assets/images/school_blank.jpg";?>');
+							//alert(result.nama_sekolah);
+							if (result.logo != "" && result.logo != null) {
+								// alert (result.logo);
+								$('#previewing2').attr('src', '<?php echo base_url() . "uploads/sekolah/";?>' + result.logo);
+							} else {
 
-						$('#inpsn').prop('readonly', true);
-						$('#inpsn').val(result.npsn_sekolah);
-						$('#isekolah').val($('#isearch').val());
-						$('#ikotasekolah').val(result.nama_kota)
-						$('#previewing2').attr('src', '<?php echo base_url() . "uploads/sekolah/";?>' + result.logo);
-						getdaftarprodi();
-						//alert(result.nama_sekolah);
-						if (!result.logo == "") {
-							// alert (result.logo);
-							$('#previewing2').attr('src', '<?php echo base_url() . "uploads/sekolah/";?>' + result.logo);
-						} else {
+							}
 
+							$('#isearch2').focus();
+							$('#ketsekolahbaru').hide();
+							$('#ketkampusmerdeka').hide();
+						}
+						else
+						{
+							$('#ketsekolahbaru').hide();
+							$('#ketkampusmerdeka').show();
 						}
 
 					} 
+					else
+					{
+						$('#ketkampusmerdeka').hide();
+						$('#ketsekolahbaru').show();
+					}
 				});
 				// $('#dkota').html(isihtml0 + isihtml1 + isihtml2 + isihtml3);
 			}
 		});
 	}
 
+	function cekkodekampus() {
+		$.ajax({
+			type: 'GET',
+			data: {kodekampus: $('#inpsn').val()},
+			dataType: 'text',
+			cache: false,
+			url: '<?php echo base_url();?>login/cekkodekampus',
+			success: function (result) {
+				if (result=="ada")
+				{
+					$('#ketkodebaru').show();
+				}
+				else
+				$('#ketkodebaru').hide();
+			}
+		});
+	}
 
-	$(document).on('change', '#ijenjang', function () {
-		getdaftarmapel();
-	});
+	function cekprodi() {
+		$('#inomor').focus();
+	}
+
 
 	$(document).on('change', '#ifirst_name', function () {
 		var objRegExp = /^[a-zA-Z.,\s]+$/;
@@ -1285,6 +1259,11 @@ else if ($opsiuser=="kelasuser")
 
 	function cekupdate() {
 		//alert ("DISINI"+ijinlewat3);
+		// var li = document.getElementById('tab-new');
+		// var tabaktif='personal';
+		// if (li.className=='cd-tabs__panel text-component cd-tabs__panel--selected')
+		// tabaktif='kampus';
+
 		var ijinlewat1 = true;
 		var ijinlewat2 = true;
 		var kelamin = true;
@@ -1315,7 +1294,7 @@ else if ($opsiuser=="kelasuser")
 
 				}
 			});
-
+			return false;
 		}
 
 		<?php  if ($this->session->userdata('oauth_provider') == 'system'){?>
@@ -1346,47 +1325,17 @@ else if ($opsiuser=="kelasuser")
 			ijinlewat1 = false;
 		}
 
-		<?php if($this->session->userdata('sebagai')==3) { ?>
-
-		if ($('#ipropinsi').val() == 0) {
-			propinsi = false;
-		}
-
-		if ($('#ikota').val() == 0) {
-			kota = false;
-		}
-
-		if (propinsi == false || kota == false ||
-			$('#ithn_lahir').val() <= 1900) {
-			ijinlewat1 = false;
-		}
-		<?php } ?>
-
 		<?php if ($userData['sebagai'] == 1 || $userData['sebagai'] == 2) { ?>
 		$('#inpsn').prop('readonly', false);
-		if ($('#isearch').val().trim() == "" || $('#inpsn').val() == "" || $('#inomor').val() == "" || $('#iprodi').val() == 0) {
+		$('#ikodeprodi').prop('readonly', false);
+		if ($('#isearch').val().trim() == "" || $('#inpsn').val() == "" || 
+			$('#isearch2').val().trim() == "" || $('#ikodeprodi').val() == "" || 
+			$('#inomor').val() == "") {
 			ijinlewat2 = false;
 		}
 		$('#inpsn').prop('readonly', true);
+		$('#ikodeprodi').prop('readonly', true);
 		<?php } ?>
-
-		
-
-		<?php if ($userData['sebagai'] == 3 || $userData['sebagai'] == 4) { ?>
-		if ($('#ibidang').val() == 0 || $('#ikerja').val() == 0 || $('#inomor2').val().trim() == "") {
-			ijinlewat2 = false;
-		}
-		<?php } ?>
-
-		if (document.getElementById('dprodibaru').style.display == "block") {
-			if ($('#iprodibaru').val().trim()=="")
-			{
-				ijinlewat2 = false;
-			}
-		}
-		
-		<?php if($userData['sebagai'] == 3 || $userData['sebagai'] == 4){?>
-		$('#inomor').val($('#inomor2').val());<?php } ?>
 
 		var radios = document.getElementsByName('gender');
 		for (var i = 0, length = radios.length; i < length; i++) {
@@ -1415,14 +1364,14 @@ else if ($opsiuser=="kelasuser")
 			}
 			
 		} else {
-			if ($('#inpwp').val().trim() == "")
+			if (ijinlewat1 == false || kelamin==false)
+				$('#ketawal').html("Data Personal belum lengkap");
+			else if ($('#inpwp').val().trim() == "")
 				$('#ketawal').html("NPWP harus diisi");
-			else if ($('#ikota').val() == 0 && $('#ikotasekolah').val() == "")
-				$('#ketawal').html("Data Kampus harus dilengkapi");
+			else if ($('#ikotasekolah').val() == 0 || $('#ikotasekolah').val() == "")
+				$('#ketawal').html("Data Kampus belum lengkap");
 			else if (ijinlewat1 == false && ijinlewat2 == false)
 				$('#ketawal').html("Data Personal dan Data Sekolah/Instansi harus dilengkapi");
-			else if (ijinlewat1 == false || kelamin==false)
-				$('#ketawal').html("Data Personal belum lengkap");
 			else if (ijinlewat2 == false)
 				$('#ketawal').html("Data Sekolah/Instansi belum dilengkapi");
 
@@ -1445,10 +1394,8 @@ else if ($opsiuser=="kelasuser")
 		document.getElementById('ilast_name').readOnly = false;
 		document.getElementById('ifull_name').readOnly = false;
 		document.getElementById('ialamat').readOnly = false;
-		<?php if ($this->session->userdata('sebagai')==3) { ?>
-		document.getElementById('ipropinsi').disabled = false;
-		document.getElementById('ikota').disabled = false;
-		<?php } ?>
+		document.getElementById('isearch').readOnly = false;
+		document.getElementById('isearch2').readOnly = false;
 		document.getElementById('ihp').readOnly = false;
 		document.getElementById('inpwp').readOnly = false;
 		document.getElementById('glaki').disabled = false;
@@ -1462,29 +1409,27 @@ else if ($opsiuser=="kelasuser")
 		document.getElementById('file2').style.display = "block";
 		document.getElementById('btn_upload2').style.display = "block";
 		<?php } ?>
-
-		// document.getElementById('inegara').disabled = false;
-		// document.getElementById('ipropinsi').disabled = false;
-		// document.getElementById('ikota').disabled = false;
 		<?php if($userData['verifikator'] == 3) {
 			if ($userData['npsn']=="" || $userData['npsn']==null)
 			{ ?>
-				document.getElementById('inpsn').readOnly = false;
+				document.getElementById('inpsn').readOnly = true;
 			<?php }
 			else { ?>
 				document.getElementById('inpsn').readOnly = true;
 				<?php }
 		 } else {?>
-		document.getElementById('inpsn').readOnly = false;
+		document.getElementById('inpsn').readOnly = true;
 		<?php } ?>
+		
 		document.getElementById('inomor').readOnly = false;
 		document.getElementById('ibidang').readOnly = false;
 		document.getElementById('ikerja').readOnly = false;
 		document.getElementById('inomor2').readOnly = false;
-
+		
 		<?php if ($userData['sebagai']==2)
 		{ ?>
-			document.getElementById('ikelas').disabled = false;
+			// document.getElementById('ikelas').disabled = false;
+			// alert ("AAA111");
 		<?php } ?>
 
 		document.getElementById('tbedit').style.display = 'none';
@@ -1497,7 +1442,6 @@ else if ($opsiuser=="kelasuser")
 
 		//document.getElementById('ireferrer').readOnly = false;
 
-
 		return false;
 	}
 
@@ -1506,10 +1450,9 @@ else if ($opsiuser=="kelasuser")
 		document.getElementById('ilast_name').readOnly = true;
 		document.getElementById('ifull_name').readOnly = true;
 		document.getElementById('ialamat').readOnly = true;
-		<?php if ($this->session->userdata('sebagai')==3) { ?>
-		document.getElementById('ipropinsi').disabled = true;
-		document.getElementById('ikota').disabled = true;
-		<?php } ?>
+		document.getElementById('isearch').readOnly = true;
+		document.getElementById('isearch2').readOnly = true;
+
 		document.getElementById('ihp').readOnly = true;
 		document.getElementById('inpwp').readOnly = true;
 		document.getElementById('glaki').disabled = true;
@@ -1684,6 +1627,10 @@ else if ($opsiuser=="kelasuser")
 				reader2.readAsDataURL(this.files[0]);
 			}
 		});
+
+		$("#ipropinsi").change(function () {
+			$("#ajuanbaru").val($("#ipropinsi").val());
+		});
 	});
 
 	function imageIsLoaded(e) {
@@ -1703,29 +1650,6 @@ else if ($opsiuser=="kelasuser")
 		$('#previewing' + idx).attr('width', '250px');
 		$('#previewing' + idx).attr('height', 'auto');
 	};
-
-	function tambahsekolah() {
-		if (document.getElementById('dsekolahbaru').style.display == "none") {
-			document.getElementById('dsekolahbaru').style.display = "block";
-			document.getElementById('dkotasekolah').style.display = "none";
-			document.getElementById('dnegarasekolah').style.display = "none";
-
-			if ($('#inegara').val() == 2) {
-				document.getElementById('dsekolahbaruindo').style.display = "none";
-			} else {
-				document.getElementById('dsekolahbaruindo').style.display = "block";
-			}
-			$('#inpsn').prop('readonly', false);
-		} else {
-			document.getElementById('dsekolahbaru').style.display = "none";
-			document.getElementById('dkotasekolah').style.display = "block";
-			document.getElementById('dsekolahbaruindo').style.display = "none";
-			document.getElementById('dnegarasekolah').style.display = "block";
-			$('#inpsn').prop('readonly', true);
-		}
-
-		return false;
-	}
 
 	function goBack() {
 		window.history.go(-1);
@@ -1752,8 +1676,14 @@ else if ($opsiuser=="kelasuser")
 		return false;
 	}
 
-	
-
-	
+	function tambahkampus()
+	{
+		document.getElementById('inpsn').readOnly = false;
+		document.getElementById('inomor').readOnly = false;
+		document.getElementById('ketsekolahbaru').style.display = "none";
+		document.getElementById('dpropinsi').style.display = "block";
+		document.getElementById('dkotasekolah').style.display = "none";
+		return false;
+	}
 
 </script>

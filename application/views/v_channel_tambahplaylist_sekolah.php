@@ -59,7 +59,7 @@ $opsi="/dashboard";
 				<center>
 					<div style="text-align: center; width: 300px;">
 						<?php
-						echo form_open('channel/addplaylist_sekolah/'.$opsi.$kodeevent);
+						echo form_open('channel/addplaylist_kampus/'.$opsi.$kodeevent);
 						?>
 						<div>
 							<div class="well bp-component">

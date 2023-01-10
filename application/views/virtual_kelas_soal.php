@@ -85,6 +85,9 @@ else if ($kodeevent != null)
 	$alamat = "/" . $kodeevent;
 else
 	$alamat = "";
+
+	if ($bulan=="" && $tahun=="")
+	$alamat="";
 ?>
 
 <!-- content begin -->
@@ -252,8 +255,11 @@ else
 	</section>
 </div>
 
+<!----------------------------- SCRIPT DATATABLE  -------------------------------->
+<script src="<?php echo base_url();?>js/jquery.min.js"></script>
 
 <script>
+	
 	var idsoal = new Array();
 	var pertanyaantxt = new Array();
 	var pertanyaangbr = new Array();

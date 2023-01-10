@@ -30,7 +30,7 @@ class User extends CI_Controller
 
 	public function index()
 	{
-		$this->usersekolah();
+		$this->verifikator();
 	}
 
 	public function usersekolah($asal=null, $sebagai=null)
@@ -216,10 +216,11 @@ class User extends CI_Controller
 		$this->load->view('layout/wrapper_tabel', $data);
 	}
 
-	public function calver($opsi=null)
+	public function daftarcalver($opsi=null)
 	{
 		$data = array();
 		$data['konten'] = 'v_user';
+		$data['judul'] = 'CALON VERIFIKATOR';
 
 		$this->load->model("M_user");
 		$data['sekolahku'] = $this->M_user->getNamaSekolah($this->session->userdata['npsn']);
@@ -230,6 +231,63 @@ class User extends CI_Controller
 				echo var_dump($data['dafuser']);
 				echo "</pre>";
 			}
+		$data['asal'] = "dashboard";
+		$this->load->view('layout/wrapper_tabel', $data);
+	}
+
+	public function verifikator($opsi=null)
+	{
+		$data = array();
+		$data['konten'] = 'v_user';
+		$data['judul'] = 'VERIFIKATOR';
+
+		$this->load->model("M_user");
+		$data['sekolahku'] = $this->M_user->getNamaSekolah($this->session->userdata['npsn']);
+		$data['dafuser'] = $this->M_user->getAllVer();
+		if ($opsi=="tes")
+			{
+				echo "<pre>";
+				echo var_dump($data['dafuser']);
+				echo "</pre>";
+			}
+		$data['asal'] = "dashboard";
+		$this->load->view('layout/wrapper_tabel', $data);
+	}
+
+	public function dosen()
+	{
+		$data = array();
+		$data['konten'] = 'v_user';
+		$data['judul'] = 'DOSEN';
+
+		$getuser = getstatususer();
+		$data['sekolahku'] = $getuser['namakampus'];
+		$data['prodiku'] = $getuser['namaprodi'];
+		$npsn = $this->session->userdata('npsn');
+		$kd_prodi = $getuser['kelasku'];
+
+		$this->load->Model('M_user');
+		$data['dafuser'] = $this->M_user->getAllDosen($npsn, $kd_prodi);
+
+		$data['asal'] = "dashboard";
+		$this->load->view('layout/wrapper_tabel', $data);
+	}
+
+	public function mahasiswa()
+	{
+		$data = array();
+		$data['konten'] = 'v_user';
+		$data['judul'] = 'MAHASISWA';
+
+		$getuser = getstatususer();
+		$data['sekolahku'] = $getuser['namakampus'];
+		$data['prodiku'] = $getuser['namaprodi'];
+		$npsn = $this->session->userdata('npsn');
+		$kd_prodi = $getuser['kelasku'];
+
+		$this->load->model("M_user");
+		$data['dafuser'] = $this->M_user->getAllMahasiswa($npsn, $kd_prodi);
+
 		$data['asal'] = "dashboard";
 		$this->load->view('layout/wrapper_tabel', $data);
 	}
@@ -270,7 +328,7 @@ class User extends CI_Controller
 		$this->load->view('layout/wrapper', $data);
 	}
 
-	public function verifikator()
+	public function verifikator_old()
 	{
 		if (!($this->session->userdata('a01') || $this->session->userdata('sebagai') == 4))
 			redirect('/');
@@ -347,8 +405,8 @@ class User extends CI_Controller
 //			echo var_dump($kotasekolah);
 //			echo "</pre>";
 				if ($kotasekolah) {
-					$data['namakotasekolah'] = $kotasekolah->nama_kota;
-					$data['idkotasekolah'] = $kotasekolah->id_kota;
+					$data['namakotasekolah'] = $kotasekolah->nama_propinsi;
+					$data['idkotasekolah'] = $kotasekolah->id_propinsi;
 				} else {
 					$data['namakotasekolah'] = "";
 					$data['idkotasekolah'] = 0;
@@ -455,6 +513,7 @@ class User extends CI_Controller
 		$npsn = $this->input->post('npsn');
 		$sekolah = $this->input->post('nm_sekolah');
 		$idkota = $this->input->post('kt_sekolah');
+		$kodeprodi = $this->input->post('kodeprodi');
 
 		$this->load->model("M_user");
 		// $idpropinsi = $this->M_user->kodepropfromkota($idkota);
@@ -466,25 +525,6 @@ class User extends CI_Controller
 		$data['activate'] = 1;
 		$data['statusbayar'] = $kondisibayar;
 
-		// $data['kd_kota'] = $idkota;
-		// $data['kd_provinsi'] = $idpropinsi;
-
-
-		// $data2['id_user'] = $id;
-		// $data2['kd_otoritas'] = "a02";
-
-		// $data3['npsn'] = $npsn;
-		// //$data3['kode_sekolah'] = "ch".base_convert(microtime(false), 10, 36);
-		// $data3['nama_sekolah'] = $sekolah;
-		// $data3['idkota'] = $idkota;
-		// $data3['status'] = 1;
-
-		// $data4['npsn'] = $npsn;
-		// //$data3['kode_sekolah'] = "ch".base_convert(microtime(false), 10, 36);
-		// $data4['nama_sekolah'] = $sekolah;
-		// $data4['id_kota'] = $idkota;
-		// $data4['status'] = 1;
-
 		$this->M_user->updateStaf($data, $id);
 		// $this->M_user->tambahsekolah($data3,$data4);
 		// $this->M_user->updateOtoritas($data2);
@@ -492,10 +532,18 @@ class User extends CI_Controller
 
 		//redirect($_SERVER['HTTP_REFERER']);
 
+		$this->M_user->updateSisaCalver($npsn, $kodeprodi, $id);
+		$this->M_user->updateKonfirmUser("CALVER");
 		$this->M_user->updateKonfirmUser("VER");
 		$this->M_user->updateKonfirmUser("KONTRI");
+		$this->M_user->updateKonfirmUser("DOSEN");
 
-		redirect('user/calver/' . $asal);
+		$this->load->Model('M_channel');
+		$totalchanneladaver = sizeof($this->M_channel->getChannelSiap('adaver'));
+		$dataprodi['n_prodi'] = $totalchanneladaver;
+		$this->M_user->updateDashAdmin($dataprodi);
+
+		redirect('user/verifikator/' . $asal);
 	}
 
 	public function updatekontributor($asal = null)
@@ -534,18 +582,18 @@ class User extends CI_Controller
 			$tujuan = "verifikator";
 		} else {
 			if ($kondisi == 4) {
-				$data['kontributor'] = 0;
+				$data['kontributor'] = 2;
 				$data2['id_user'] = $id;
 				$data2['kd_otoritas'] = "a03";
 				// $this->M_user->delOtoritas($data2);
-				$tujuan = "kontributor";
+				$tujuan = "dosen";
 			} else if ($kondisi == 5 || $kondisi == 3 || $kondisi == 9) {
 				$data['tgl_verifikasi'] = $datesekarang->format('Y-m-d H:i:s');
 				$data['kontributor'] = 3;
 				$data2['id_user'] = $id;
 				$data2['kd_otoritas'] = "a03";
 				// $this->M_user->updateOtoritas($data2);
-				$tujuan = "kontributor";
+				$tujuan = "dosen";
 			}
 
 		}

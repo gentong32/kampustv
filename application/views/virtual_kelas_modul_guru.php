@@ -122,8 +122,8 @@ foreach ($dafpaket as $datane) {
 					<thead>
 					<tr>
 						<th style='padding:5;width:5px;'>No</th>
-						<th>Kelas</th>
-						<th>Mapel</th>
+						<th>Semester</th>
+						<th>Mata Kuliah</th>
 						<th>Nama Modul</th>
 						<th>Ke</th>
 						<th>Durasi</th>
@@ -156,7 +156,7 @@ foreach ($dafpaket as $datane) {
 						?>
 						<tr>
 							<td><?php echo $nomor[$i]; ?></td>
-							<td><?php echo $nama_kelas[$i]." / ".$semester[$i]; ?></td>
+							<td><?php echo $semester[$i]; ?></td>
 							<td><?php echo $nama_mapel[$i]; ?></td>
 							<td><?php echo $nama_paket[$i]; ?></td>
 							<td><?php echo $mingguke[$i]; ?></td>
@@ -215,7 +215,7 @@ foreach ($dafpaket as $datane) {
 </center>
 
 <!----------------------------- SCRIPT DATATABLE  -------------------------------->
-<?php require_once('layout/calljs.php'); ?>
+<script src="<?php echo base_url();?>js/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript"
 		src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>

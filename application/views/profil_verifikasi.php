@@ -39,7 +39,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								</div>
 								<?php } ?>
 
-								<?php if ($jmlverekskul>=0) { ?>
+								<?php if ($jmlverekskul>0) { ?>
 								<div class="col-md-6 margin_bottom_30" style="min-width: 320px;">
 									<div class="dash_blog">
 										<div class="dash_blog_inner">

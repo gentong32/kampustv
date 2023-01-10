@@ -17,77 +17,100 @@ class Channel extends CI_Controller
 
 	public function index()
 	{
-    	setcookie('acara', null, -1, '/');
-		unset($_COOKIE['acara']); 
-		setcookie('basis', "channel", time() + (86400), '/');
-		$data = array();
-		$data['konten'] = "v_channel_home";
-		$npsn = "";
-		if ($this->session->userdata('loggedIn')) {
-			if ($this->session->userdata('sebagai') == 4)
-				$npsn = "";
-			else
-				$npsn = $this->session->userdata('npsn');
-		}
 
-		if ($npsn == "")
-			$npsn = "000";
+		$this->kampus();
 
-		$now = new DateTime();
-		$now->setTimezone(new DateTimezone('Asia/Jakarta'));
-		$hari = $now->format('N');
+//     	setcookie('acara', null, -1, '/');
+// 		unset($_COOKIE['acara']); 
+// 		setcookie('basis', "channel", time() + (86400), '/');
+// 		$data = array();
+// 		$data['konten'] = "v_channel_home";
+// 		$npsn = "";
+// 		if ($this->session->userdata('loggedIn')) {
+// 			if ($this->session->userdata('sebagai') == 4)
+// 				$npsn = "";
+// 			else
+// 				{
+// 					$npsn = $this->session->userdata('npsn');
+// 					$iduser = $this->session->userdata('id_user');
+// 					$getuser = $this->M_login->getUser($iduser);
+// 					$prodi = $getuser['kd_prodi'];
+// 				}
+// 		}
 
-		$data['dafplaylist'] = $this->M_channel->getDafPlayListTVE(0, $hari);
+// 		if ($npsn == "")
+// 			$npsn = "000";
 
-		$durasiplaylist = $data['dafplaylist'][0]->durasi_paket;
+// 		$now = new DateTime();
+// 		$now->setTimezone(new DateTimezone('Asia/Jakarta'));
+// 		$hari = $now->format('N');
 
-		if ($durasiplaylist != "00:00:00") {
-			// echo "Disini-02";
-			$data['punyalist'] = true;
-			$statusakhir = $data['dafplaylist'][0]->link_list;
-			$data['playlist'] = $this->M_channel->getPlayListTVE($statusakhir);
-			$linklist = $statusakhir;
+// 		$data['dafplaylist'] = $this->M_channel->getDafPlayListTVE(0, $hari);
 
+// 		$durasiplaylist = $data['dafplaylist'][0]->durasi_paket;
 
-		} else {
-			//echo "Belum punya daftar siaran";
-			$data['punyalist'] = false;
-//            if (!$this->session->userdata('loggedIn')) {
-//                redirect('/');
-//            }
-		}
-
-		//die();
-
-		if ($npsn == "000")
-			$npsn = "10101010101";
-		$data['channelku'] = $this->M_channel->getSekolahKu($npsn);
-		$data['dafchannel'] = $this->M_channel->getSekolahLain($npsn, "");
-
-		//unset($data['dafchannel'][0]);
-
-		$indeks = 0;
-		$batas10 = 0;
-		foreach ($data['dafchannel'] as $row) {
-			if ($this->cekstatusbayarchannel($row->npsn) == "off") {
-				unset($data['dafchannel'][$indeks]);
-			} else {
-				$batas10++;
-			}
-			$indeks++;
-			if ($batas10 > 9)
-				unset($data['dafchannel'][$indeks]);
-//			echo $row->npsn."==".$this->cekstatusbayarchannel($row->npsn)."<br>";
-		}
+// 		if ($durasiplaylist != "00:00:00") {
+// 			// echo "Disini-02";
+// 			$data['punyalist'] = true;
+// 			$statusakhir = $data['dafplaylist'][0]->link_list;
+// 			$data['playlist'] = $this->M_channel->getPlayListTVE($statusakhir);
+// 			$linklist = $statusakhir;
 
 
-		$data['dafvideo'] = $this->M_channel->getVodAll();
+// 		} else {
+// 			//echo "Belum punya daftar siaran";
+// 			$data['punyalist'] = false;
+// //            if (!$this->session->userdata('loggedIn')) {
+// //                redirect('/');
+// //            }
+// 		}
 
+// 		//die();
+
+// 		if ($npsn == "000")
+// 			{
+// 				$npsn = "10101010101";
+// 				$prodi= "0";
+// 			}
+
+// 		$iduser = $this->session->userdata('id_user');
+		
+
+// 		$data['channelku'] = $this->M_channel->getSekolahKu($npsn, $prodi);
+// 		$data['dafchannel'] = $this->M_channel->getSekolahLain($npsn, "");
+
+// 		//unset($data['dafchannel'][0]);
+
+// 		$indeks = 0;
+// 		$batas10 = 0;
+// 		foreach ($data['dafchannel'] as $row) {
+// 			if ($this->cekstatusbayarchannel($row->npsn) == "off") {
+// 				unset($data['dafchannel'][$indeks]);
+// 			} else {
+// 				$batas10++;
+// 			}
+// 			$indeks++;
+// 			if ($batas10 > 9)
+// 				unset($data['dafchannel'][$indeks]);
+// //			echo $row->npsn."==".$this->cekstatusbayarchannel($row->npsn)."<br>";
+// 		}
+
+
+// 		$data['dafvideo'] = $this->M_channel->getVodAll();
+
+// 		$this->load->view('layout/wrapper_umum', $data);
+	}
+
+	public function kampus()
+	{
+		$data['konten'] = "v_channel_kampus";
+		$data['dafkampus'] =  $this->M_channel->getKampusAktifSiaran();
+		// echo var_dump ($data['dafkampus']);
+		
 		$this->load->view('layout/wrapper_umum', $data);
 	}
 
-
-	public function sekolah($npsn = null, $linklist = null)
+	public function siaran($npsn = null, $prodi = null, $linklist = null)
 	{
 
 		if ($npsn != null) {
@@ -95,20 +118,15 @@ class Channel extends CI_Controller
 
 			$data = array();
 
-			$ceksekolahpremium = ceksekolahpremium($npsn);
-			$statussekolah = "non";
-			$data['statussekolah'] = " [ - ]";
-			if ($ceksekolahpremium['status_sekolah'] != "non")
-			{
-				$statussekolah = $ceksekolahpremium['status_sekolah'];
-				if ($statussekolah == "Lite Siswa")
-					$statussekolah = "Lite";
-				$data['statussekolah'] = " [ " . $statussekolah . " ] ";
-			}
+			$this->load->Model('M_channel');
+			$getsekolah = $this->M_channel->getSekolahKu($npsn, $prodi);
+			$stratasekolah = $getsekolah->strata_sekolah;
+			$dafstratasekolah=array('-', 'Lite', 'Pro', 'Premium');
+			$statussekolahskr = " [".$dafstratasekolah[$stratasekolah]."]";
 
 			if (($statussekolah=="Pro" && $this->session->userdata('loggedIn'))  || $statussekolah=="Premium")
 				{
-					$getpilihansiaran = $this->M_channel->getsiaranaktif($npsn);
+					$getpilihansiaran = $this->M_channel->getsiaranaktif($npsn, $prodi);
 					$data['siaranaktif'] = $getpilihansiaran->siaranaktif;
 					$data['urllive'] = $getpilihansiaran->urllive;
 				}
@@ -117,8 +135,6 @@ class Channel extends CI_Controller
 					$data['siaranaktif'] = 1;
 					$data['urllive'] = "";
 				}
-
-			
 
 			// echo $npsn;
 			// echo $data['siaranaktif'];
@@ -130,7 +146,8 @@ class Channel extends CI_Controller
 				$cekuser = 2;
 
 			
-			$data['konten'] = "v_channel_sekolah";
+			$data['konten'] = "v_channel_siaran";
+			
 
 			$now = new DateTime();
 			$now->setTimezone(new DateTimezone('Asia/Jakarta'));
@@ -148,16 +165,19 @@ class Channel extends CI_Controller
 
 			if (strlen($npsn) > 0) {
 
-				$ceknpsn = $this->M_channel->getSekolahKu($npsn);
+				$ceknpsn = $this->M_channel->getSekolahKu($npsn, $prodi);
+				$data['namasekolah'] = $ceknpsn->nama_sekolah;
+				$data['namaprodi'] = $ceknpsn->nama_prodi;
+				// echo var_dump($ceknpsn);
 
-				if (sizeof($ceknpsn) == 0) {
-					$ceknpsn = $this->M_channel->insertkeDafSekolahKu($npsn);
-				}
+				// if (sizeof($ceknpsn) == 0) {
+				// 	$ceknpsn = $this->M_channel->insertkeDafSekolahKu($npsn);
+				// }
 
 				//$this->cekstatussekolah($npsn);
 
 
-				$data['dafplaylist'] = $this->M_channel->getDafPlayListSekolah($npsn, 0, $hari);
+				$data['dafplaylist'] = $this->M_channel->getDafPlayListSekolah($npsn, $prodi, 0, $hari);
 //					echo "<pre>";
 //					echo var_dump($data['dafplaylist']);
 //					echo "</pre>";
@@ -168,15 +188,15 @@ class Channel extends CI_Controller
 					$data['punyalist'] = true;
 					$statusakhir = $data['dafplaylist'][0]->link_list;
 					if ($linklist == null) {
-						$data['playlist'] = $this->M_channel->getPlayListSekolah($npsn, $statusakhir);
+						$data['playlist'] = $this->M_channel->getPlayListSekolah($npsn, $prodi, $statusakhir);
 
 					} else {
-						$data['playlist'] = $this->M_channel->getPlayListSekolah($npsn, $linklist);
+						$data['playlist'] = $this->M_channel->getPlayListSekolah($npsn, $prodi, $linklist);
 
 					}
 
 					/////////paksa dulu ------------
-					$data['playlist'] = $this->M_channel->getPlayListSekolah($npsn, $statusakhir);
+					$data['playlist'] = $this->M_channel->getPlayListSekolah($npsn, $prodi, $statusakhir);
 					$linklist = $statusakhir;
 
 				} else {
@@ -192,7 +212,7 @@ class Channel extends CI_Controller
 				$data['url_sponsor'] = "";
 				$data['durasi_sponsor'] = "00:00:00";
 
-				$getsponsor = $this->M_channel->getsponsor($npsn);
+				$getsponsor = $this->M_channel->getsponsor($npsn, $prodi);
 				if ($getsponsor) {
 					//echo "<br><br><br><br><br><br><br><br>".$getsponsor->url_sponsor;
 					$data['sponsor'] = $getsponsor->nama_lembaga;
@@ -201,13 +221,13 @@ class Channel extends CI_Controller
 				}
 				//echo var_dump($getsponsor);
 
-				$data['dafchannelguru'] = $this->M_channel->getChannelGuru($npsn);
-				$cekinfosekolah = $this->M_channel->getInfoSekolah($npsn);
+				$data['dafchannelguru'] = $this->M_channel->getChannelGuru($npsn, $prodi);
+				$cekinfosekolah = $this->M_channel->getInfoSekolah($npsn, $prodi);
 
 				if ($cekinfosekolah) {
 					$data['infosekolah'] = $cekinfosekolah;
 				}
-				$data['dafvideo'] = $this->M_channel->getVodSekolah($npsn);
+				$data['dafvideo'] = $this->M_channel->getVodSekolah($npsn, $prodi);
 
 
 			}
@@ -379,11 +399,32 @@ class Channel extends CI_Controller
 
 	public function daftarprodi($opsi=null)
 	{
+		if (!$this->session->userdata('a01') && $this->session->userdata('siag')!=3)
+		redirect ("/");
+
+		$this->load->model('M_channel');
+		$data = array();
+		$data['konten'] = 'v_prodi_all';
+
+		$getchannel = $this->M_channel->getProdiAll();
+		$data['dafchannel'] = $getchannel;
+
+		$this->load->view('layout/wrapper_tabel', $data);
+
+	}
+
+	public function daftarchannel()
+	{
+		if (!$this->session->userdata('a01') && $this->session->userdata('siag')!=3)
+		redirect ("/");
+
 		$this->load->model('M_channel');
 		$data = array();
 		$data['konten'] = 'v_channel_all';
 
 		$getchannel = $this->M_channel->getChannelSiap();
+
+		// echo var_dump($getchannel);
 
 		// $ceksekolahpremium = ceksekolahpremium('69877907');
 			
@@ -459,18 +500,32 @@ class Channel extends CI_Controller
 
 	}
 
+	public function daftaragency()
+	{
+		if (!$this->session->userdata("a01"))
+		{
+			redirect("/");
+		}
+		$this->load->model('M_channel');
+		$data = array();
+		$data['konten'] = 'v_agency_all';
+		$getchannel = $this->M_channel->getAgencyAll();
+		$data['dafagency'] = $getchannel;
+		$this->load->view('layout/wrapper_tabel', $data);
+	}
+
 	public function daftarkampus()
 	{
+		if (!$this->session->userdata("a01"))
+		{
+			redirect("/");
+		}
 		$this->load->model('M_channel');
 		$data = array();
 		$data['konten'] = 'v_kampus_all';
-
 		$getchannel = $this->M_channel->getKampusAll();
-
 		$data['dafchannel'] = $getchannel;
-
 		$this->load->view('layout/wrapper_tabel', $data);
-
 	}
 
 	public function tambahkampus()
@@ -487,25 +542,88 @@ class Channel extends CI_Controller
 		$data = array();
 		$this->load->model('M_login');
 		$data['dafkampus'] = $this->M_login->dafkampus();
-		$data['konten'] = 'v_channel_tambah';
+		if ($this->session->userdata('siag')==3)
+		{
+			$kampus = $this->M_channel->getInfoKampus($this->session->userdata('npsn'));
+			$data['namakampus'] = $kampus->nama_sekolah;
+		}
+		$data['konten'] = 'v_prodi_tambah';
 		$this->load->view('layout/wrapper_umum', $data);
 	}
 
 	public function addprodi()
 	{
-		$npsn = $_POST['ikampus'];
+		// $npsn = $_POST['ikampus'];
 		$kodeprodi = $_POST['ikode'];
 		$namaprodi = $_POST['iprodi'];
+		$jenjang = $_POST['ijenjang'];
 
-		$dataprodi['npsn_sekolah'] = $npsn;
+		// $dataprodi['npsn_sekolah'] = $npsn;
 		$dataprodi['kd_prodi'] = $kodeprodi;
 		$dataprodi['nama_prodi'] = $namaprodi;
-		$dataprodi['pengusul'] = $this->session->userdata('id_user');
+		$dataprodi['jenjang'] = $jenjang;
+		// $dataprodi['pengusul'] = $this->session->userdata('id_user');
 
 		$this->load->model('M_login');
-		$addprodi = $this->M_login->addusulanprodibaru($dataprodi);
+		$addprodi = $this->M_channel->addprodi($dataprodi);
 
 		redirect('channel/daftarprodi');
+	}
+
+	public function inputagency($idwilayah)
+	{
+		$data = array();
+		$infolldikti = $this->M_channel->getInfoLLDIKTI($idwilayah);
+		$data['namalembaga'] = $infolldikti->nama_lembaga;
+		$data['lokasi'] = $infolldikti->lokasi_wilayah;
+		$data['email'] = $infolldikti->email;
+		$data['idwilayah'] = $idwilayah;
+
+		$data['konten'] = 'v_agency_input';
+		$this->load->view('layout/wrapper_umum', $data);
+	}
+
+	public function masukkanagency()
+	{
+		$email = $this->input->post('iemail');
+		$password = $this->input->post('ipassword');
+		$iwilayah = $this->input->post('iwilayah');
+		$namalembaga = $this->input->post('namalembaga');
+	
+		$data = array();
+
+		$ceklldikti = $this->M_channel->getInfoLLDIKTI($iwilayah);
+		if ($ceklldikti->email==$email)
+		{
+			$data['token'] = md5($password);
+			$this->M_channel->updateuser($data, $ceklldikti->kd_user);
+		}
+		else
+		{
+			$data['sekolah'] = $namalembaga;
+			$data['npsn'] = $iwilayah;
+			$id=hash('ripemd128', $data['email']).strtotime("now");
+			$data['kd_user'] = $id;
+			$data['email'] = $email;
+			$data['first_name'] = "";
+			$data['last_name'] = "";
+			$data['full_name'] = "";
+			$data['alamat'] = "";
+			$data['hp'] = "";
+			$set = '123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+			$code = substr(str_shuffle($set), 0, 32);
+			$data['code'] = $code;
+			$data['token'] = md5($password);
+			$data['siag'] = 3;
+
+			$this->M_channel->insertuser($data);
+			$this->M_channel->updateidagency($iwilayah,$id);
+		}
+		
+		
+		
+
+		redirect("/channel/daftaragency/");
 	}
 
 	public function eksporchannel()
@@ -865,7 +983,7 @@ class Channel extends CI_Controller
 		}
 	}
 
-	public function playlistsekolah($opsi=null,$kodeevent=null)
+	public function playlistkampus($opsi=null,$kodeevent=null)
 	{
 
 		if (!$this->session->userdata('loggedIn')) {
@@ -881,8 +999,6 @@ class Channel extends CI_Controller
 		$status = $this->cekstatus($dataekskul);
 		$dibayaroleh = $this->cekbayareskul();
 		$jmlpembayar = substr($dibayaroleh, 6);
-
-		
 
 		$data = array();
 		$data['konten'] = 'v_channel_playlistsekolah';
@@ -1292,7 +1408,7 @@ class Channel extends CI_Controller
 			redirect('channel/playlistbimbel/' . $linklist_event);
 	}
 
-	public function addplaylist_sekolah($opsi=null,$kodeevent=null)
+	public function addplaylist_kampus($opsi=null,$kodeevent=null)
 	{
 		
 		$data = array();
@@ -1340,7 +1456,7 @@ class Channel extends CI_Controller
 
 		$this->updateharitayang_channel($npsn, $prodi);
 
-		redirect('channel/playlistsekolah/'.$opsi.$kodeevent);
+		redirect('channel/playlistkampus/'.$opsi.$kodeevent);
 	}
 
 	public function addplaylist_tve()
@@ -1463,7 +1579,7 @@ class Channel extends CI_Controller
 		$this->load->view('layout/wrapperinduk2', $data);
 	}
 
-	public function tambahplaylist_sekolah($hari=null,$opsi=null)
+	public function tambahplaylist_kampus($hari=null,$opsi=null)
 	{
 //		if (!$this->session->userdata('a02')) {
 //			redirect('/');
@@ -1582,7 +1698,7 @@ class Channel extends CI_Controller
 		$this->load->view('layout/wrapperinduk2', $data);
 	}
 
-	public function editplaylist_sekolah($kodepaket = null, $opsi = null, $kodeevent = null)
+	public function editplaylist_kampus($kodepaket = null, $opsi = null, $kodeevent = null)
 	{
 		if (!$this->session->userdata('loggedIn')) {
 			redirect('/');
@@ -1920,7 +2036,7 @@ class Channel extends CI_Controller
 
 	}
 
-	public function inputplaylist_sekolah($kodepaket = null, $opsi = null, $kodeevent = null)
+	public function inputplaylist_kampus($kodepaket = null, $opsi = null, $kodeevent = null)
 	{
 
 		if (!$this->session->userdata('loggedIn')) {
@@ -1968,13 +2084,20 @@ class Channel extends CI_Controller
 			$data['nama_paket'] = $getpaketsekolah['nama_paket'];
 			$data['harike'] = $getpaketsekolah['hari'];
 			$data['mulaitayang'] = $getpaketsekolah['jam_tayang'];
+			
 			if ($opsi=="calver")
-				$data['dafvideo'] = $this->M_channel->getVideoSekolahCalver($npsn, $prodi, $kodepaket, 3);
+				{
+					
+					$data['dafvideo'] = $this->M_channel->getVideoSekolahCalver($npsn, $prodi, $kodepaket, 3);
+				}
 			else 
 			{
 				if ($this->session->userdata('verifikator') == 3)
 					{
 						$data['dafvideo'] = $this->M_channel->getVideoSekolah($npsn, $prodi, $kodepaket, 0);
+						// echo "<pre>";
+						// echo var_dump($data['dafvideo']);
+						// echo "</pre>";
 					}
 				else
 					$data['dafvideo'] = $this->M_channel->getVideoSekolahCalver($npsn, $prodi, $kodepaket, 3);
@@ -2116,7 +2239,7 @@ class Channel extends CI_Controller
 
 	}
 
-	public function urutanplaylist_sekolah($kodepaket = null, $opsi = null, $kodeevent = null)
+	public function urutanplaylist_kampus($kodepaket = null, $opsi = null, $kodeevent = null)
 	{
 		if (!$this->session->userdata('loggedIn')) {
 			redirect('/');
@@ -2921,10 +3044,16 @@ class Channel extends CI_Controller
 
 	public function cekjawaban()
 	{
+		$iduser = $this->session->userdata('id_user');
 		$jawaban_user = $this->input->post('jwbuser');
 		$idjawaban_user = $this->input->post('idjwbuser');
-		$iduser = $this->session->userdata('id_user');
 		$linklist = $this->input->post('linklistnya');
+
+		// $jawaban_user = array ("1");
+		// $idjawaban_user = array ("7");
+		// $linklist = "63ft165k44zp";
+		
+		
 		$paket = $this->M_channel->getPaket($linklist);
 		$jmlsoalkeluar = $paket[0]->soalkeluar;
 		$iduserpaket = $paket[0]->id_user;
@@ -4274,6 +4403,13 @@ class Channel extends CI_Controller
 		redirect ('/channel/daftarprodi');
 	}
 
+	public function nosiaran()
+	{
+		$data = array();
+		$data['konten'] = "channelsiaran_no";
+		$this->load->view('layout/wrapper_umum', $data);
+	}
+
 	public function pilihsiaran()
 	{
 		
@@ -4288,16 +4424,22 @@ class Channel extends CI_Controller
 			$data['urllive'] = $getpilihansiaran->urllive;
 			$data['siaranaktif'] = $getpilihansiaran->siaranaktif;
 
-			$ceksekolahpremium = ceksekolahpremium();
-			$statussekolah = "non";
-			$data['statussekolah'] = " [ - ]";
-			if ($ceksekolahpremium['status_sekolah'] != "non")
-			{
-				$statussekolah = $ceksekolahpremium['status_sekolah'];
-				if ($statussekolah == "Lite Siswa")
-					$statussekolah = "Lite";
-				$data['statussekolah'] = " [ " . $statussekolah . " ] ";
-			}
+			// $ceksekolahpremium = ceksekolahpremium();
+			// $statussekolah = "non";
+			// $data['statussekolah'] = " [ - ]";
+			// if ($ceksekolahpremium['status_sekolah'] != "non")
+			// {
+			// 	$statussekolah = $ceksekolahpremium['status_sekolah'];
+			// 	if ($statussekolah == "Lite Siswa")
+			// 		$statussekolah = "Lite";
+			// 	$data['statussekolah'] = " [ " . $statussekolah . " ] ";
+			// }
+
+			$this->load->Model('M_channel');
+			$getsekolah = $this->M_channel->getSekolahKu($npsn, $prodi);
+			$stratasekolah = $getsekolah->strata_sekolah;
+			$dafstratasekolah=array('-', 'Lite', 'Pro', 'Premium');
+			$statussekolah = $dafstratasekolah[$stratasekolah];
 
 			if ($statussekolah=="Pro" || $statussekolah=="Premium")
 				$data['konten'] = "channelsiaran";
@@ -4323,11 +4465,12 @@ class Channel extends CI_Controller
 
 				$ceknpsn = $this->M_channel->getSekolahKu($npsn,$prodi);
 
-				if (sizeof($ceknpsn) == 0) {
-					$ceknpsn = $this->M_channel->insertkeDafSekolahKu($npsn);
+				if (!$ceknpsn) {
+					// echo "PERLU UPDATE SEKOLAH";
+					$ceknpsn = $this->M_channel->insertkeDafSekolahKu($npsn,$prodi);
 				}
 
-				$data['dafplaylist'] = $this->M_channel->getDafPlayListSekolah($npsn, 0, $hari);
+				$data['dafplaylist'] = $this->M_channel->getDafPlayListSekolah($npsn, $prodi,0, $hari);
 //					echo "<pre>";
 //					echo var_dump($data['dafplaylist']);
 //					echo "</pre>";
@@ -4338,7 +4481,7 @@ class Channel extends CI_Controller
 					$data['punyalist'] = true;
 					$statusakhir = $data['dafplaylist'][0]->link_list;
 					if ($linklist == null) {
-						$data['playlist'] = $this->M_channel->getPlayListSekolah($npsn, $statusakhir);
+						$data['playlist'] = $this->M_channel->getPlayListSekolah($npsn, $prodi, $statusakhir);
 
 					} else {
 						$data['playlist'] = $this->M_channel->getPlayListSekolah($npsn, $linklist);
@@ -4346,7 +4489,7 @@ class Channel extends CI_Controller
 					}
 
 					/////////paksa dulu ------------
-					$data['playlist'] = $this->M_channel->getPlayListSekolah($npsn, $statusakhir);
+					$data['playlist'] = $this->M_channel->getPlayListSekolah($npsn, $prodi, $statusakhir);
 					$linklist = $statusakhir;
 
 				} else {
@@ -4371,14 +4514,14 @@ class Channel extends CI_Controller
 				}
 				//echo var_dump($getsponsor);
 
-				$data['dafchannelguru'] = $this->M_channel->getChannelGuru($npsn);
+				$data['dafchannelguru'] = $this->M_channel->getChannelGuru($npsn, $prodi);
 				$cekinfosekolah = $this->M_channel->getInfoSekolah($npsn, $prodi);
 				
 
 				if ($cekinfosekolah) {
 					$data['infosekolah'] = $cekinfosekolah;
 				}
-				$data['dafvideo'] = $this->M_channel->getVodSekolah($npsn);
+				$data['dafvideo'] = $this->M_channel->getVodSekolah($npsn, $prodi);
 
 
 			}
@@ -4396,8 +4539,10 @@ class Channel extends CI_Controller
 	{
 		$npsn = $this->session->userdata('npsn');
 		$url = $_POST['url'];
+		$getuser = getstatususer();
+		$prodi = $getuser['kelasku'];
 
-		$updateurl = $this->M_channel->updateurl($url,$npsn);
+		$updateurl = $this->M_channel->updateurl($url,$npsn,$prodi);
 
 		if ($updateurl)
 		{
@@ -4413,13 +4558,15 @@ class Channel extends CI_Controller
 	{
 		$npsn = $this->session->userdata('npsn');
 		$siaranaktif = $_POST['siaranaktif'];
+		$getuser = getstatususer();
+		$prodi = $getuser['kelasku'];
 
 		if ($siaranaktif==2)
 		$siaranganti=1;
 		else
 		$siaranganti=2;
 
-		$updatesiaran = $this->M_channel->updatesiaran($siaranganti,$npsn);
+		$updatesiaran = $this->M_channel->updatesiaran($siaranganti,$npsn, $prodi);
 
 		if ($updatesiaran)
 		{
@@ -4428,6 +4575,16 @@ class Channel extends CI_Controller
 		else
 		{
 			echo "gagal";
+		}
+	}
+
+	public function cekprodi()
+	{
+		$hasil = $this->M_channel->getProdi($_POST['kode']);
+		if ($hasil) {
+			echo 'Kode prodi ini sudah terdaftar pada';
+		} else {
+			echo '';
 		}
 	}
 

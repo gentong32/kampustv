@@ -6,8 +6,8 @@
 				<div class="widget">
 					<h5>Fitur Utama</h5>
 					<ul>
-						<li><a href="<?php echo base_url();?>channel/">• Panggung Sekolah</a></li>
-						<li><a href="<?php echo base_url();?>vod/">• Perpustakaan Digital</a></li>
+						<li><a href="<?php echo base_url();?>channel/">• Channel TV Prodi</a></li>
+						<li><a href="<?php echo base_url();?>vod/">• Ensiklomedia</a></li>
 						<li><a href="<?php echo base_url();?>virtualkelas">• Kelas Virtual</a></li>
 						<li><a href="<?php echo base_url();?>informasi/ekstrakurikuler">• Ekskul MD</a></li>
 					</ul>

@@ -215,7 +215,7 @@ class Assesment extends CI_Controller
 		$data['nilaitugas' . $tugaske] = $nilai;
 		$tgl_sekarang = new DateTime();
 		$tgl_sekarang->setTimezone(new DateTimezone('Asia/Jakarta'));
-		$data['tgltugas' . $tugaske] = $tgl_sekarang->format("Y-m-d H-i:s");
+		$data['tgltugas' . $tugaske] = $tgl_sekarang->format("Y-m-d H:i:s");
 		$update = $this->M_assesment->updateNilai($data, $iduser);
 		if ($update)
 			echo "OK";

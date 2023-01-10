@@ -7,8 +7,8 @@
 		<li>
 			<a href="#">Fitur Utama<span></span></a>
 			<ul>
-				<li><a href="<?php echo base_url(); ?>channel/">Panggung Sekolah</a></li>
-				<li><a href="<?php echo base_url(); ?>vod/">Perpustakaan Digital</a></li>
+				<li><a href="<?php echo base_url(); ?>channel/">Channel TV Prodi</a></li>
+				<li><a href="<?php echo base_url(); ?>vod/">Ensiklomedia</a></li>
 				<?php if ($this->session->userdata('sebagai') == 1 || $this->session->userdata('sebagai') == 2) {?>
 					<li><a href="<?php echo base_url(); ?>virtualkelas/">Kelas Virtual</a></li>
 				<?php } else {?>

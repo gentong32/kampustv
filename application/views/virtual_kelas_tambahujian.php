@@ -40,54 +40,19 @@ if ($addedit == "add") {
 	$mingguke = $datapaket->modulke;
 	$semesterini = $datapaket->semester;
 
-	if ($jenjangini == 5) {
-		$jml_jurusan = 0;
-		foreach ($dafjurusan as $datane) {
-			$jml_jurusan++;
-			$sel_jurusan[$jml_jurusan] = "";
-			$id_jurusan[$jml_jurusan] = $datane->id;
-			$nama_jurusan[$jml_jurusan] = $datane->nama_jurusan;
-		}
-		for ($a1 = 1; $a1 <= $jml_jurusan; $a1++)
-			$sel_jurusan[$a1] = "";
-	} else if ($jenjangini == 6) {
-		$jml_jurusan = 0;
-		foreach ($dafjurusanpt as $datane) {
-			$jml_jurusan++;
-			$sel_jurusan[$jml_jurusan] = "";
-			$id_jurusan[$jml_jurusan] = $datane->id;
-			$nama_jurusan[$jml_jurusan] = $datane->nama_jurusan;
-		}
-		for ($a1 = 1; $a1 <= $jml_jurusan; $a1++)
-			$sel_jurusan[$a1] = "";
-	}
-
-	$jml_kelas = 0;
-	foreach ($dafkelas as $datane) {
-		$jml_kelas++;
-		$kd_kelas[$jml_kelas] = $datane->id;
-		$nama_kelas[$jml_kelas] = $datane->nama_kelas;
-	}
-
-	$jml_mapel = 0;
-	foreach ($dafmapel as $datane) {
-		$jml_mapel++;
-		$kd_mapel[$jml_mapel] = $datane->id;
-		$nama_mapel[$jml_mapel] = $datane->nama_mapel;
-	}
-
 	if ($jenjangini == 6)
 		$dekelas = "none";
 	else
 		$dekelas = "block";
 }
 
-$jml_jenjang = 0;
-foreach ($dafjenjang as $datane) {
-	$jml_jenjang++;
-	$kd_jenjang[$jml_jenjang] = $datane->id;
-	$nama_jenjang[$jml_jenjang] = $datane->nama_jenjang;
+$jml_mapel = 0;
+foreach ($dafmapel as $datane) {
+	$jml_mapel++;
+	$kd_mapel[$jml_mapel] = $datane->id;
+	$nama_mapel[$jml_mapel] = $datane->nama_mapel;
 }
+
 
 $nama_ujian[1] = "UTS";
 $nama_ujian[2] = "UAS";
@@ -163,73 +128,11 @@ $nama_ujian[4] = "Remedial UAS";
 										</div>
 									</div>
 
-									<div class="form-group">
-										<div class="col-md-12">
-											<label for="select" class="col-md-12 control-label">Jenjang</label>
-											<select class="form-control" name="ijenjang" id="ijenjang">
-												<option value="0">-- Pilih Jenjang --</option>
-												<!--					<option value="kategori">[Ganti Pilihan ke Kategori]</option>-->
-												<?php
-												for ($v1 = 1; $v1 <= $jml_jenjang; $v1++) {
-													if ($kd_jenjang[$v1] == $jenjangini)
-														$opsi = " selected ";
-													else
-														$opsi = " ";
-													echo '<option' . $opsi . 'value="' . $kd_jenjang[$v1] . '">' . $nama_jenjang[$v1] . '</option>';
-												}
-												?>
-											</select>
-										</div>
-									</div>
-
-									<div class="form-group" id="djurusan">
-										<?php
-										if ($addedit == "edit" && ($jenjangini == 5 ||
-												$jenjangini == 6)) { ?>
-											<br>
-											<label for="select" class="col-md-12 control-label">Jurusan</label>
-											<div class="col-md-12">
-												<select class="form-control" name="ijurusan" id="ijurusan">
-													<option value="0">-- Semua Jurusan --</option>
-													<?php
-													if ($addedit == "edit")
-														for ($bc11 = 1; $bc11 <= $jml_jurusan; $bc11++) {
-															if ($id_jurusan[$bc11] == $jurusanini)
-																$opsi = " selected ";
-															else
-																$opsi = " ";
-															echo '<option' . $opsi . 'value="' . $id_jurusan[$bc11] . '">' . $nama_jurusan[$bc11] . '</option>';
-														}
-													?>
-												</select>
-											</div>
-										<?php } ?>
-									</div>
-
-									<div class="form-group">
-										<div class="col-md-12" id="dkelas" style="display:<?php echo $dekelas; ?>;">
-											<label for="select" class="col-md-12 control-label">Kelas</label>
-											<select class="form-control" name="ikelas" id="ikelas">
-												<option value="0">-- Pilih Kelas --</option>
-												<?php
-												if ($addedit == "edit")
-													for ($v1 = 1; $v1 <= $jml_kelas; $v1++) {
-														if ($kd_kelas[$v1] == $kelasini)
-															$opsi = " selected ";
-														else
-															$opsi = " ";
-														echo '<option' . $opsi . 'value="' . $kd_kelas[$v1] . '">' . $nama_kelas[$v1] . '</option>';
-													}
-												?>
-											</select>
-										</div>
-									</div>
-
-									<div class="form-group">
+									<div class="form-group maks360">
 										<div class="col-md-12" id="dmapel">
-											<label for="select" class="col-md-12 control-label">Mata Pelajaran</label>
+											<label for="select" class="col-md-12 control-label">Mata Kuliah</label>
 											<select class="form-control" name="imapel" id="imapel">
-												<option value="0">-- Pilih Mapel --</option>
+												<option value="0">-- Pilih Matkul --</option>
 												<?php
 												if ($addedit == "edit")
 													for ($v1 = 1; $v1 <= $jml_mapel; $v1++) {
@@ -239,8 +142,23 @@ $nama_ujian[4] = "Remedial UAS";
 															$opsi = " ";
 														echo '<option' . $opsi . 'value="' . $kd_mapel[$v1] . '">' . $nama_mapel[$v1] . '</option>';
 													}
+													else
+													{
+														for ($v1 = 1; $v1 <= $jml_mapel; $v1++) {
+															echo '<option value="' . $kd_mapel[$v1] . '">' . $nama_mapel[$v1] . '</option>';
+														}
+													}
 												?>
+												<option value="baru">>> Tambah Matkul Baru</option>
 											</select>
+										</div>
+									</div>
+
+									<div class="form-group maks360">
+										<div class="col-md-12" id="dmatkulbaru" style="display:none">
+											<input type="text" class="form-control" id="imatkulbaru" name="imatkulbaru"
+												maxlength="100"
+												value="" placeholder="ketik di sini ...">
 										</div>
 									</div>
 
@@ -324,7 +242,7 @@ $nama_ujian[4] = "Remedial UAS";
 
 
 <!----------------------------- SCRIPT DATATABLE  -------------------------------->
-<?php require_once('layout/calljs.php'); ?>
+<script src="<?php echo base_url();?>js/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript"
 		src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
@@ -354,8 +272,18 @@ $nama_ujian[4] = "Remedial UAS";
 		document.getElementById('tbupdate').innerText = "Update";
 	});
 
+
 	$(document).on('change', '#imapel', function () {
 		document.getElementById('tbupdate').innerText = "Update";
+		if ($('#imapel').val()=="baru")
+		{
+			$('#dmatkulbaru').show();
+			$('#imatkulbaru').focus();
+		}
+		else
+		{
+			$('#dmatkulbaru').hide();
+		}
 	});
 
 	$(document).on('change', '#isemester', function () {

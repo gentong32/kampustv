@@ -23,7 +23,7 @@
 			<div class="row">
 				<div class="container" style="font-size: 18px">
 					<center>
-					Sebelum aktif menjadi Verifikator Sekolah atau Guru (Kontributor), akan dilakukan verifikasi terlebih
+					Sebelum aktif menjadi Verifikator Prodi Kampus atau Dosen, akan dilakukan verifikasi terlebih
 					dahulu!<br>
 					<span
 						style="font-weight:bold "><?php echo '<a href="' . base_url() . '">Kembali ke beranda.</a>' ?></span>

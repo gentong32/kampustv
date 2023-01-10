@@ -53,20 +53,7 @@ if ($addedit == "add") {
 		for ($a1 = 1; $a1 <= $jml_jurusan; $a1++)
 			$sel_jurusan[$a1] = "";
 	}
-
-	$jml_kelas = 0;
-	foreach ($dafkelas as $datane) {
-		$jml_kelas++;
-		$kd_kelas[$jml_kelas] = $datane->id;
-		$nama_kelas[$jml_kelas] = $datane->nama_kelas;
-	}
-
-	$jml_mapel = 0;
-	foreach ($dafmapel as $datane) {
-		$jml_mapel++;
-		$kd_mapel[$jml_mapel] = $datane->id;
-		$nama_mapel[$jml_mapel] = $datane->nama_mapel;
-	}
+	
 
 	if ($jenjangini == 6)
 		$dekelas = "none";
@@ -74,11 +61,11 @@ if ($addedit == "add") {
 		$dekelas = "block";
 }
 
-$jml_jenjang = 0;
-foreach ($dafjenjang as $datane) {
-	$jml_jenjang++;
-	$kd_jenjang[$jml_jenjang] = $datane->id;
-	$nama_jenjang[$jml_jenjang] = $datane->nama_jenjang;
+$jml_mapel = 0;
+foreach ($dafmapel as $datane) {
+	$jml_mapel++;
+	$kd_mapel[$jml_mapel] = $datane->id;
+	$nama_mapel[$jml_mapel] = $datane->nama_mapel;
 }
 
 if (!isset($tahun))
@@ -166,72 +153,10 @@ if (!isset($tahun))
 								</div>
 
 								<div class="form-group maks360">
-									<div class="col-md-12">
-										<label for="select" class="col-md-12 control-label">Jenjang</label>
-										<select class="form-control" name="ijenjang" id="ijenjang">
-											<option value="0">-- Pilih Jenjang --</option>
-											<!--					<option value="kategori">[Ganti Pilihan ke Kategori]</option>-->
-											<?php
-											for ($v1 = 1; $v1 <= $jml_jenjang; $v1++) {
-												if ($kd_jenjang[$v1] == $jenjangini)
-													$opsi = " selected ";
-												else
-													$opsi = " ";
-												echo '<option' . $opsi . 'value="' . $kd_jenjang[$v1] . '">' . $nama_jenjang[$v1] . '</option>';
-											}
-											?>
-										</select>
-									</div>
-								</div>
-
-								<div class="form-group maks360" id="djurusan">
-									<?php
-									if ($addedit == "edit" && ($jenjangini == 5 ||
-											$jenjangini == 6)) { ?>
-										<br>
-										<label for="select" class="col-md-12 control-label">Jurusan</label>
-										<div class="col-md-12">
-											<select class="form-control" name="ijurusan" id="ijurusan">
-												<option value="0">-- Semua Jurusan --</option>
-												<?php
-												if ($addedit == "edit")
-													for ($bc11 = 1; $bc11 <= $jml_jurusan; $bc11++) {
-														if ($id_jurusan[$bc11] == $jurusanini)
-															$opsi = " selected ";
-														else
-															$opsi = " ";
-														echo '<option' . $opsi . 'value="' . $id_jurusan[$bc11] . '">' . $nama_jurusan[$bc11] . '</option>';
-													}
-												?>
-											</select>
-										</div>
-									<?php } ?>
-								</div>
-
-								<div class="form-group maks360">
-									<div class="col-md-12" id="dkelas" style="display:<?php echo $dekelas; ?>;">
-										<label for="select" class="col-md-12 control-label">Kelas</label>
-										<select class="form-control" name="ikelas" id="ikelas">
-											<option value="0">-- Pilih Kelas --</option>
-											<?php
-											if ($addedit == "edit")
-												for ($v1 = 1; $v1 <= $jml_kelas; $v1++) {
-													if ($kd_kelas[$v1] == $kelasini)
-														$opsi = " selected ";
-													else
-														$opsi = " ";
-													echo '<option' . $opsi . 'value="' . $kd_kelas[$v1] . '">' . $nama_kelas[$v1] . '</option>';
-												}
-											?>
-										</select>
-									</div>
-								</div>
-
-								<div class="form-group maks360">
 									<div class="col-md-12" id="dmapel">
-										<label for="select" class="col-md-12 control-label">Mata Pelajaran</label>
+										<label for="select" class="col-md-12 control-label">Mata Kuliah</label>
 										<select class="form-control" name="imapel" id="imapel">
-											<option value="0">-- Pilih Mapel --</option>
+											<option value="0">-- Pilih Matkul --</option>
 											<?php
 											if ($addedit == "edit")
 												for ($v1 = 1; $v1 <= $jml_mapel; $v1++) {
@@ -241,12 +166,28 @@ if (!isset($tahun))
 														$opsi = " ";
 													echo '<option' . $opsi . 'value="' . $kd_mapel[$v1] . '">' . $nama_mapel[$v1] . '</option>';
 												}
+												else
+												{
+													for ($v1 = 1; $v1 <= $jml_mapel; $v1++) {
+														echo '<option value="' . $kd_mapel[$v1] . '">' . $nama_mapel[$v1] . '</option>';
+													}
+												}
 											?>
+											<option value="baru">>> Tambah Matkul Baru</option>
 										</select>
 									</div>
 								</div>
 
 								<div class="form-group maks360">
+									<div class="col-md-12" id="dmatkulbaru" style="display:none">
+										<input type="text" class="form-control" id="imatkulbaru" name="imatkulbaru"
+											   maxlength="100"
+											   value="" placeholder="ketik di sini ...">
+									</div>
+								</div>
+
+								<div class="form-group maks360">
+								<br>
 									<div class="col-md-12" id="dsemester">
 										<label for="select" class="col-md-12 control-label">Semester</label>
 										<select <?php 
@@ -270,8 +211,9 @@ if (!isset($tahun))
 								</div>
 
 								<div class="form-group maks360">
+								<br>
 									<div class="col-md-12" id="dmapel">
-										<label for="select" class="col-md-12 control-label">Modul ke: </label>
+										<label for="select" class="col-md-12 control-label">Modul ke: <span style="color:red"><sup>* (1 - 16)</sup></span></label>
 										<input <?php 
 											if ($referrer!="")
 											echo "disabled";?> type="text" class="form-control" id="imingguke" name="imingguke"
@@ -330,7 +272,7 @@ if (!isset($tahun))
 
 
 <!----------------------------- SCRIPT DATATABLE  -------------------------------->
-<?php require_once('layout/calljs.php'); ?>
+<script src="<?php echo base_url();?>js/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript"
 		src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
@@ -376,7 +318,24 @@ if (!isset($tahun))
 			<?php } ?>
 	});
 
+	$(document).on('change', '#imingguke', function () {
+		if ($('#imingguke').val()>16)
+		$('#imingguke').val(16);
+		else if ($('#imingguke').val()<0)
+		$('#imingguke').val(0);
+		
+	});
+
 	$(document).on('change', '#imapel', function () {
+		if ($('#imapel').val()=="baru")
+		{
+			$('#dmatkulbaru').show();
+			$('#imatkulbaru').focus();
+		}
+		else
+		{
+			$('#dmatkulbaru').hide();
+		}
 		<?php if ($sudahdibeli==0) { ?>
 			document.getElementById('tbupdate').innerText = "Update";
 		<?php } else {?>

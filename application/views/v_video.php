@@ -59,12 +59,17 @@ else
 if (!isset($opsi)) {
 	$opsi = "profil";
 }
+
 if (!isset($opsikhusus)) {
 	$opsikhusus = "";
 }
 if (!isset($asal)) {
 	$asal = "";
 }
+
+
+if ($asal=="kontributor")
+$asal="/kontributor/";
 
 if (!isset($kembali)) {
 	$kembali = "";
@@ -121,7 +126,7 @@ if (!isset($sudahdicekagency))
 					<h3 class="text-center">Video <?php echo $akhiran; ?></h3>
 					<center><span style="color: red">
 					<?php if ($sudahdicekverifikator == "belum") { ?>
-						Untuk video yang diunggah harus diverifikasi oleh Verifikator Sekolah terlebih dahulu sebelum bisa digunakan.
+						Untuk video yang diunggah harus diverifikasi oleh Verifikator Prodi Kampus terlebih dahulu sebelum bisa digunakan.
 						<br>
 					<?php }
 					if ($sudahdicekagency == "belum") { ?>
@@ -279,7 +284,7 @@ if (!isset($sudahdicekagency))
 				<?php } ?>
 				</center>
 				<hr style="margin-bottom: 10px;">
-				<?php if ($status_verifikator != "oke" && $statusvideo != "bimbel" && $statusvideo != "bimbelsaya") {
+				<?php if ($stratasekolah == 0 && $statusvideo != "bimbel" && $statusvideo != "bimbelsaya") {
 					if ((($this->session->userdata('sebagai') == 1 && $this->session->userdata('verifikator') != 3)
 							|| ($this->session->userdata('sebagai') == 2) || ($this->session->userdata('bimbel') == 3
 								&& $this->session->userdata('sebagai') == 3)) || $this->session->userdata('a01')) {
@@ -289,8 +294,7 @@ if (!isset($sudahdicekagency))
 							if ($this->session->userdata('siam')!=3)
 							{
 							?>
-							<div style="font-weight:bold; color:red;margin-bottom: 12px;">Maaf, Tombol Verifikasi
-								sementara tidak berfungsi. (Iuran belum diselesaikan).
+							<div style="font-weight:bold; color:red;margin-bottom: 12px;">Maaf, Tombol Verifikasi sementara tidak berfungsi. (Iuran belum diselesaikan).
 							</div>
 						<?php }
 						}
@@ -299,9 +303,11 @@ if (!isset($sudahdicekagency))
 				?>
 				<div style="margin-bottom: 12px;">Sifat Video:<br>
 					<ul>
-						<li>"Publik" : Channel TV Sekolah</li>
-						<li>"Modul" : Modul Sekolah</li>
+						<li>"Publik" : Channel TV Prodi</li>
+						<li>"Modul" : Modul Kampus</li>
+						<?php if($this->session->userdata('sebagai')==2) {?>
 						<li>"Bimbel" : Modul Bimbel (Diverifikasi Verifikator Bimbel)</li>
+						<?php } ?>
 						<!-- <li>"Playlist" : Playlist</li> -->
 					</ul>
 				</div>
@@ -403,10 +409,10 @@ if (!isset($sudahdicekagency))
 						<thead>
 						<tr>
 							<th style='padding:5px;width:5px;'>No</th>
-							<th>Judul</th>
+							<th>Judul <?php //echo "ASAL:".$asal?></th>
 							<!--				<th>Topik</th>-->
 							<?php
-							if (($statusvideo != 'modul' && $statusvideo != 'bimbel') || $this->session->userdata('bimbel') == 4) {
+							if ($this->session->userdata('a01') || ($this->session->userdata('verifikator')==3 && $asal=="/kontributor/")) {
 								?>
 								<th>Pengirim</th>
 							<?php } ?>
@@ -431,7 +437,7 @@ if (!isset($sudahdicekagency))
 							<?php if ($linkdari == "event" && $this->session->userdata('sebagai') == 4) { ?>
 								<th>Sekolah</th>
 							<?php } ?>
-							<?php if ($linkdari != "events") { ?>
+							<?php if ($linkdari != "events" && ($asal!="saya" && $this->session->userdata('verifikator')!=3)) { ?>
 								<th>Verifikator</th>
 								<!--								<th>Siap Tayang</th>-->
 							<?php } ?>
@@ -606,7 +612,6 @@ if (!isset($sudahdicekagency))
 			$inamasekolah = "";
 		}
 
-
 		if ($datane->file_video != "") {
 			$iver = '-';
 		} else {
@@ -633,7 +638,7 @@ if (!isset($sudahdicekagency))
 				if ($datane->status_verifikasi == 1)
 					$lulustidak = 'Tidak Lulus';
 				else if ($datane->status_verifikasi >= 2) {
-					if ($datane->status_verifikasi_admin == 4)
+					if ($datane->status_verifikasi_admin == 4 || $datane->status_verifikasi_admin == 2)
 						$lulustidak = 'Lulus';
 					else if ($datane->status_verifikasi_admin == 3)
 						$lulustidak = 'Batal Lulus';
@@ -754,7 +759,7 @@ if (!isset($sudahdicekagency))
 					else
 					{
 						$iedit1 = '<button onclick=\"window.location.href=\'' . base_url() .
-						$linkdari . '/edit/' . $kode_event . $datane->kode_video . $asal . '\'\"' .
+						$linkdari . '/edit/' . $kode_event . $datane->kode_video . $asal . $opsi. '\'\"' .
 						' id=\"btn-show-all-children\" type=\"button\" ' .
 						'class=\"myButtongreen\">Edit</button>';
 					}
@@ -793,16 +798,30 @@ if (!isset($sudahdicekagency))
 
 		///////////////////////////////////////////////////////
 
-		if ($linkdari == "events")
+		if ($this->session->userdata('a01'))
 		{ ?>
 		data.push([<?php echo $jml_video;?>, "<?php echo $judule;?>", <?php echo $ipengirim;?><?php
+			echo $ivideo;?>"<?php echo $datane->channeltitle;?>", "<?php
+			echo $txt_jenis[$datane->id_jenis];?>", <?php echo $isifatplaylist;?><?php
+			echo $inamasekolah;?>"<?php echo $iver;?>", "<?php echo $iedit;?>"]);
+		<?php }
+		else if (($this->session->userdata('verifikator')==3 && $asal=="/kontributor/"))
+		{ ?>
+		data.push([<?php echo $jml_video;?>, "<?php echo $judule;?>", <?php echo $ipengirim;?><?php
+			echo $ivideo;?>"<?php echo $datane->channeltitle;?>", "<?php
+			echo $txt_jenis[$datane->id_jenis];?>", <?php echo $isifatplaylist;?><?php
+			echo $inamasekolah;?>"<?php echo $iver;?>", "<?php echo $iedit;?>"]);
+		<?php }
+		else if (($this->session->userdata('verifikator')==3 && $asal=="saya"))
+		{ ?>
+		data.push([<?php echo $jml_video;?>, "<?php echo $judule;?>",<?php
 			echo $ivideo;?>"<?php echo $datane->channeltitle;?>", "<?php
 			echo $txt_jenis[$datane->id_jenis];?>", <?php echo $isifatplaylist;?><?php
 			echo $inamasekolah;?>"<?php echo $iedit;?>"]);
 		<?php }
 		else
 		{ ?>
-		data.push([<?php echo $jml_video;?>, "<?php echo $judule;?>", <?php echo $ipengirim;?><?php
+		data.push([<?php echo $jml_video;?>, "<?php echo $judule;?>", <?php
 			echo $ivideo;?>"<?php echo $datane->channeltitle;?>", "<?php
 			echo $txt_jenis[$datane->id_jenis];?>", <?php echo $isifatplaylist;?><?php
 			echo $inamasekolah;?>"<?php echo $iver;?>", "<?php echo $iedit;?>"]);
@@ -981,7 +1000,7 @@ if (!isset($sudahdicekagency))
 		}
 		<?php if($this->session->userdata('loggedIn')) {?>
 		else if ($('#bt1_' + idx).html() == "Modul") {
-			statusnya = 2;
+			statusnya = 0;
 		}
 		<?php } ?>
 		else if ($('#bt1_' + idx).html() == "Bimbel") {
@@ -1005,7 +1024,7 @@ if (!isset($sudahdicekagency))
 						$('#bt1_' + idx).css({"background-color": "#ffd0b4"});
 					}
 					<?php if($this->session->userdata('loggedIn')) {?>
-					else if ($('#bt1_' + idx).html() == "Modul") {
+					else if ($('#bt1_' + idx).html() == "Modulxxx") {
 						var keterangan = result.substr(1);
 						$('#bt1_' + idx).html("Bimbel");
 						$('#bt1_' + idx).css({"background-color": "#96e748"});
@@ -1021,7 +1040,7 @@ if (!isset($sudahdicekagency))
 						}
 					}
 					<?php } ?>
-					else if ($('#bt1_' + idx).html() == "Bimbel") {
+					else if ($('#bt1_' + idx).html() == "Modul") {
 						// $('#bt1_' + idx).html("Playlist");
 						// $('#bt1_' + idx).css({"background-color": "#E984B1"});
 						$('#bt1_' + idx).html("Publik");

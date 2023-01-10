@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$txt_contreng = Array('---', 'Masuk');
+$txt_contreng = Array('---', 'Sudah Masuk');
 $nama_verifikator = Array('-', 'Calon', 'Verifikator');
 $txt_jenis = Array('-', 'Instruksional', 'Non Instruksional');
 $namasifat = Array('Publik', 'Modul', 'Bimbel', 'Playlist');
@@ -37,18 +37,18 @@ foreach ($dafvideo as $datane) {
 	$dilist[$jml_video] = $datane->dilist;
 	$sifat[$jml_video] = $datane->sifat;
 	if ($datane->idchannel != null)
-		$idchannel[$jml_video] = "Masuk";
+		$idchannel[$jml_video] = "Sudah Masuk";
 	else
 		$idchannel[$jml_video] = "---";
-	$namapaket = $datane->nama_paket;
-	$kodepaket = $datane->link_list;
+	// $namapaket = $datane->nama_paket;
+	// $kodepaket = $datane->link_list;
 
 	if ($dilist[$jml_video] == 0)
 		$warnane[$jml_video] = '#b6e7e0';
 	else
 		$warnane[$jml_video] = '#e6aaab';
 
-	if ($idchannel[$jml_video] == "Masuk")
+	if ($idchannel[$jml_video] == "Sudah Masuk")
 		$warnane[$jml_video] = '#b2cae6';
 
 }
@@ -171,7 +171,7 @@ if($tahun!=null)
 								<th style='padding:5;width:5px;'>No</th>
 								<th style='padding:5;width:20%;'>Judul</th>
 								<th>Durasi</th>
-								<th>Masuk Playlist</th>
+								<th>Masuk Daftar</th>
 								<th class="none">Video</th>
 								<th class="none">Topik</th>
 								<th class="none">Jenis</th>
@@ -257,7 +257,7 @@ if($tahun!=null)
 </div>
 
 <!----------------------------- SCRIPT DATATABLE  -------------------------------->
-<?php require_once('layout/calljs.php'); ?>
+<script src="<?php echo base_url();?>js/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript"
 		src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
@@ -404,7 +404,7 @@ if($tahun!=null)
 				console.log(result);
 
 				if ($('#bt2_' + idx).html() == "---") {
-					$('#bt2_' + idx).html("Masuk");
+					$('#bt2_' + idx).html("Sudah Masuk");
 					$('#bt2_' + idx).css({"background-color": "#b2cae6"});
 				} else {
 					$('#bt2_' + idx).html("---");

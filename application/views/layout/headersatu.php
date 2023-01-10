@@ -582,10 +582,10 @@ if ($this->session->userdata('sebagai') == "4")
 							class="caret" style="color: #7f8ce8"></span></a>
 					<ul class="dropdown-menu" aria-labelledby="themes">
 						<li><a href="<?php echo base_url(); ?>channel">
-								<span class="menuku" style="<?php echo $warna[2]; ?>">Panggung Sekolah</span></a>
+								<span class="menuku" style="<?php echo $warna[2]; ?>">Channel TV Prodi</span></a>
 						</li>
 						<li><a href="<?php echo base_url(); ?>vod">
-								<span class="menuku" style="<?php echo $warna[3]; ?>">Perpustakaan Digital</span></a>
+								<span class="menuku" style="<?php echo $warna[3]; ?>">Ensiklomedia</span></a>
 						</li>
 						<?php if ($this->session->userdata('bimbel') >= 0) { ?>
 							<li><a href="<?php echo base_url(); ?>virtualkelas">

@@ -24,8 +24,6 @@ $namapaket = "";
 $namahari = "belum dibuat";
 
 foreach ($dafplaylist as $datane) {
-//    echo "<br><br><br><br><br>Paket. ".$jmldaf_list.":".$datane->nama_paket;
-//    die();
 
 	$jmldaf_list++;
 
@@ -234,7 +232,7 @@ if ($jml_video == 0) { ?>
 					</center>
 					<br>
 					<center>
-						<button onclick="window.open('<?php echo base_url() . "channel/inputplaylist_sekolah/". $kodepaket;?>','_self');"
+						<button onclick="window.open('<?php echo base_url() . "channel/inputplaylist_kampus/". $kodepaket;?>','_self');"
 								class="btn-main">Input Paket Video Playlist
 						</button>
 					</center>
@@ -273,12 +271,12 @@ if ($jml_video == 0) { ?>
 						<h3>URUTAN JAM TAYANG PLAYLIST HARI <?php echo strtoupper(namahari_panjang($harike)); ?></h3></center>
 					<br>
 					<div style="margin-bottom: 10px;">
-						<button onclick="window.location.href='<?php echo base_url().'channel/playlistsekolah'.$opsidashboard.$kodeevent;?>'"
+						<button onclick="window.location.href='<?php echo base_url().'channel/playlistkampus'.$opsidashboard.$kodeevent;?>'"
 								class="btn btn-main">Kembali
 						</button>
 
 						<button
-							onclick="window.location.href='<?php echo base_url(); ?>channel/inputplaylist_sekolah/<?php echo $kodepaket.$opsidashboard.$kodeevent; ?>'"
+							onclick="window.location.href='<?php echo base_url(); ?>channel/inputplaylist_kampus/<?php echo $kodepaket.$opsidashboard.$kodeevent; ?>'"
 							class="btn btn-main">Input Paket Playlist
 						</button>
 					</div>
@@ -287,7 +285,7 @@ if ($jml_video == 0) { ?>
 					<!--	<button style="margin-left:10px" id="btn-hide-all-children" type="button">Tutup Semua</button>-->
 					<hr>
 					<div class="col-lg-8 col-md-8">
-						<div style="margin-bottom: 10px;">
+						<div style="margin-bottom: 15px;">
 							<button type="button" onclick="updatedata()" class=""
 									style="float:right;margin-right:10px;margin-top:-20px;">Update
 							</button>

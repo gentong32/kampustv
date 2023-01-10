@@ -57,10 +57,10 @@
 						</div>
 						<div class="video__item_info">
 							<a href="<?php echo base_url();?>informasi/panggung_sekolah">
-								<h4 align="center">Panggung Sekolah</h4>
+								<h4 align="center">Channel TV Prodi</h4>
 							</a>
 							<p align="center">Merupakan kanal tv streaming yang dapat dikembangkan sendiri
-								program-programnya oleh masing-masing sekolah...</p>
+								program-programnya oleh masing-masing prodi kampus...</p>
 							<p align="center">
 								<a class="btn-main" href="<?php echo base_url();?>informasi/panggung_sekolah">Selengkapnya</a>
 							</p>
@@ -79,10 +79,9 @@
 						</div>
 						<div class="video__item_info">
 							<a href="<?php echo base_url();?>informasi/perpustakaan_digital">
-								<h4 align="center">Perpustakaan Digital</h4>
+								<h4 align="center">Ensiklomedia</h4>
 							</a>
-							<p align="center">Perpustakaan Digital merupakan fitur TV Sekolah yang menyajikan
-								tayangan-tayangan video edukatif...</p>
+							<p align="center">Ensiklomedia merupakan fitur TV Kampus yang menyajikan tayangan-tayangan video edukatif...</p>
 							<p align="center">
 								<a class="btn-main" href="<?php echo base_url();?>informasi/perpustakaan_digital">Selengkapnya</a>
 							</p>

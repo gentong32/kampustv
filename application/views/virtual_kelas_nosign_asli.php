@@ -39,7 +39,7 @@
 						</div>
 						<div class="video__item_info">
 							<a>
-								<h3 align="center">Sekolah Saya</h3>
+								<h3 align="center">Kampus Saya</h3>
 							</a>
 						</div>
 					</div>

@@ -21,7 +21,7 @@ foreach ($dafpaket as $datane) {
 	$jml_paket++;
 	$nomor[$jml_paket] = $jml_paket;
 	$id_paket[$jml_paket] = $datane->id;
-	$nama_kelas[$jml_paket] = substr($datane->nama_kelas, 6);
+	// $nama_kelas[$jml_paket] = substr($datane->nama_kelas, 6);
 	$semester[$jml_paket] = $datane->semester;
 	$nama_mapel[$jml_paket] = $datane->nama_mapel;
 	$nama_guru[$jml_paket] = $datane->first_name . " " . $datane->last_name;
@@ -123,9 +123,9 @@ if ($adamapelkosong > 0)
 					<thead>
 					<tr>
 						<th style='padding:5;width:5px;'>No</th>
-						<th>Kelas</th>
-						<th>Mapel</th>
-						<th>Guru</th>
+						<th>Semester</th>
+						<th>Mata Kuliah</th>
+						<th>Dosen</th>
 						<th>Nama Modul</th>
 						<th>Ke</th>
 						<th>Durasi</th>
@@ -150,7 +150,7 @@ if ($adamapelkosong > 0)
 						?>
 						<tr>
 							<td><?php echo $nomor[$i]; ?></td>
-							<td><?php echo $nama_kelas[$i] . " / " . $semester[$i]; ?></td>
+							<td><?php echo $semester[$i]; ?></td>
 							<td><?php echo $nama_mapel[$i]; ?></td>
 							<td><?php echo $nama_guru[$i]; ?></td>
 							<td><?php echo $nama_paket[$i]; ?></td>
@@ -179,7 +179,7 @@ if ($adamapelkosong > 0)
 </center>
 
 <!----------------------------- SCRIPT DATATABLE  -------------------------------->
-<?php require_once('layout/calljs.php'); ?>
+<script src="<?php echo base_url();?>js/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript"
 		src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>

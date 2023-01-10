@@ -363,6 +363,13 @@ if (!function_exists('getstatusverifikator')) {
 			$hasilakhir = "oke";
 		}
 
+		////////// KHUSUS KAMPUS MERDEKA ///////////////
+		if ($CI->session->userdata('npsn')=='200101')
+		{
+			$hasilakhir = "oke";
+		}
+		//--------------------------------------------//
+
 		$hasil['status_verifikator'] = $hasilakhir;
 
 		return $hasil;
@@ -410,6 +417,8 @@ if (!function_exists('getstatususer')) {
 			$hasil = array();
 
 			$hasil['kelasku'] = $getuserdata['kd_prodi'];
+			$hasil['namaprodi'] = $getuserdata['nama_prodi'];
+			$hasil['namakampus'] = $getuserdata['sekolah'];
 			$hasil['kd_kota'] = $getuserdata['kd_kota'];
 			$hasil['gender'] = $getuserdata['gender'];
 			$hasil['npwp'] = $getuserdata['npwp'];
@@ -672,6 +681,7 @@ if (!function_exists('ceksekolahpremium')) {
 	}
 }
 
+
 if (!function_exists('siswaambilgratisekskul')) {
 	function siswaambilgratisekskul()
 	{
@@ -688,77 +698,41 @@ if (!function_exists('siswaambilgratisekskul')) {
 
 	}
 }
-///////////////////////  CEK MOU ///////////////////////////////
-//		$CI->load->model('M_mou');
-//		$mouaktif = $CI->M_mou->cekmouaktif($npsn, 4);
-//
-//		if ($mouaktif) {
-//			$CI->session->set_userdata('mou', "3");
-//			$CI->load->model("M_payment");
-//			$cekstatusbayar = $CI->M_payment->getlastmou($iduser, 1);
-//
-//			if ($cekstatusbayar) {
-//				$statusbayar = $cekstatusbayar->status;
-//				$tanggalorder = new DateTime($cekstatusbayar->tgl_order);
-//				$batasorder = $tanggalorder->add(new DateInterval('P1D'));
-//				$nbatasorder = strtotime($batasorder->format('Y-m-d H:i:s'));
-//
-//				if ($statusbayar == 1) {
-//					if ($ndatesekarang > $nbatasorder) {
-//						$datax = array("status" => 0);
-//						$CI->M_payment->update_payment($datax, $iduser, $cekstatusbayar->order_id);
-//					}
-//
-//					$status_tagih1 = $mouaktif->status_tagih1;
-//					$status_tagih2 = $mouaktif->status_tagih2;
-//					$status_tagih3 = $mouaktif->status_tagih3;
-//					$status_tagih4 = $mouaktif->status_tagih4;
-//					$tagihan1 = $mouaktif->tagihan1;
-//					$tagihan2 = $mouaktif->tagihan2;
-//					$tagihan3 = $mouaktif->tagihan3;
-//					$tagihan4 = $mouaktif->tagihan4;
-//					$tgl_tagih1 = new DateTime($mouaktif->tgl_penagihan1);
-//					$tgl_tagih2 = new DateTime($mouaktif->tgl_penagihan2);
-//					$tgl_tagih3 = new DateTime($mouaktif->tgl_penagihan3);
-//					$tgl_tagih4 = new DateTime($mouaktif->tgl_penagihan4);
-//					$ntgl_tagih1 = strtotime($tgl_tagih1->format('Y-m-d H:i:s'));
-//					$ntgl_tagih2 = strtotime($tgl_tagih2->format('Y-m-d H:i:s'));
-//					$ntgl_tagih3 = strtotime($tgl_tagih3->format('Y-m-d H:i:s'));
-//					$ntgl_tagih4 = strtotime($tgl_tagih4->format('Y-m-d H:i:s'));
-//
-//					if ($status_tagih1 == 0) {
-//						if ($ndatesekarang > $ntgl_tagih1) {
-//							$CI->session->set_userdata('mou', "3");
-//							$CI->session->set_userdata('statusbayar', 2);
-//							$CI->session->set_userdata('a02', 0);
-//							redirect("/payment/pembayaran/");
-//						}
-//					} else if ($status_tagih2 == 0) {
-//						if ($ndatesekarang > $ntgl_tagih2) {
-//							$CI->session->set_userdata('mou', "3");
-//							$CI->session->set_userdata('statusbayar', 2);
-//							$CI->session->set_userdata('a02', 0);
-//							redirect("/payment/pembayaran/");
-//						}
-//					} else if ($status_tagih3 == 0 && $tagihan3 > 0) {
-//						if ($ndatesekarang > $ntgl_tagih3) {
-//							$CI->session->set_userdata('mou', "3");
-//							$CI->session->set_userdata('statusbayar', 2);
-//							$CI->session->set_userdata('a02', 0);
-//							redirect("/payment/pembayaran/");
-//						}
-//					} else if ($status_tagih4 == 0 && $tagihan4 > 0) {
-//						if ($ndatesekarang > $ntgl_tagih4) {
-//							$CI->session->set_userdata('mou', "3");
-//							$CI->session->set_userdata('statusbayar', 2);
-//							$CI->session->set_userdata('a02', 0);
-//							redirect("/payment/pembayaran/");
-//						}
-//					}
-//				}
-//				return true;
-//			} else {
-//				$CI->session->unset_userdata('mou');
-//			}
-//		}
+
+function cekstatusverprodikampus()
+{
+		$tgl_sekarang = new DateTime();
+		$tgl_sekarang->setTimezone(new DateTimezone('Asia/Jakarta'));
+		$tglsekarang = $tgl_sekarang->format("Y-m-d H:i:s");
+
+		$CI = get_instance();
+		$CI->load->library('session');
+		$npsn = $CI->session->userdata('npsn');
+
+		$getuser = getstatususer();
+		$prodi = $getuser['kelasku'];
+
+		$CI->load->Model('M_channel');
+		$getsekolah = $CI->M_channel->getSekolahKu($npsn, $prodi);
+		$tglkadaluwarsa = $getsekolah->kadaluwarsa;
+
+		if (strtotime($tglsekarang)>strtotime($tglkadaluwarsa))
+		{
+			$stratasekolah = 0;
+		}
+		else
+		{
+			$stratasekolah = $getsekolah->strata_sekolah;
+		}
+		
+		$kadaluwarsa = $getsekolah->kadaluwarsa;
+
+		$hasil = array();
+		$hasil['stratakampus'] = $stratasekolah;
+		$hasil['kadaluwarsa'] = $kadaluwarsa;
+
+		return $hasil;
+
+		
+}
 

@@ -8,6 +8,7 @@ $jmlujian = 0;
 // echo "<br>jmlmapelaktif:".$jmlmapelaktif;
 
 if ($datamodul)
+// echo 
 	foreach ($datamodul as $data) {
 		if ($data->nama_paket == "UTS" || $data->nama_paket == "REMEDIAL UTS" ||
 			$data->nama_paket == "UAS" || $data->nama_paket == "REMEDIAL UAS") {
@@ -159,9 +160,14 @@ $jmlmodulujian = $jmlmodul + $jmlujian;
 		<div class="container">
 			<div class="row" style="margin-bottom: 10px;">
 				<center>
-					<h3>SEKOLAH SAYA</h3>
-					<h5><?php echo strtoupper($namakelas)." SEMESTER ". $semester; ?></h5>
+					<h3>PERKULIAHAN SAYA</h3>
+					<h5><?php echo strtoupper($namaprodi)." SEMESTER ". $semester; ?></h5>
 				</center>
+				
+				<div>
+				<?="<br><button class='s btn-main' onclick='window.open(\"" . base_url() . "virtualkelas/pilih_modul/" . "\")'>Dosen dan Mapel</button>";?>
+				</div>
+				<hr>
 			</div>
 			<div class="row">
 				<div class="col-xl-3 col-md-6">
@@ -173,20 +179,25 @@ $jmlmodulujian = $jmlmodul + $jmlujian;
 										" " . $thn_skr; ?></b><br>
 								<?php
 								if ($jmlgurupilih > 0) {
+									// echo "111111111111111111111111111111111111";
 									if (is_numeric($modulke))
 										echo "<a class=\"small text-white\" href=\"" . base_url() . "virtualkelas/pilih_modul/\">Modul ke-" . $modulke . "</a>";
 									else
 										echo strtoupper($modulke); ?><br>
 								<?php }
-								if ($jmlgurupilih < $jmlmapelaktif)
-									echo "<span style='font-size:13px;font-style:italic;'>[Silakan memilih guru dan mapel modul terlebih dahulu]</span>";
+								if ($jmlgurupilih <= 0 || $jmlmapelaktif <=0)
+									{
+										echo "<span style='font-size:13px;font-style:italic;'>[Silakan memilih dosen dan matakuliah terlebih dahulu]</span>";
+									}
+									
 								else {
-									if (!$modullengkap) {
-										if ($jmlmodul == -1)
-											echo "<span style='font-size:13px;font-style:italic;'>[Belum tersedia modul]</span>";
-										else
-											echo "<span style='font-size:13px;font-style:italic;'>[Modul belum tersedia lengkap]</span>";
-									} else {
+									// if (!$modullengkap) {
+									// 	if ($jmlmodul == -1)
+									// 		echo "<span style='font-size:13px;font-style:italic;'>[Belum tersedia modul]</span>";
+									// 	else
+									// 		echo "<span style='font-size:13px;font-style:italic;'>[Modul belum tersedia lengkap]</span>";
+									// } else 
+									{
 										for ($a = 1; $a <= $jmlmodul; $a++) {
 											if ($statusbelipaket == "0") {
 												echo "<a class='small text-white' href='" . base_url() .
@@ -206,15 +217,8 @@ $jmlmodulujian = $jmlmodul + $jmlujian;
 								}
 								?>
 								<hr style="margin-top: 15px;margin-bottom: 5px; ">
-								<a class='small text-white' href='<?php echo base_url() .
-									"virtualkelas/modul_semua"; ?>'>Modul Saya</a>
+								<button class='tb_hijau' onclick="window.open('<?php echo base_url() .'virtualkelas/modul_semua'; ?>','_self');">Modul Saya</a>
 
-								<?php
-								if ($jmlgurupilih < $jmlmapelaktif) {
-									echo "<button class='s btn-main' onclick='window.open(\"" . base_url() . "virtualkelas/pilih_modul/" . "\")'>Pilih Guru dan Mapel</button>";
-								}
-
-								?>
 								<div class="small text-white"></div>
 							</div>
 						</div>
@@ -283,7 +287,7 @@ $jmlmodulujian = $jmlmodul + $jmlujian;
 								<?php
 								if ($jmlgurupilih == $jmlmapelaktif ) {
 									if (($modulke == "uts" || $modulke == "remedial uts" || $modulke == "uas"
-										|| $modulke == "remedial uas") && $statusbelipaket != "0") {
+										|| $modulke == "remedial uas") ) {
 										if ($nilaiujian == 0)
 											for ($a = 1; $a <= $jmlujian2; $a++) {
 												echo "<a class='small text-white' href='" . base_url() .
@@ -331,26 +335,9 @@ $jmlmodulujian = $jmlmodul + $jmlujian;
 
 				<div class="col-xl-3 col-md-6">
 					<div class="card bg-danger text-white mb-4">
-						<div class="card-body">Paket Saya</div>
+						<div class="card-body">Informasi</div>
 						<div class="card-footer d-flex align-items-center justify-content-between">
-							<!--							<a class="small text-white stretched-link"-->
-							<!--							   href="-->
-							<?php //echo base_url();
-							if ($jmlgurupilih < $jmlmapelaktif)
-								echo $keteranganbayar;
-							else
-							{
-							if (!$modullengkap){
-							?><!--vksekolah/pilih_paket/saya/">- Premium</a>-->
-							<span style="font-size: 14px;"><i>[Paket belum lengkap]</i></span>
-							<?php }
-								else {
-									?>
-									<a class="small text-white stretched-link"
-									   href="<?php echo base_url(); ?>virtualkelas/pilih_paket/saya"><?php
-										echo $keteranganbayar; ?></a>
-								<?php }
-							}?>
+							
 							<div class="small text-white"></div>
 						</div>
 					</div>
@@ -359,3 +346,4 @@ $jmlmodulujian = $jmlmodul + $jmlujian;
 			</div>
 	</section>
 </div>
+

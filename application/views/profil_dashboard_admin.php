@@ -17,24 +17,6 @@
 			<div class="col-md-l2 col-lg-12">
 				<div class="row">
 					<div class="col-md-6 col-lg-3">
-						<a href="<?php echo $linkkampus;?>">
-						<div class="full counter_section margin_bottom_30">
-							<div class="couter_icon">
-								<div>
-									<i class="fa fa-university orange_color"></i>
-								</div>
-							</div>
-							<div class="counter_no">
-								<div>
-									<p class="total_no"><?php echo $jmlkampus;?></p>
-									<p class="head_couter">Total Kampus</p>
-								</div>
-							</div>
-						</div>
-						</a>
-					</div>
-					
-					<div class="col-md-6 col-lg-3">
 						<a href="<?php echo $linkprodi;?>">
 						<div class="full counter_section margin_bottom_30">
 							<div class="couter_icon">
@@ -45,13 +27,70 @@
 							<div class="counter_no">
 								<div>
 									<p class="total_no"><?php echo $jmlprodi;?></p>
-									<p class="head_couter">Total Channel Prodi</p>
+									<p class="head_couter"><?php echo $judulprodi;?></p>
 								</div>
 							</div>
 						</div>
 						</a>
 					</div>
 
+					<?php if($jmlcalver>0) { ?>
+					<div class="col-md-6 col-lg-3">
+						<a href="<?php echo $linkcalver;?>">
+						<div class="full counter_section margin_bottom_30">
+							<div class="couter_icon">
+								<div>
+									<i class='fa fa-user green_color'></i>
+								</div>
+							</div>
+							<div class="counter_no">
+								<div>
+									<p class="total_no"><?php echo $jmlcalver;?></p>
+									<p class="head_couter">Calon Verifikator</p>
+								</div>
+							</div>
+						</div>
+						</a>
+					</div>
+					<?php } ?>
+
+					<div class="col-md-6 col-lg-3">
+						<a href="<?php echo $linkdosen;?>">
+						<div class="full counter_section margin_bottom_30">
+							<div class="couter_icon">
+								<div>
+									<i class='fa fa-user red_color'></i>
+								</div>
+							</div>
+							<div class="counter_no">
+								<div>
+									<p class="total_no"><?php echo $jmldosen;?></p>
+									<p class="head_couter"><?php echo $juduldosen;?></p>
+								</div>
+							</div>
+						</div>
+						</a>
+					</div>
+
+					<div class="col-md-6 col-lg-3">
+						<a href="<?php echo $linkmahasiswa;?>">
+						<div class="full counter_section margin_bottom_30">
+							<div class="couter_icon">
+								<div>
+									<i class='fa fa-user orange_color'></i>
+								</div>
+							</div>
+							<div class="counter_no">
+								<div>
+									<p class="total_no"><?php echo $jmlmahasiswa;?></p>
+									<p class="head_couter">Mahasiswa</p>
+								</div>
+							</div>
+						</div>
+						</a>
+					</div>
+
+					<?php if ($jmlcalonae>0) { ?>
 					<div class="col-md-6 col-lg-3">
 						<a href="<?php echo $linkguru;?>">
 						<div class="full counter_section margin_bottom_30">
@@ -69,7 +108,8 @@
 						</div>
 						</a>
 					</div>
-
+					<?php } ?>
+					
 					<?php if ($jmlcalonae>0) { ?>
 						<div class="col-md-6 col-lg-3">
 							<a href="<?php echo $linkae;?>">
@@ -150,9 +190,9 @@
 						</div>
 					<?php } ?>
 
-					<?php if ($jmlfreechannel>0) { ?>
+					<!-- <?php //if ($jmlfreechannel>0) { ?>
 						<div class="col-md-6 col-lg-3">
-							<a href="<?php echo $linkchn;?>">
+							<a href="<?php //echo $linkchn;?>">
 								<div class="full counter_section margin_bottom_30">
 									<div class="couter_icon">
 										<div>
@@ -161,14 +201,14 @@
 									</div>
 									<div class="counter_no">
 										<div>
-											<p class="total_no"><?php echo $jmlfreechannel;?></p>
+											<p class="total_no"><?php //echo $jmlfreechannel;?></p>
 											<p class="head_couter">Sekolah mendapat paket gratis</p>
 										</div>
 									</div>
 								</div>
 							</a>
 						</div>
-					<?php } ?>
+					<?php //} ?> -->
 
 					
 				</div>

@@ -51,8 +51,10 @@ foreach ($dafsoal as $datane) {
 	$kunci[$jml] = $datane->kunci;
 }
 
+
 $alamat = "/".$bulan."/".$tahun;
 $alamats = $alamat;
+
 if ($kodeevent=="evm")
 	{
 		$alamat = "/".$bulan."/".$tahun;
@@ -62,6 +64,9 @@ else if ($kodeevent != null)
 	$alamat = "/".$bulan."/".$tahun;
 else
 	$alamat = "";
+
+if ($bulan=="" && $tahun=="")
+$alamats="";
 ?>
 
 
@@ -496,7 +501,7 @@ else
 						<button class="btn btn-primary" onclick="return setingsoal();">Seting Soal</button>
 						<button class="btn btn-primary" onclick="return lihatsoal();">Lihat Soal</button>
 						<?php if ($kodeevent == null) { ?>
-							<button class="btn btn-primary" onclick="return lihatnilai();">Nilai Siswa</button>
+							<button class="btn btn-primary" onclick="return lihatnilai();">Nilai Mahasiswa</button>
 						<?php } ?>
 					</div>
 				</div>
@@ -522,7 +527,7 @@ else
 </style>
 
 <!----------------------------- SCRIPT DATATABLE  -------------------------------->
-<?php require_once('layout/calljs.php'); ?>
+<script src="<?php echo base_url();?>js/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript"
 		src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>

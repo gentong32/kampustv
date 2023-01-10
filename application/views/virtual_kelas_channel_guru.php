@@ -136,7 +136,7 @@ if ($this->session->userdata('a01'))
 		<div class="container">
 			<div class="row">
 				<center>
-					<h3>Modul Sekolah Saya</h3>
+					<h3>Modul Kampus Saya</h3>
 				</center>
 				<div style="margin-bottom: 10px;">
 					<?php if ($this->session->userdata('a01')) { ?>
@@ -155,7 +155,7 @@ if ($this->session->userdata('a01'))
 							onclick="window.location.href='<?php echo base_url(); ?>virtualkelas/sekolah_saya'">Dashboard
 					</button> -->
 					<button class="btn-main"
-							onclick="window.location.href='<?php echo base_url(); ?>virtualkelas/modul/'">Daftar Modul Sekolah
+							onclick="window.location.href='<?php echo base_url(); ?>virtualkelas/modul/'">Daftar Modul Kampus
 					</button>
 					<?php } ?>
 				</div>

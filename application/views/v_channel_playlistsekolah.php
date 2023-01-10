@@ -124,11 +124,11 @@ foreach ($dafpaket as $datane) {
 										<?php if ($this->session->userdata('sebagai')==1 ||
 										($this->session->userdata('sebagai')==2 && ($dibayaroleh=="sekolah" || $status==2 || $status==12))) {?>
 										<button
-											onclick="window.open('<?php echo base_url(); ?>channel/inputplaylist_sekolah/<?php echo $link_paket[$i].$opsipaket.$kodeevent; ?>', '_self')"
+											onclick="window.open('<?php echo base_url(); ?>channel/inputplaylist_kampus/<?php echo $link_paket[$i].$opsipaket.$kodeevent; ?>', '_self')"
 											type="button">Paket
 										</button>
 										<button
-											onclick="window.open('<?php echo base_url(); ?>channel/editplaylist_sekolah/<?php echo $link_paket[$i].$opsipaket.$kodeevent; ?>', '_self')"
+											onclick="window.open('<?php echo base_url(); ?>channel/editplaylist_kampus/<?php echo $link_paket[$i].$opsipaket.$kodeevent; ?>', '_self')"
 											type="button">Jam
 										</button>
 										<?php } else {?>
@@ -143,7 +143,7 @@ foreach ($dafpaket as $datane) {
 									<td>-</td>
 									<td>
 										<button
-											onclick="window.open('<?php echo base_url(); ?>channel/tambahplaylist_sekolah/<?php echo $i.'/'.$opsi; ?>', '_self')"
+											onclick="window.open('<?php echo base_url(); ?>channel/tambahplaylist_kampus/<?php echo $i.'/'.$opsi; ?>', '_self')"
 											type="button">Tambahkan Paket
 										</button>
 
