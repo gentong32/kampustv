@@ -23,8 +23,8 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-8 offset-md-2">
-					<h3>Tertarik untuk ikut berpartisipasi memajukan TV Sekolah?</h3>
-					<p>Kami memberikan kesempatan kepada Anda untuk ikut memajukan TV Sekolah melalui penyelenggaraan donasi yang bersifat tidak mengikat, bagi kepentingan pengelolaan dan pengembanganTV Sekolah.</p>
+					<h3>Tertarik untuk ikut berpartisipasi memajukan TV Kampus?</h3>
+					<p>Kami memberikan kesempatan kepada Anda untuk ikut memajukan TV Kampus melalui penyelenggaraan donasi yang bersifat tidak mengikat, bagi kepentingan pengelolaan dan pengembangan TV Kampus.</p>
 					<p>Setelah Anda melakukan transfer donasi, Anda dapat melihat seluruh donasi dan mendownload Seritifkat Donasi yang sudah anda berikan.</p>
 					<p>Daftar donasi Anda dapat dibuka melalui menu profil (klik nama anda pada menu).</p>
 

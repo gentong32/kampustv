@@ -40,7 +40,7 @@ if (substr($http, 0, strlen($prefix)) == $prefix) {
 		<div class="container">
 			<div class="row">
 				<center>
-					<span style="font-size: 18px;color: black">Link untuk registrasi TV Sekolah</span>
+					<span style="font-size: 18px;color: black">Link untuk registrasi TV Kampus</span>
 					<br>
 					<span style="font-size: 20px;color: black"><?php echo $dataku->nama_sekolah; ?></span>
 					<br>

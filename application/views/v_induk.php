@@ -8,7 +8,7 @@ $jml_video1 = 0;
 
 $links = array("","channel","vod","virtualkelas","festival");
 
-$submenu = array("","Channel TV Prodi","Ensiklomedia","Kelas Virtual","Festival TV Sekolah");
+$submenu = array("","Channel TV Prodi","Ensiklomedia","Kelas Virtual","Festival TV Kampus");
 $submenu2 = array("","Kanal TV Streaming untuk Unjuk Kreasi Siswa","Video Pembelajaran dari Semua untuk Semua",
 	"Platform Pembelajaran Elektronik untuk Sekolah","Gamifikasi untuk Jalur Prestasi Siswa");
 

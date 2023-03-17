@@ -607,7 +607,7 @@ if ($this->session->userdata('sebagai') == "4")
 						<?php } ?>
 
 						<li>
-							<span style="color: grey;margin-left: 20px;">Festival TV Sekolah</span>
+							<span style="color: grey;margin-left: 20px;">Festival TV Kampus</span>
 						</li>
 					</ul>
 				</li>
@@ -643,7 +643,7 @@ if ($this->session->userdata('sebagai') == "4")
 								<span class="menuku" style="<?php echo $warna[33]; ?>">Peluang Karir</span></a>
 						</li>
 						<li><a href="<?php echo base_url() . 'informasi/agency'; ?>">
-								<span class="menuku" style="<?php echo $warna[34]; ?>">Kantor Perwakilan TV Sekolah</span></a>
+								<span class="menuku" style="<?php echo $warna[34]; ?>">Kantor Perwakilan TV Kampus</span></a>
 							<hr style="margin-top: 5px;margin-bottom: 5px;">
 						</li>
 

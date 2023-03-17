@@ -39,6 +39,7 @@ class Watch extends CI_Controller
 		$data['konten'] = "v_vod_play";
 
 		$data['datavideo'] = $this->M_vod->getVideo($kode_video);
+
 		if (!$data['datavideo'])
 		{
 			redirect("/vod");
@@ -54,27 +55,16 @@ class Watch extends CI_Controller
 
 		$id_video = $data['datavideo']['id_video'];
 		//echo $id_video;
-
-		if (($data['datavideo']['status_verifikasi'] == 4 && $data['datavideo']['id_jenis'] == 1) ||
-			($data['datavideo']['status_verifikasi'] == 2 && $data['datavideo']['id_jenis'] == 1) ||
-			($data['datavideo']['status_verifikasi'] == 2 && $data['datavideo']['id_jenis'] == 2) ||
-			($data['datavideo']['status_verifikasi'] == 4 && $data['datavideo']['file_video'] != "") ||
-			($data['datavideo']['status_verifikasi'] == 4 && $data['datavideo']['link_video'] != "") ||
-			$pribadi!=null) {
-
-			$cookie_name = 'cookie_vod'.$kode_video;
-			if (!isset($_COOKIE[$cookie_name]))
-			{
-				$this->M_vod->updatetonton($id_video);
-				setcookie($cookie_name, "ok", time() + (86400), '/');
-			}
-
-			$data['dafkomentar'] = $this->M_vod->getKomentar($id_video);
-			$this->load->view('layout/wrapper_umum', $data);
-		} else {
-			redirect('/');
+		
+		$cookie_name = 'cookie_vod'.$kode_video;
+		if (!isset($_COOKIE[$cookie_name]))
+		{
+			$this->M_vod->updatetonton($id_video);
+			setcookie($cookie_name, "ok", time() + (86400), '/');
 		}
 
+		$data['dafkomentar'] = $this->M_vod->getKomentar($id_video);
+		$this->load->view('layout/wrapper_umum', $data);
 
 	}
 

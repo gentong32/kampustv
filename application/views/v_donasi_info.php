@@ -36,7 +36,7 @@ $namabank = $donasi->namabank;
 			<div style="font-size: larger; color: black">
 				<center>Kami sampaikan ucapan terimakasih sebelumnya.<br>
 					Donasi yang Anda diberikan kepada kami, akan dimanfaatkan untuk
-					mengelola dan mengembangkan fitur TV Sekolah. <br><br> Donasi ditransfer melalui <br>
+					mengelola dan mengembangkan fitur TV Kampus. <br><br> Donasi ditransfer melalui <br>
 					<b><?php echo strtoupper($namabank); ?></b><br> sebesar Rp <?php
 					echo number_format($iuran, 0, ",", ".") .
 						',- <br>ke rekening ' . $rekening; ?>. <br><br>

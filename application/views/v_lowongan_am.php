@@ -9,8 +9,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<div class="row"
 			 style="text-align:left;width:100%;border: #5faabd dotted 5px;padding: 20px;margin-top:20px;padding-top: 20px;margin-bottom: 25px">
 		<span style="padding-top:30px;font-weight:bold;font-size: 18px;">ACCOUNT MANAGER adalah seorang yang bertugas:<br>
-			- memberi semangat dan mendukung aktivitas sekolah di TV Sekolah<br>
-			- mendongkrak jumlah siswa mendaftar di TV Sekolah
+			- memberi semangat dan mendukung aktivitas sekolah di TV Kampus<br>
+			- mendongkrak jumlah siswa mendaftar di TV Kampus
 		</span>
 			<br><br>
 			<span style="font-weight:bold;font-size: 18px;">ACCOUNT MANAGER mendapatkan fee sebesar 5% dari jumlah Kelas Virtual yang laku

@@ -16,8 +16,19 @@ foreach ($dafpaket as $datane) {
 	$link_paket[$jml_paket] = $datane->link_list;
 	$nama_paket[$jml_paket] = $datane->nama_paket;
 	$status_video_ver[$jml_paket] = $datane->status_max;
+	$keteranganmod[$jml_paket] = "";
+
 	if($datane->modulke>0 && $datane->modulke<100)
-		$mingguke[$jml_paket] =  $datane->modulke;
+		{
+			$mingguke[$jml_paket] =  $datane->modulke;
+			// if ($datane->modulke!=17 && $datane->modulke!=18 && $datane->modulke!=19 && $datane->modulke!=20)
+			if ($datane->semester==1)
+			$gettglmodul = hitungtanggalmodul($datane->modulke,$datane->semester,$krs->start_tgl1,$krs->start_bln1);
+			else
+			$gettglmodul = hitungtanggalmodul($datane->modulke,$datane->semester,$krs->start_tgl2,$krs->start_bln2);
+			$keteranganmod[$jml_paket] = "(".$gettglmodul['fulltgl'].")";
+			
+		}
 	else
 		$mingguke[$jml_paket] = "-";
 	$durasi_paket[$jml_paket] = $datane->durasi_paket;
@@ -74,7 +85,7 @@ foreach ($dafpaket as $datane) {
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
-					<h3 class="text-center">Daftar Modul Sekolah</h3>
+					<h3 class="text-center">Daftar Modul Prodi Kampus</h3>
 				</div>
 				<div style="margin-bottom: 10px;">
 					<!-- <button class="btn-main"
@@ -85,7 +96,7 @@ foreach ($dafpaket as $datane) {
 					</button>
 				</div>
 				<hr>
-				<span style="color: red; font-style: italic;">*Jadwal Ujian akan ditentukan oleh Verifikator Sekolah</span>
+				<span style="color: red; font-style: italic;">*Jadwal Ujian akan ditentukan oleh Verifikator Prodi</span>
 				<?php if ($referrer!="") { ?>
 				<span style="color: red; font-style: italic;">*Modul akan diverifikasi oleh Mentor terlebih dahulu</span>
 				<?php } ?>
@@ -122,10 +133,10 @@ foreach ($dafpaket as $datane) {
 					<thead>
 					<tr>
 						<th style='padding:5;width:5px;'>No</th>
-						<th>Semester</th>
+						<th>Smst</th>
 						<th>Mata Kuliah</th>
 						<th>Nama Modul</th>
-						<th>Ke</th>
+						<th>Modul Ke-</th>
 						<th>Durasi</th>
 						<th>Tgl VC/Ujian</th>
 						<th>Materi/Soal</th>
@@ -159,7 +170,7 @@ foreach ($dafpaket as $datane) {
 							<td><?php echo $semester[$i]; ?></td>
 							<td><?php echo $nama_mapel[$i]; ?></td>
 							<td><?php echo $nama_paket[$i]; ?></td>
-							<td><?php echo $mingguke[$i]; ?></td>
+							<td style="text-align:center"><?php echo $mingguke[$i]."<br><i> <span style='font-size:12px'>".$keteranganmod[$i]."</span></i>"; ?></td>
 							<td><?php echo $durasi_paket[$i]; ?></td>
 							<td><?php echo $tayang_paket[$i]; ?></td>
 							<td><?php echo $keterangan; ?></td>

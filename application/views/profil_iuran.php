@@ -79,7 +79,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<div class="dash_blog">
 											<div class="dash_blog_inner">
 												<div class="dash_head">
-													<h3><span><i class="fa fa-dollar"></i> Pembayaran Ekskul Majalah Dinding TV Sekolah (Lite)</span>
+													<h3><span><i class="fa fa-dollar"></i> Pembayaran Ekskul Majalah Dinding TV Kampus (Lite)</span>
 													</h3>
 													Lite dapat 3 siswa ekskul gratis
 												</div>
@@ -127,7 +127,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<div class="dash_blog">
 											<div class="dash_blog_inner">
 												<div class="dash_head" style="word-break: keep-all">
-													<h3><span><i class="fa fa-dollar"></i> Pembayaran Ekskul Majalah Dinding TV Sekolah (Pro)</span>
+													<h3><span><i class="fa fa-dollar"></i> Pembayaran Ekskul Majalah Dinding  (Pro)</span>
 													</h3>
 													Pro dapat 10 siswa ekskul gratis
 												</div>
@@ -186,7 +186,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="dash_blog_inner">
 												<div class="dash_head">
 													<h3><span><i
-																class="fa fa-dollar"></i> Pembayaran Ekskul Majalah Dinding TV Sekolah (Premium)</span>
+																class="fa fa-dollar"></i> Pembayaran Ekskul Majalah Dinding  (Premium)</span>
 													</h3>
 													<ul>
 														<li>
@@ -250,7 +250,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<div class="dash_blog">
 											<div class="dash_blog_inner">
 												<div class="dash_head">
-													<h3><span><i class="fa fa-dollar"></i> Pembayaran Ekskul Majalah Dinding TV Sekolah melalui SIPLah</span>
+													<h3><span><i class="fa fa-dollar"></i> Pembayaran Ekskul Majalah Dinding TV Kampus melalui SIPLah</span>
 													</h3>
 													<ul>
 														<li>
@@ -376,7 +376,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<div class="dash_blog">
 											<div class="dash_blog_inner">
 												<div class="dash_head">
-													<h3><span><i class="fa fa-dollar"></i> Pembayaran Ekskul Majalah Dinding TV Sekolah melalui Siplah</span>
+													<h3><span><i class="fa fa-dollar"></i> Pembayaran Ekskul Majalah Dinding TV Kampus melalui Siplah</span>
 													</h3>
 													<ul>
 														<li>
@@ -484,7 +484,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="dash_blog_inner">
 												<div class="dash_head">
 													<h3><span><i
-																class="fa fa-dollar"></i> Bebas Pembayaran Ekskul Majalah Dinding TV Sekolah (Lite)</span>
+																class="fa fa-dollar"></i> Bebas Pembayaran Ekskul Majalah Dinding TV Kampus (Lite)</span>
 													</h3>
 												</div>
 												<?php if ($jmlpro==0 || $jmlpremium==0 || $jmlekskul==0)
@@ -534,7 +534,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<!-- footer -->
 	<div class="container-fluid">
 		<div class="footer">
-			<p>© Copyright 2021 - TV Sekolah. All rights reserved.</p>
+			<p>© Copyright 2021 - TV Kampus. All rights reserved.</p>
 		</div>
 	</div>
 </div>

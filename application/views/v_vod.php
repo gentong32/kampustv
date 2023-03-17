@@ -129,28 +129,15 @@ if ($jenjang != "0") {
 	}
 }
 $warnaaktif = "#F0F0F0";
-if ($jenjangpendek == "SMK")
-	$warnaaktif = "#ebe3ed";
-else if ($jenjangpendek == "SMA")
-	$warnaaktif = "#d4d4d4";
-else if ($jenjangpendek == "SMP")
-	$warnaaktif = "rgba(1,158,203,0.19)";
-else if ($jenjangpendek == "SD")
-	$warnaaktif = "rgba(203,3,5,0.14)";
-else if ($jenjangpendek == "TK")
-	$warnaaktif = "rgba(248,246,81,0.12)";
 
-$halaman = 99;
-if (isset($page)) {
-	$halaman = $page / 8 + 1;
-}
+$halaman = $page;
 
 $seimbang = 2;
 $pembagi = intval(($halaman - 1) / 8);
 $kloter = $pembagi + 1;
 $kloterakhir = intval(($total_data - 1) / 8) + 1;
 $batasawal = ($pembagi * 8) + 1;
-if ($kloter == $kloterakhir) {
+if ($kloter == $kloterakhir || $total_data<=40) {
 	$batasakhir = $kloterakhir;
 } else
 	$batasakhir = $kloter * 5;
@@ -198,54 +185,7 @@ if ($halaman > 3) {
 			<div class="row" style="margin-bottom: 10px;">
 				<!--    --><?php //echo "".$total_data;?>
 			<center>
-				<?php if ($asal == "cari" || ($kategori != "99" && $kategori == null && $asal != "cari")) { ?>
-					<div id="isijenjang" style="text-align:center;width:150px;display:inline-block">
-						<select class="form-control" name="ijenjang" id="ijenjang">
-							<option value="0">- Pilih Jenjang -</option>
-							<option value="carikategori">[Kategori]</option>
-							<?php
-							for ($v1 = 1; $v1 <= $jml_jenjang; $v1++) {
-								echo '<option ' . $keselectj[$v1] . ' value="' . $nama_pendek[$v1] . '">' . $nama_jenjang[$v1] . '</option>';
-							}
-							?>
-						</select>
-
-					</div>
-				<?php } ?>
-
-				<?php if ($asal != "cari" && $mapel != "kategori" && $kategori == null) { ?>
-					<div id="isimapel" style="width:200px;display:inline-block">
-						<select class="form-control" name="imapel" id="imapel">
-							<option value="0">-- Pilih Mapel --</option>
-							<option value="pilihkategori">[Ganti Pilihan ke Kategori]</option>
-							<?php
-							//if (!$mapel=="")
-							{
-								for ($v2 = 1; $v2 <= $jml_mapel; $v2++) {
-									echo '<option ' . $keselectm[$v2] . ' value="' . $kd_mapel[$v2] . '">' . $nama_mapel[$v2] . '</option>';
-								}
-							}
-							?>
-						</select>
-					</div>
-				<?php } ?>
-
-				<?php if ($kategori > 0) { ?>
-					<div id="isikategori" style="width:230px;display:inline-block">
-						<select class="form-control" name="ikategori" id="ikategori">
-							<option value="0">-- Pilih Kategori --</option>
-							<option value="pilihmapel">[Ganti Pilihan ke Mapel]</option>
-							<?php
-							//if (!$mapel=="")
-							{
-								for ($v3 = 1; $v3 <= $jml_kategori; $v3++) {
-									echo '<option ' . $keselectk[$v3] . ' value="' . $kd_kategori[$v3] . '">' . $nama_kategori[$v3] . '</option>';
-								}
-							}
-							?>
-						</select>
-					</div>
-				<?php } ?>
+				
 
 				<div id="pencarian" style="width:220px;display:inline-block">
 					<input type="text" name="isearch" class="form-control" id="isearch" placeholder="cari ..."
@@ -276,7 +216,7 @@ if ($halaman > 3) {
 			<?php if ($jml_video > 0) { ?>
 				<div class="col-lg-12">
 					<div class="text-center wow fadeInLeft">
-						<h2>Video <?php echo $jenjangpendek; ?></h2>
+						<h2>Video</h2>
 						<div class="small-border bg-color-2"></div>
 					</div>
 				</div>
@@ -338,53 +278,16 @@ if ($halaman > 3) {
 						if ($mapel == "")
 							$mapel = "0";
 
-						if ($asal == "mapel") {
-							if ($mapel == "0") {
-								$alamat = "mapel/" . $jenjangpendek . '/0';
-							} else {
-								$alamat = "mapel/" . $jenjangpendek;
-								if ($mapel == "cari")
-									$alamat = $alamat . '/cari/' . $kuncine;
-								else {
-									if ($kuncine == "cari")
-										$alamat = $alamat . '/' . $mapel . '/cari/' . $kuncine;
-									else
-										$alamat = $alamat . '/' . $mapel;
-								}
-							}
-						} else if ($asal == "mapelcari") {
-							$alamat = "mapel/" . $jenjangpendek . '/' . $mapel . '/cari/' . $kuncine;;
-						} else if ($asal == "kategori") {
-							$alamat = "kategori/" . $kategori;
-						} else if ($asal == "kategoricari") {
-							$alamat = "kategori/" . $kategori . '/cari/' . $kuncine;
-						} else if ($asal == "cari") {
-							$alamat = "cari/" . $kuncine;
-						} else {
-							$alamat = "kategori/" . $kategori;
-						}
-
-//						if ($total_data > 8) {
-//							$batas = intval($total_data / 8);
-//							if ($total_data % 8 > 0)
-//								$batas = $batas + 1;
-//							//echo "==============".$batas;
-//							for ($a = 1; $a <= $batas; $a++) {
-//								if ($a == $halaman)
-//									echo '<li><a href="' . base_url() . 'vod/' . $alamat . '/' . $a . '" style="background-color: #e4c774">' . $a . '</a></li>';
-//								else
-//									echo '<li><a href="' . base_url() . 'vod/' . $alamat . '/' . $a . '" style="background-color: #7f7f7f">' . $a . '</a></li>';
-//							}
-//							?>
-<!---->
-<!--						--><?php //} ?>
-
-						<?php if ($kategori != "99") {?>
+						$alamat = "daftar_vod/";
+						if ($kuncine!="")
+							$alamat = $alamat . '/cari/' . $kuncine;
+						
+						if ($kategori != "99") {?>
 						<ul class="pagination">
 							<?php if ($halaman == 1) { ?>
 
 							<?php } else { ?>
-								<li><a href="<?php echo base_url() . "vod/" . $alamat . "/" . $halprev; ?>">Prev</a></li>
+								<li><a href="<?php echo base_url() . "vod?hal=" . $halprev; ?>">Prev</a></li>
 							<?php }
 							?>
 							<?php for ($i = $batasawal; $i <= $batasakhir; $i++) { ?>
@@ -394,13 +297,13 @@ if ($halaman > 3) {
 									if ($i == $halaman)
 										echo "#";
 									else if ($i == 1)
-										echo base_url() . "vod/" . $alamat . "/";
+										echo base_url() . "vod/";
 									else
-										echo base_url() . "vod/" . $alamat . "/" . $i; ?>"><?php echo $i; ?></a></li>
+										echo base_url() . "vod?hal=".$i; ?>"><?php echo $i; ?></a></li>
 							<?php }
 							?>
 							<?php if ($halnext <= $kloterakhir) { ?>
-								<li><a href="<?php echo base_url() . "vod/" . $alamat . "/" . $halnext; ?>">Next</a></li>
+								<li><a href="<?php echo base_url() . "vod?hal=".$halnext; ?>">Next</a></li>
 							<?php } else { ?>
 
 							<?php }
@@ -428,7 +331,7 @@ if ($halaman > 3) {
 	$(document).on('change input', '#isearch', function () {
 		$.ajax({
 			type: 'GET',
-			data: {asal: "<?php echo $asal;?>", jenjang: "<?php echo $jenjang;?>", mapel: "<?php echo $mapel;?>", kunci: $('#isearch').val()},
+			data: {kunci: $('#isearch').val()},
 			dataType: 'json',
 			cache: false,
 			url: '<?php echo base_url();?>vod/get_autocomplete',
@@ -487,60 +390,22 @@ if ($halaman > 3) {
 	});
 
 	function caridonk() {
+
 		var segments = $(location).attr('href').split('/');
 		var tambahseg = -1;
-		//var kata = segments[segments.length-3];
+
 		if (segments[2] == "localhost") {
 			tambahseg = 0;
 		}
-		var vod = segments[3 + tambahseg];
-		var vod2 = segments[4 + tambahseg];
-		var mapel = segments[5 + tambahseg];
-		var jenjang = segments[6 + tambahseg];
-		var idmapel = segments[7 + tambahseg];
-		var cari = segments[8 + tambahseg];
 
-		//var cleanString = $('#isearch').val().replace(/[|&;$%@"<>()+,]/g, "");
 		$('#isearch').val($('#isearch').val().replace(/[|&;$%@"<>()+,]/g, ""));
 
-		if (cari == "cari") {
-			window.open('<?php echo base_url();?>vod/mapel/' + jenjang + '/' + idmapel + '/cari/' + $('#isearch').val(), '_self');
-		} else if (vod2 == "" || (vod == "vod" && vod2 == "vod" && mapel == "") || (vod2 == "vod" && mapel == "cari")) {
-			if ($('#isearch').val() == "") {
+		if ($('#isearch').val() == "") {
 
-				window.open('<?php echo base_url();?>vod/', '_self');
-			} else {
+		window.open('<?php echo base_url();?>vod/', '_self');
+		} else {
 
-				window.open('<?php echo base_url();?>vod/cari/' + $('#isearch').val(), '_self');
-			}
-		} else if (idmapel > 0) {
-			if ($('#isearch').val() == "") {
-
-				window.open('<?php echo base_url();?>vod/mapel/' + jenjang + '/' + idmapel, '_self');
-			} else {
-				if (mapel == "kategori") {
-					window.open('<?php echo base_url();?>vod/kategori/' + jenjang + '/cari/' + $('#isearch').val(), '_self');
-				} else
-					window.open('<?php echo base_url();?>vod/mapel/' + jenjang + '/' + idmapel + '/cari/' + $('#isearch').val(), '_self');
-			}
-		} else if (mapel == "mapel") {
-			if ($('#isearch').val() == "") {
-
-				window.open('<?php echo base_url();?>vod/mapel/' + jenjang, '_self');
-			} else {
-
-				window.open('<?php echo base_url();?>vod/mapel/' + jenjang + '/cari/' + $('#isearch').val(), '_self');
-			}
-		} else if (mapel == "kategori") {
-
-			if ($('#isearch').val() == "")
-				window.open('<?php echo base_url();?>vod/kategori/' + jenjang, '_self');
-			else {
-				if (jenjang == "pilih")
-					window.open('<?php echo base_url();?>vod/cari/' + $('#isearch').val(), '_self');
-				else
-					window.open('<?php echo base_url();?>vod/kategori/' + jenjang + '/cari/' + $('#isearch').val(), '_self');
-			}
+		window.open('<?php echo base_url();?>vod/cari/' + $('#isearch').val(), '_self');
 		}
 	}
 

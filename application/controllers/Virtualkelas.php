@@ -47,8 +47,10 @@ class Virtualkelas extends CI_Controller
 		$this->load->view('layout/wrapper_umum', $data);
 	}
 
-	public function sekolah_saya()
+	public function sekolah_saya($tanggal=null)
 	{
+		
+
 		if (!$this->session->userdata('loggedIn') || $this->session->userdata('siam')==3) {
 			redirect("/");
 		}
@@ -69,7 +71,7 @@ class Virtualkelas extends CI_Controller
 
 		$data = array();
 
-		$cekmodul = hitungmodulke();
+		$cekmodul = hitungmodulke($tanggal);
 		$semester = $cekmodul['semester'];
 
 		$data['tgl_skr'] = $cekmodul['tanggalnya'];
@@ -94,6 +96,8 @@ class Virtualkelas extends CI_Controller
 			$nmodul = 19;
 		else if ($nmodul == "remedial uas")
 			$nmodul = 20;
+
+		
 
 		if ($this->session->userdata('sebagai') == 1) {
 			$adamentor = 0;
@@ -1244,6 +1248,11 @@ class Virtualkelas extends CI_Controller
 
 	public function modul($linklist = null, $opsi = null)
 	{
+		if (isset($_GET['tanggal']))
+		$tanggal = $_GET['tanggal'];
+		else
+		$tanggal = null;
+
 		if (!$this->session->userdata('loggedIn')) {
 			redirect("/");
 		}
@@ -1251,6 +1260,9 @@ class Virtualkelas extends CI_Controller
 		setcookie('basis', "modul", time() + (86400), '/');
 		$id_user = $this->session->userdata('id_user');
 		$npsn = $this->session->userdata('npsn');
+		$getuser = getstatususer();
+		$prodi = $getuser['kelasku'];
+
 		if ($this->session->userdata('verifikator') == 3) {
 			$data = array();
 			$data['konten'] = 'virtual_kelas_modul_ver';
@@ -1268,6 +1280,7 @@ class Virtualkelas extends CI_Controller
 			$user = $this->M_login->getUser($id_user);
 			$data['referrer'] = $user['referrer'];
 			$data['konten'] = 'virtual_kelas_modul_guru';
+			$data['krs'] = $this->M_vksekolah->getSetingKRS($npsn, $prodi);
 			$data['dafpaket'] = $this->M_vksekolah->getPaketGuru($id_user);
 			// echo "<pre>";
 			// echo var_dump($data['dafpaket']);
@@ -1279,11 +1292,13 @@ class Virtualkelas extends CI_Controller
 			$cekmoduluser = $this->M_vksekolah->cekModulPilihan($id_user);
 			$jmlmapelpilihan = count($cekmoduluser);
 
-			if ($jmlmapelpilihan == $jmlmapel) {
-				$this->modul_siswa($linklist, $opsi);
-			} else {
-				$this->pilih_modul();
-			}
+			$this->modul_siswa($linklist, $opsi, $tanggal);
+
+			// echo "CEK84734".$tanggal;
+			// if ($jmlmapelpilihan == $jmlmapel) {
+			// } else {
+			// 	$this->pilih_modul();
+			// }
 		}
 	}
 
@@ -1301,12 +1316,15 @@ class Virtualkelas extends CI_Controller
 		$ambilmodul = $this->M_vksekolah->getDafModulSayaSemua($id_user);
 		$data['dafpaket'] = $ambilmodul;
 
+		// echo var_dump($data['dafpaket']);
+		// die();
+
 		$this->load->view('layout/wrapper_tabel', $data);
 
 	}
 
 
-	private function modul_siswa($linklist, $opsi = null)
+	private function modul_siswa($linklist, $opsi = null, $tanggal = null)
 	{
 
 		if ($linklist == null)
@@ -1348,28 +1366,23 @@ class Virtualkelas extends CI_Controller
 				$data['ambilpaket'] = "premium";
 			$data['modullaluke'] = $cekmodulsaya->modulke;
 		}
+		else if ($npsn=="001007")
+		{
+			$data['ambilpaket'] = "premium";
+		}
 		else if ($data['ambilpaket']!="Lite")
 			redirect("/virtualkelas/sekolah_saya");
 
-		
+		$cekmodul = hitungmodulke($tanggal);
 
-		//echo var_dump($cekmodulsaya);
-		
-
-		
-
-//		if ($statusvksekolah == "Pro" || $statusvksekolah == "Premium" || $statusvksaya != "0") {
-//
-//		} else
-//			redirect("/virtualkelas/sekolah_saya");
-
-		$cekmodul = hitungmodulke();
+		// echo "CEK1456".$tanggal;
 		$modulke = $cekmodul['nmodul'];
 		$mingguke = $cekmodul['nminggu'];
 		$semester = $cekmodul['semester'];
 
 		$data['konten'] = 'virtual_kelas_channel_siswa';
 		$dafmodul = $this->M_vksekolah->getDafModulSaya($id_user, $modulke, $linklist, $semester);
+		// echo var_dump($dafmodul);
 		$data['dafplaylist'] = $dafmodul;
 		$data['modulke'] = $modulke;
 		$data['mingguke'] = $mingguke;
@@ -1677,7 +1690,7 @@ class Virtualkelas extends CI_Controller
 		return $tstrata;
 	}
 
-	public function tambahmodul()
+	public function tambahmodul($testanggal=null)
 	{
 		if (!$this->session->userdata('a03') && !$this->session->userdata('a02')) {
 			redirect('/');
@@ -1686,7 +1699,34 @@ class Virtualkelas extends CI_Controller
 		$statususer = getstatususer();
 		$referrer = $statususer['referrer'];
 
+		date_default_timezone_set('Asia/Jakarta');
+
+		$namabulan = Array('', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September','Oktober', 'November', 'Desember');
+
+		if ($testanggal==null)
+			$sekarang = new DateTime();
+		else
+			$sekarang = new DateTime($testanggal);
+
+		$tglpaket = $sekarang->format("Y-m-d H:i");
+		$tahun = $sekarang->format("Y");
+
+		
 		$data = array();
+
+		if (intval(substr($tglpaket,5,2))>=6)
+		$semestermodul = 1;
+		else
+		$semestermodul = 2;
+
+		$npsn = $this->session->userdata('npsn');
+		$getuser = getstatususer();
+		$prodi = $getuser['kelasku'];
+		
+		$getdaftarmodul = $this->M_vksekolah->getDafModul($semestermodul);
+		$data['datakrs'] = $this->M_vksekolah->getSetingKRS($npsn,$prodi);
+		$data['dafmodul'] = $getdaftarmodul;
+		$data['semestermodul'] = $semestermodul;
 		$data['konten'] = "virtual_kelas_tambahmodul";
 		$data['addedit'] = "add";
 		$this->load->Model('M_video');
@@ -1785,6 +1825,13 @@ class Virtualkelas extends CI_Controller
 		}
 
 		$data = array();
+
+		$npsn = $this->session->userdata('npsn');
+		$getuser = getstatususer();
+		$prodi = $getuser['kelasku'];
+		
+		$data['datakrs'] = $this->M_vksekolah->getSetingKRS($npsn,$prodi);
+
 		$data['konten'] = 'virtual_kelas_tambahmodul';
 
 		$data['addedit'] = "edit";
@@ -1809,6 +1856,14 @@ class Virtualkelas extends CI_Controller
 		$this->load->model('M_bimbel');
 		$this->load->model('M_video');
 		$data['dafmapel'] = $this->M_video->getMatkul($this->session->userdata('id_user'));
+
+		///////////////////////////////
+
+		$semestermodul = $data['datapaket']->semester;
+		
+		$getdaftarmodul = $this->M_vksekolah->getDafModul($semestermodul);
+		// echo var_dump($getdaftarmodul);
+		$data['dafmodul'] = $getdaftarmodul;
 		
 		$cekbelimodul = $this->M_channel->getmodultb_virtual($kodepaket);
 	
@@ -2273,9 +2328,13 @@ class Virtualkelas extends CI_Controller
 		//echo "KODEBELI:".$iduser;
 
 		if ($kodeusr != "verifikator")
-			$data['dafplaylist'] = $this->M_channel->getDafPlayListSaya($kd_user, $iduser, $kodebeli, 1);
+			{
+				$data['dafplaylist'] = $this->M_channel->getDafPlayListSaya($kd_user, $iduser, $kodebeli, 1);
+			}
 		else
-			$data['dafplaylist'] = $this->M_channel->getDafPlayListGuru($this->session->userdata("npsn"), $iduser, $kodebeli, 1);
+			{
+				$data['dafplaylist'] = $this->M_channel->getDafPlayListGuru($this->session->userdata("npsn"), $iduser, $kodebeli, 1);
+			}
 
 		if (sizeof($data['dafplaylist']) == 0 && $linklist != "tampilkan")
 			redirect("/virtualkelas/modul");
@@ -3518,6 +3577,166 @@ class Virtualkelas extends CI_Controller
 
 		$this->load->view('layout/wrapper_umum', $data);
 
+	}
+
+	public function getdafmodulke($semestermodul=null)
+	{
+		if ($semestermodul==null)
+		$semestermodul = $_GET['semester'];
+
+		$getdaftarmodul = array();
+
+		$npsn = $this->session->userdata('npsn');
+		$getuser = getstatususer();
+		$prodi = $getuser['kelasku'];
+		$datakrs = $this->M_vksekolah->getSetingKRS($npsn,$prodi);
+
+		for ($a0=1;$a0<=16;$a0++)
+		{
+			$a = $a0;
+			if ($a>8)
+			$a=$a0+2;
+
+			$kd_modul[$a0] = $a;
+			
+			if ($semestermodul==1)
+			$gettglmodul = hitungtanggalmodul($a,$semestermodul,$datakrs->start_tgl1,$datakrs->start_bln1);
+			else
+			$gettglmodul = hitungtanggalmodul($a,$semestermodul,$datakrs->start_tgl2,$datakrs->start_bln2);
+			$keteranganmod = $gettglmodul['fulltgl'];
+
+			$getdaftarmodul[] = "Modul ".$a0." [".$keteranganmod."]";
+		}
+		echo json_encode($getdaftarmodul);
+	}
+
+	public function getdafmodulke_old($semester=null)
+	{
+		$namabulan = Array('', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September','Oktober', 'November', 'Desember');
+
+		if ($semester==null)
+		$semester = $_GET['semester'];
+		$sekarang = new DateTime();
+		$tglpaket = $sekarang->format("Y-m-d H:i");
+		$tahun = $sekarang->format("Y");
+
+		$getdaftarmodul = array();
+		$nmodul=0;
+
+		if ($semester==1)
+		{
+			for ($a=8; $a<=12; $a++)
+			{
+				for ($b=1; $b<=3; $b++)
+				{
+					if (($a==10 && $b<=2) || ($a==12 && $b>2))
+					{
+
+					}
+					else
+					{
+						$nmodul++;
+						$getdaftarmodul[] = "Modul ".$nmodul." [".(1+($b-1)*7)." - ".(7+($b-1)*7)." ".$namabulan[$a]."]";
+					}
+				} 
+				if ($a==12)
+				{
+
+				}
+				else
+				{
+					$nmodul++;
+					$tglhitung = new DateTime($tahun."-".($a)."-1");
+					$tglakhir = $tglhitung->format("t");
+					$getdaftarmodul[] = "Modul ".$nmodul." [22 - ".$tglakhir." ".$namabulan[$a]."]";
+				}
+			}
+		}
+		else
+		{
+			for ($a=2; $a<=6; $a++)
+			{
+				for ($b=1; $b<=3; $b++)
+				{
+					if (($a==4 && $b<=2) || ($a==6 && $b>2))
+					{
+
+					}
+					else
+					{
+						$nmodul++;
+						$getdaftarmodul[] = "Modul ".$nmodul." [".(1+($b-1)*7)." - ".(7+($b-1)*7)." ".$namabulan[$a]."]";
+					}
+				} 
+				if ($a==6)
+				{
+
+				}
+				else
+				{
+					$nmodul++;
+					$tglhitung = new DateTime($tahun."-".($a)."-1");
+					$tglakhir = $tglhitung->format("t");
+					if ($a==2)
+						$tglakhir = "28/29";
+					$getdaftarmodul[] = "Modul ".$nmodul." [22 - ".$tglakhir." ".$namabulan[$a]."]";
+				}
+			}
+		}
+
+		echo json_encode($getdaftarmodul);
+	}
+
+	public function krs()
+	{
+		if (!$this->session->userdata('loggedIn'))
+		redirect("/");
+		$npsn = $this->session->userdata('npsn');
+		$getuser = getstatususer();
+		$prodi = $getuser['kelasku'];
+
+		$data = array();
+		$data['konten'] = "jadwalkrs";
+		$data['datakrs'] = $this->M_vksekolah->getSetingKRS($npsn,$prodi);
+
+		// var_dump($data['datakrs']);
+
+		$this->load->view('layout/wrapper_umum', $data);
+	}
+
+	public function updatejadwalkrs($semester)
+	{
+		$npsn = $this->session->userdata('npsn');
+		$getuser = getstatususer();
+		$prodi = $getuser['kelasku'];
+		$tgl1 = $_POST['tgl1'];
+		$tgl2 = $_POST['tgl2'];
+		$tgl1format = substr($tgl1,6,4)."-".substr($tgl1,3,2)."-".substr($tgl1,0,2);
+		$tgl2format = substr($tgl2,6,4)."-".substr($tgl2,3,2)."-".substr($tgl2,0,2);
+		$update = $this->M_vksekolah->updatejadwalkrs($npsn,$prodi,$semester,$tgl1format,$tgl2format);
+		if ($update)
+			echo "sukses";
+		else
+			echo "gagal";
+	}
+
+	public function updatemulaikuliah($semester)
+	{
+		$npsn = $this->session->userdata('npsn');
+		$getuser = getstatususer();
+		$prodi = $getuser['kelasku'];
+		$tgl = $_POST['tglstart'];
+		$bln = $_POST['blnstart'];
+		$update = $this->M_vksekolah->updatemulaikuliah($npsn,$prodi,$semester,$tgl,$bln);
+		if ($update)
+			echo "sukses";
+		else
+			echo "gagal";
+	}
+
+	public function tesmodul()
+	{
+		hitungtanggalmodul(8,1,8,9,2022);
 	}
 
 }

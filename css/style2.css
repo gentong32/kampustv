@@ -61,8 +61,50 @@
   .tb_oren:hover {
 	background: rgba(236, 230, 218, 1)
   }
+
+  .tb_hijauauto {
+	font-size:15px;
+	font-family:Arial;
+	width:auto;
+	height:37px;
+	border-width:1px;
+	color:#757d6f;
+	border-color:#b2b8ad;
+	font-weight:bold;
+	border-top-left-radius:6px;
+	border-top-right-radius:6px;
+	border-bottom-left-radius:6px;
+	border-bottom-right-radius:6px;
+	box-shadow:inset 0px 0px 14px -3px #f2fadc;
+	text-shadow:inset 0px 1px 0px #ced9bf;
+	background:#dbe6c4;
+  }
+  
+  .tb_hijauauto:hover {
+	background: rgba(226, 236, 218, 1)
+  }
 				
-				
+  .tb_biruauto {
+	font-size:15px;
+	font-family:Arial;
+	width:auto;
+	height:37px;
+	border-width:1px;
+	color:#9697a9;
+	border-color:#adaeb8;
+	font-weight:bold;
+	border-top-left-radius:6px;
+	border-top-right-radius:6px;
+	border-bottom-left-radius:6px;
+	border-bottom-right-radius:6px;
+	box-shadow:inset 0px 0px 14px -3px #dce9fa;
+	text-shadow:inset 0px 1px 0px #bfcbd9;
+	background:#c4cae6;
+  }
+  
+  .tb_biruauto:hover {
+	background: rgb(218, 231, 236)
+  }			
 				
 
 .text-wrap {

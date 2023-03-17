@@ -3,13 +3,13 @@
 	{
 		require_once('metane.php');
 	} else {?>
-	<title>TV Sekolah - Wahana Belajar dan Berkreasi</title>
-	<meta content="TV Sekolah - Wahana Belajar dan Berkreasi" name="description" />
+	<title>TV Kampus - Wahana Belajar dan Berkreasi</title>
+	<meta content="TV Kampus - Wahana Belajar dan Berkreasi" name="description" />
 	<?php } ?>
 	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
 	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
-	<meta content="kurikulum 2013,materi sekolah,tv,sekolah,pjj,bimbel" name="keywords" />
-	<meta content="tv sekolah" name="author" />
+	<meta content="kurikulum 2013,mahasiswa,materi kampus,tv,kampus,prodi,pjj,bimbel" name="keywords" />
+	<meta content="tv kampus" name="author" />
 
 	<link rel="icon" href="<?php echo base_url();?>images/icon.png" type="image/gif" sizes="16x16">
 	<link rel="apple-touch-icon" sizes="57x57" href="<?php echo base_url();?>ico/apple-icon-57x57.png">

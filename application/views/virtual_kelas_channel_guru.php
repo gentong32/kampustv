@@ -34,6 +34,10 @@ foreach ($dafplaylist as $datane) {
 	$semester[$jmldaf_list] = $datane->semester;
 	$nama_mapel[$jmldaf_list] = $datane->nama_mapel;
 	$modulke[$jmldaf_list] = $datane->modulke;
+	$keteranganmod[$jmldaf_list] = "";
+	if ($datane->modulke!=17 && $datane->modulke!=18 && $datane->modulke!=19 && $datane->modulke!=20)
+		$keteranganmod[$jmldaf_list] = "(".$datane->keterangan_mod.")";
+
 	if ($datane->status_paket == 1) {
 		$tlive[$jmldaf_list] = "Segera Tayang";
 		$idliveduluan = $jmldaf_list;
@@ -178,9 +182,9 @@ if ($this->session->userdata('a01'))
 				<img class="thumbbimbel" style="width: 100%;height: auto;" src="' . $thumbnail[$a1] . '"><br>
 				</a>
 			</div>
-			<div style="font-size: smaller;">Pertemuan ke-' . $modulke[$a1] .'</div>
+			<div style="font-size: smaller;">Modul ke-' . $modulke[$a1] .' '.$keteranganmod[$a1].'</div>
 			<div class="judulvideo">' . $nama_playlist[$a1] .'</div>
-			<div style="font-size: smaller;"><i>'.$nama_mapel[$a1].' - '.$kelas[$a1].' / '.$semester[$a1].'</i></div>
+			<div style="font-size: smaller;"><i>'.$nama_mapel[$a1].' - Smstr '.$semester[$a1].'</i></div>
 			
 			<div style="margin-bottom: 5px;">
 			<button style="width: 100%;" class="btn-outline-info" onclick="window.open(\'' . base_url() .

@@ -2450,6 +2450,12 @@ class Channel extends CI_Controller
 		$status_video = $_POST['status'];
 		$linklist_paket = $_POST['kodepaket'];
 
+		$npsn = $this->session->userdata('npsn');
+		$getuser = getstatususer();
+		$prodi = $getuser['kelasku'];
+
+		// 12--1--285minr5li1w
+
 		$this->load->model('M_channel');
 		$infopaket = $this->M_channel->getInfoPaket($linklist_paket);
 
@@ -2461,6 +2467,7 @@ class Channel extends CI_Controller
 		$data1['id_paket'] = $infopaket->id;
 		$data1['urutan'] = 0;
 		$data1['id_video'] = $id_video;
+		$data1['prodi'] = $prodi;
 
 		if ($status_video == 1) {
 			$this->M_channel->addDataChannelVideo($data1);
@@ -2470,7 +2477,10 @@ class Channel extends CI_Controller
 			$this->M_channel->updatedilist($id_video, 0);
 		}
 
-		$datachannelvideo = $this->M_channel->getDataChannelVideo($infopaket->id);
+		$datachannelvideo = $this->M_channel->getDataChannelVideo($infopaket->id, $prodi);
+
+		// echo var_dump($datachannelvideo);
+		// die();
 
 		$durasi = 0;
 		foreach ($datachannelvideo as $datane) {

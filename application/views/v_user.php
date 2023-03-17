@@ -59,24 +59,8 @@ if (!isset($premium))
 					<?php }
 					?>
 					<br><br>
-<!--					--><?php //if ($this->session->userdata('a02') && !$this->session->userdata('a01') && $nama_am != "kosong") {
-//						echo "Area Marketing : " . $nama_am . "<br>";
-//						if ($premium == "") {
-//							$sisa = 25 - ($total_adapaketreguler + $total_adapaketpremium);
-//							if ($sisa > 0)
-//								echo "[Perlu " . $sisa . " paket pembelian menuju TV Sekolah Gratis]";
-//							else
-//								echo "Sekolah anda gratis iuran untuk bulan depan";
-//						} else if ($premium == "PREMIUM") {
-//							$sisa = 100 - ($total_adapaketreguler + $total_adapaketpremium);
-//							echo "[Masih tersedia " . $sisa . " Paket Premium gratis]";
-//						}
-//
-//					}
-//					?>
 				</center>
-				<!--<button style="margin-left:10px" id="btn-show-all-children" type="button">Expand All</button>-->
-				<!--<button style="margin-left:10px" id="btn-hide-all-children" type="button">Collapse All</button>-->
+	
 				<?php if ($asal == "dashboard") {
 					if ($sebagai=="calver") { ?>
 					<div style="margin-bottom: 10px;">

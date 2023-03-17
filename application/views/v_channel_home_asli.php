@@ -211,7 +211,7 @@ else
 
 <!--<hr>-->
 <div style="text-align: center">
-	<span style="font-weight: bold;color: grey">TV SEKOLAH</span>
+	<span style="font-weight: bold;color: grey">TV KAMPUS</span>
 	<div class="regular slider" style="margin-top: 20px;">
 		<?php if ($jml_channelku && !$this->session->userdata('a01')) { ?>
 			<div style="vertical-align: text-top; display: inline-block; padding-left: 10px;padding-right: 10px;">

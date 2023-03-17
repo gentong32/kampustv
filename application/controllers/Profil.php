@@ -1173,10 +1173,10 @@ class Profil extends CI_Controller
 			if ($getstatus['status_tunggu'] == "tunggu") {
 
 				if (substr($getstatus['order_id'], 0, 3) == "TVS")
-					$namapembayaran = "Pembayaran TV Sekolah";
+					$namapembayaran = "Pembayaran TV Kampus";
 				else if (substr($getstatus['order_id'], 0, 3) == "EK1" || substr($getstatus['order_id'], 0, 3) == "EK2" ||
 					substr($getstatus['order_id'], 0, 3) == "EK3" || substr($getstatus['order_id'], 0, 3) == "EK4")
-					$namapembayaran = "Pembayaran Ekskul oleh Sekolah";
+					$namapembayaran = "Pembayaran Ekskul oleh Prodi Kampus";
 				else if (substr($getstatus['order_id'], 0, 2) == "TP")
 					$namapembayaran = "Pembayaran Sekolah Pro";
 				else if (substr($getstatus['order_id'], 0, 2) == "TF")
@@ -1476,9 +1476,9 @@ class Profil extends CI_Controller
 
 		if ($this->session->userdata('statusbayar') == 2 && $this->session->userdata('a02') == false) {
 			$iuran = $iuran + $standar->reaktivasi;
-			$namane = "Reaktivasi " . $bulanapa . " Bulan TV Sekolah";
+			$namane = "Reaktivasi " . $bulanapa . " Bulan TV Kampus";
 		} else {
-			$namane = "Pembayaran " . $bulanapa . " Bulan TV Sekolah";
+			$namane = "Pembayaran " . $bulanapa . " Bulan TV Kampus";
 		}
 
 		$iduser = $this->session->userdata('id_user');

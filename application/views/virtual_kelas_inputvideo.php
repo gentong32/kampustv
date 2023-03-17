@@ -396,6 +396,8 @@ if($tahun!=null)
 			statusnya = 1;
 		}
 
+		alert (idx+"--"+statusnya+"--"+"<?php echo $kodepaket;?>");
+
 		$.ajax({
 			url: "<?php echo base_url();?>channel/masukinlist",
 			method: "POST",

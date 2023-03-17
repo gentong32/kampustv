@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<br>
 				<span style="font-size: 16px;font-weight: normal">
 					telah berperan aktif sebagai:</span><br>
-				<span style="font-size: 18px;font-weight: bold">Peserta Bimtek Calon Verifikator TV Sekolah</span>
+				<span style="font-size: 18px;font-weight: bold">Peserta Bimtek Calon Verifikator TV Kampus</span>
 					<br>
 					<span style="font-size: 16px;font-weight: normal">untuk periode:</span><br>
 				<span style="font-size: 18px;font-weight: bold"><?php echo nmbulan_panjang($bulan)." ".$tahun;?>

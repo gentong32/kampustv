@@ -29,8 +29,9 @@ if ($addedit == "add") {
 	$kelasini = $datapaket->id_kelas;
 	$jurusanini = $datapaket->id_jurusan;
 	$mapelini = $datapaket->id_mapel;
+	// $modulini = $datapaket->id_mapel;
 	$mingguke = $datapaket->modulke;
-	$semester = $datapaket->semester;
+	$semestermodul = $datapaket->semester;
 
 	if ($jenjangini == 5) {
 		$jml_jurusan = 0;
@@ -66,6 +67,32 @@ foreach ($dafmapel as $datane) {
 	$jml_mapel++;
 	$kd_mapel[$jml_mapel] = $datane->id;
 	$nama_mapel[$jml_mapel] = $datane->nama_mapel;
+}
+
+// $jml_modul = 0;
+// foreach ($dafmodul as $datane) {
+// 	$jml_modul++;
+// 	$kd_modul[$jml_modul] = $jml_modul;
+// 	$nama_modul[$jml_modul] = "Modul ".$jml_modul." [".$datane->keterangan_mod."]";
+	
+// }
+
+$jml_modul=16;
+for ($a0=1;$a0<=16;$a0++)
+{
+	$a = $a0;
+	if ($a>8)
+	$a=$a0+2;
+
+	$kd_modul[$a0] = $a;
+	
+	if ($semestermodul==1)
+	$gettglmodul = hitungtanggalmodul($a,$semestermodul,$datakrs->start_tgl1,$datakrs->start_bln1);
+	else
+	$gettglmodul = hitungtanggalmodul($a,$semestermodul,$datakrs->start_tgl2,$datakrs->start_bln2);
+	$keteranganmod = $gettglmodul['fulltgl'];
+
+	$nama_modul[$a0] = "Modul ".$a0." [".$keteranganmod."]";
 }
 
 if (!isset($tahun))
@@ -197,7 +224,7 @@ if (!isset($tahun))
 											<?php
 											
 												for ($v1 = 1; $v1 <= 2; $v1++) {
-													if ($v1 == $semester)
+													if ($v1 == $semestermodul)
 														$opsi = " selected ";
 													else
 														$opsi = " ";
@@ -212,14 +239,29 @@ if (!isset($tahun))
 
 								<div class="form-group maks360">
 								<br>
-									<div class="col-md-12" id="dmapel">
-										<label for="select" class="col-md-12 control-label">Modul ke: <span style="color:red"><sup>* (1 - 16)</sup></span></label>
-										<input <?php 
-											if ($referrer!="")
-											echo "disabled";?> type="text" class="form-control" id="imingguke" name="imingguke"
-											   maxlength="100"
-											   value="<?php echo $mingguke; ?>" placeholder="">
-										<br>
+									<div class="col-md-12" id="dmingguke">
+										<label for="select" class="col-md-12 control-label">Modul ke: 
+											<!-- <span style="color:red"><sup>* (1 - 16)</sup></span> -->
+										</label>
+										<select class="form-control" name="imingguke" id="imingguke">
+											<option value="0">-- Pilih Modul Ke --</option>
+											<?php
+											if ($addedit == "edit")
+												for ($v1 = 1; $v1 <= $jml_modul; $v1++) {
+													if ($v1 == $mingguke)
+														$opsi = " selected ";
+													else
+														$opsi = " ";
+													echo '<option' . $opsi . 'value="' . $v1 . '">' . $nama_modul[$v1] . '</option>';
+												}
+												else
+												{
+													for ($v1 = 1; $v1 <= $jml_modul; $v1++) {
+														echo '<option value="' . $v1 . '">' . $nama_modul[$v1] . '</option>';
+													}
+												}
+											?>
+										</select>
 									</div>
 								</div>
 
@@ -344,6 +386,7 @@ if (!isset($tahun))
 	});
 
 	$(document).on('change', '#isemester', function () {
+		getdafmodulke();
 		<?php if ($sudahdibeli==0) { ?>
 			document.getElementById('tbupdate').innerText = "Update";
 		<?php } else {?>
@@ -427,6 +470,34 @@ if (!isset($tahun))
 					isihtmlb2 = isihtmlb2 + "<option value='" + result.id + "'>" + result.nama_mapel + "</option>";
 				});
 				$('#dmapel').html(isihtmlb0 + isihtmlb1 + isihtmlb2 + isihtmlb3);
+			}
+		});
+	}
+
+	function getdafmodulke() {
+		
+
+		isihtmlb0 = '<label for="select" class="col-md-12 control-label">Modul ke: <span style="color:red"><sup>* (1 - 16)</sup></span></label>';
+		isihtmlb1 = '<select class="form-control" name="imingguke" id="imingguke"><option value="0">-- Pilih Modul Ke --</option>';
+		isihtmlb3 = '</select>';
+
+		$('#dmingguke').html(isihtmlb0 + isihtmlb1 + isihtmlb3);
+
+		$.ajax({
+			type: 'GET',
+			data: {
+				semester: $('#isemester').val()},
+			dataType: 'json',
+			cache: false,
+			url: '<?php echo base_url();?>virtualkelas/getdafmodulke',
+			success: function (result) {
+				var isihtmlb2 = "";
+				var urut=0;
+				$.each(result, function (i, result) {
+					urut++;
+					isihtmlb2 = isihtmlb2 + "<option value='" + urut + "'>" + result + "</option>";
+				});
+				$('#dmingguke').html(isihtmlb0 + isihtmlb1 + isihtmlb2 + isihtmlb3);
 			}
 		});
 	}

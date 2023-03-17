@@ -43,7 +43,7 @@ $namabulan = Array('', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', '
 		<div class="container">
 			<div class="row">
 				<center>
-					<h4>LAPORAN KEUANGAN TV SEKOLAH</h4>
+					<h4>LAPORAN KEUANGAN TV KAMPUS</h4>
 				</center>
 				<br>
 				<div class="col-md-12" style="margin-bottom: 15px;">
@@ -147,7 +147,7 @@ $namabulan = Array('', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', '
 							</tr>
 							<tr>
 								<td>7</td>
-								<td style='text-align:right;'><b>PENDAPATAN TV SEKOLAH</b></td>
+								<td style='text-align:right;'><b>PENDAPATAN TV KAMPUS</b></td>
 								<td></td>
 								<td style='text-align:right;'><b><?php 
 								echo number_format($daftransaksi->total_bruto-($daftransaksi->total_potmid+$daftransaksi->total_ppn+

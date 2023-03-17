@@ -34,7 +34,7 @@ $namabulan = Array('', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', '
 		<div class="container">
 			<div class="row">
 				<center>
-					<h4>PEMBAYARAN FEE TV SEKOLAH</h4>
+					<h4>PEMBAYARAN FEE TV KAMPUS</h4>
 				</center>
 				<br>
 				<div class="col-md-12" style="margin-bottom: 15px;">

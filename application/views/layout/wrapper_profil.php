@@ -305,6 +305,7 @@ else
 											<li><a href="<?php echo base_url()."virtualkelas/event";?>">> <span>Tambah Modul Kampus</span></a></li>
 										<?php } ?>
 								<li><a href="<?php echo base_url()."virtualkelas/modul";?>">> <span>Daftar Modul Kampus</span></a></li>
+								<li><a href="<?php echo base_url()."virtualkelas/krs";?>">> <span>Jadwal KRS</span></a></li>
 							</ul>
 						</li>
 					<?php }

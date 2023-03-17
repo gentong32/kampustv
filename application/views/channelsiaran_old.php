@@ -119,7 +119,7 @@ foreach ($dafchannelguru as $datane) {
 				<div class="row">
 
 					<div class="col-md-12 text-center wow fadeInRight" data-wow-delay=".5s">
-						<h1>MCR SIARAN TV SEKOLAH</h1>
+						<h1>MCR SIARAN TV KAMPUS</h1>
 					</div>
 					<div class="clearfix"></div>
 				</div>

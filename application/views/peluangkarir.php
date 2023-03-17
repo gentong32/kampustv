@@ -26,7 +26,7 @@
 						<tbody>
 						<tr>
 							<th class="entry-title"><a>Account Executive</a></th>
-							<td>bertugas mencari sponsor/donasi untuk sekolah agar bisa memanfaatkan TV Sekolah</td>
+							<td>bertugas mencari sponsor/donasi untuk sekolah agar bisa memanfaatkan TV Kampus</td>
 							<td><a href="<?php echo base_url();?>peluangkarir/account_executive" class="btn-main btn-info">Detail</a></td>
 						</tr>
 						<tr>

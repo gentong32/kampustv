@@ -102,8 +102,7 @@
 							<a href="<?php echo base_url();?>informasi/kelas_virtual">
 								<h4 align="center">Kelas Virtual</h4>
 							</a>
-							<p align="center">Kelas Virtual ini adalah kelas yang akan menjadi kelas unggulan TV Sekolah
-								yang berisi program ...</p>
+							<p align="center">Kelas Virtual ini adalah kelas yang akan menjadi kelas unggulan TV Kampus yang berisi program ...</p>
 							<p align="center">
 								<a class="btn-main" href="<?php echo base_url();?>informasi/kelas_virtual">Selengkapnya</a>
 							</p>

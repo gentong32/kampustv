@@ -93,7 +93,7 @@ foreach ($jmlperkategori as $datane) {
 <center>
 	<div style="margin-top: 60px;margin-right: 10px;margin-right: 10px;">
 	<div class="table-wrapper">
-		<h2 style="color: black">STATISTIK TV SEKOLAH</h2>
+		<h2 style="color: black">STATISTIK TV KAMPUS</h2>
 		<br>
 		<table class="demo-table3">
 			<thead>

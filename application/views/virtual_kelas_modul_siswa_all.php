@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 $kettayang = array('Kosong', 'Belum/Sedang Tayang', 'Sudah Tayang');
 $namabulan = Array('', 'Jan', 'Peb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nop', 'Des');
+$ket_status_ver = array('Terpilih','Proses pengajuan','Disetujui');
 
 $jml_paket = 0;
 foreach ($dafpaket as $datane) {
@@ -14,11 +15,11 @@ foreach ($dafpaket as $datane) {
 	$nama_mapel[$jml_paket] = $datane->nama_mapel;
 	$link_paket[$jml_paket] = $datane->link_list;
 	$nama_paket[$jml_paket] = $datane->nama_paket;
-	$kode_paket[$jml_paket] = $datane->kode_beli;
-	if($datane->modulke>0 && $datane->modulke<100)
-		$mingguke[$jml_paket] =  $datane->modulke;
-	else
-		$mingguke[$jml_paket] = "-";
+	$nama_dosen[$jml_paket] = $datane->first_name." ".$datane->last_name;
+	$status_ver[$jml_paket] = "";
+	if ($datane->status_ver!=null)
+	$status_ver[$jml_paket] = $ket_status_ver[$datane->status_ver];
+	$tahun_ajaran[$jml_paket] = $datane->tahun_ajaran;
 	$durasi_paket[$jml_paket] = $datane->durasi_paket;
 	$status_paket[$jml_paket] = $datane->status_paket;
 	$status_soal[$jml_paket] = $datane->statussoal;
@@ -70,8 +71,16 @@ foreach ($dafpaket as $datane) {
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
-					<h3 class="text-center">Daftar Modul Saya</h3>
+					<h3 class="text-center">Daftar Semua Modul yang Tersedia</h3>
 				</div>
+				<center>
+					<select class="combobox1" id="by_matkul" name="by_matkul">
+						<option value="all">-Semua Matkul-</option>
+					</select>
+					<select class="combobox1" id="by_dosen" name="by_dosen">
+						<option value="all">-Semua Dosen-</option>
+					</select>
+				</center>
 				<div style="margin-bottom: 10px;">
 					<button class="btn-main"
 							onclick="window.location.href='<?php echo base_url(); ?>virtualkelas/sekolah_saya'">Kembali
@@ -88,11 +97,15 @@ foreach ($dafpaket as $datane) {
 					<thead>
 					<tr>
 						<th style='padding:5;width:5px;'>No</th>
-						<th>Kelas</th>
-						<th>Mapel</th>
+						<!-- <th>Kelas</th> -->
+						<th>Mata Kuliah</th>
 						<th>Nama Modul</th>
-						<th>Ke</th>
+						<th>Nama Dosen</th>
+						<!-- <th>Ke</th> -->
 						<th>Durasi</th>
+						<th>Status</th>
+						<th>Tahun Ajaran</th>
+
 						<th>Aksi</th>
 					</tr>
 					</thead>
@@ -110,26 +123,18 @@ foreach ($dafpaket as $datane) {
 							$keterangan = "Belum";
 						else
 							$keterangan = "Lengkap";
-						$stratamodul = substr($kode_paket[$i],4,1);
-						if ($stratamodul==1)
-							$belipaket[$i] = " [Lite]";
-						else if ($stratamodul==2)
-							$belipaket[$i] = " [Pro]";
-						else if ($stratamodul==3)
-							$belipaket[$i] = " [Premium]";
-						if (intval($mingguke[$i])>=17)
-							{
-								$mingguke[$i] = "-";
-								$belipaket[$i] = "";
-							}
+						
 						?>
 						<tr>
 							<td><?php echo $nomor[$i]; ?></td>
-							<td><?php echo $nama_kelas[$i]." / ".$semester[$i]; ?></td>
+							<!-- <td><?php //echo $nama_kelas[$i]." / ".$semester[$i]; ?></td> -->
 							<td><?php echo $nama_mapel[$i]; ?></td>
 							<td><?php echo $nama_paket[$i]; ?></td>
-							<td><?php echo $mingguke[$i].$belipaket[$i]; ?></td>
+							<td><?php echo $nama_dosen[$i]; ?></td>
+							<!-- <td><?php //echo $mingguke[$i].$belipaket[$i]; ?></td> -->
 							<td><?php echo $durasi_paket[$i]; ?></td>
+							<td><?php echo $status_ver[$i]; ?></td>
+							<td><?php echo $tahun_ajaran[$i]; ?></td>
 							<td>
 								<button
 									<?php if ($nama_paket[$i]=="UTS"||$nama_paket[$i]=="UAS"||$nama_paket[$i]=="REMEDIAL UTS"||$nama_paket[$i]=="REMEDIAL UAS")

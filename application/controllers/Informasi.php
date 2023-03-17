@@ -536,7 +536,7 @@ class Informasi extends CI_Controller
 			$nomor = "Nomor:".$getdatasiswaekskul->id."/e-cert/ekskul/tvs/".date("Y");
 			$nama = $getdatasiswaekskul->first_name. " ". $getdatasiswaekskul->last_name;
 			$kegiatan = "Bahwa yang bersangkutan telah aktif mengikuti kegiatan Ekstrakurikuler ".
-				"TV Sekolah untuk periode tahun ".date("Y");
+				"TV Kampus untuk periode tahun ".date("Y");
 			$tanggal = "Jakarta, ".nmbulan_panjang(date("n"))." ".date("Y");
 			$data['nomor'] = $nomor;
 			$data['nama'] = $nama;

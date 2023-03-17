@@ -25,7 +25,7 @@
 				<div class="col-md-6">
 					<div class="item_info">
 						<h2>Kelas Virtual</h2>
-						<p>Kelas Virtual ini adalah kelas yang akan menjadi kelas unggulan TV Sekolah dan akan diluncurkan pada Tanggal 1 Januari 2021. Fitur ini berisi Program <i>Micro Learning</i> yang disusun oleh guru dan akan disiapkan untuk pembelajaran daring.</p>
+						<p>Kelas Virtual ini adalah kelas yang akan menjadi kelas unggulan TV Kampus dan akan diluncurkan pada Tanggal 1 Januari 2021. Fitur ini berisi Program <i>Micro Learning</i> yang disusun oleh guru dan akan disiapkan untuk pembelajaran daring.</p>
 
 						<p><i>Microlearning</i> dapat dikatakan sebagai metode pembelajaran yang dirancang oleh pendidik (guru) dalam waktu yang singkat serta dapat digunakan dalam proses pembelajaran jangka pendek tetapi dapat diulang-ulang oleh siswa untuk lebih menguasai konten yang dipelajari.</p>
 

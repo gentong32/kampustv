@@ -40,17 +40,15 @@
 
 							<p>Banyak problematika yang muncul saat ini dan harus dihadapi oleh semua pihak. Tidak bisa permasalahan ini diselesaikan dengan parsial akan tetapi dibutuhkan kolaborasi dan sinergi serta fokus. Karena terkadang ada kebijakan yang harus dirubah, diganti atau diperbaruhi dalam situasi saat ini. Dibutuhkan solusi-solusi kreatif, inovatif, praktis, efektif dan efisien untuk membantu berbagai permasalahan yang ada.</p>
 
-<!--							<p>Untuk itulah, Forum Dosen Guru dan Masyarakat (Fordorum) sebagai asosiasi terpadu antara semua komponen mencoba memberikan alternative model pembelajaran yang  ASYIK “Aman, Senang, Yakin dan Percaya Diri, Inovatif dan Kreatif” dengan menghadirkan <b>TV Sekolah Fordorum</b> sebagai Sarana Belajar dan Berkreasi dari PAUD sampai SMA/Sederajat dan saat ini terus dikembangkan fitur lain untuk Perguruan Tinggi.  TV Sekolah Fordorum dikembangkan oleh <b>Dr. Sri Watini (CEO) Drs. Karnadi, MRDM (CIO) dan Sigit W. Triwibowo, S.Sn (CTO)</b> serta dibantu tim teknis <b>Mas Anto, Mbak Nita</b> dan <b>Mas Radit</b>. TV Sekolah ini memiliki  beberapa fitur antara lain Panggung Sekolah, , Kelas Virtual dan Bazar Sekolah sedang dalam proses pengembangan.</p>-->
+							<p>Kami berharap fitur yang ditawarkan dalam TV Kampus dapat memberikan alternative solusi bagi Pendidikan di Indonesia untuk tetap bertahan menjadi yang terbaik dan menigkatkan kwalitas di masa depan.</p>
 
-							<p>Kami berharap fitur yang ditawarkan dalam TV Sekolah Fordorum dapat memberikan alternative solusi bagi Pendidikan di Indonesia untuk tetap bertahan menjadi yang terbaik dan menigkatkan kwalitas di masa depan.</p>
+							<p>Adapun semua program yang dimasukkan ke dalam TV Kampus harus melalui verifikator tingkat sekolah yang diketahui oleh kepala sekolah sehingga konten yang dimasukkan ke dalam program TV Kampus aman, jauh dari sisi pornografi, pornoaksi, SARA dan konten-konten lainya yang tidak memiliki nilai edukatif bahkan melanggar norma dan etika penyiaran.</p>
 
-							<p>Adapun semua program yang dimasukkan ke dalam TV Sekolah harus melalui verifikator tingkat sekolah yang diketahui oleh kepala sekolah sehingga konten yang dimasukkan ke dalam program TV Sekolah aman, jauh dari sisi pornografi, pornoaksi, SARA dan konten-konten lainya yang tidak memiliki nilai edukatif bahkan melanggar norma dan etika penyiaran.</p>
+							<p>TV Kampus juga memberikan reward bagi program-program terbaik dalam bentuk dipancarkan ulang pada program TV Kampus yang tentunya melalui seleksi oleh tim penilai TV Kampus.</p>
 
-							<p>TV Sekolah juga memberikan reward bagi program-program terbaik dalam bentuk dipancarkan ulang pada program TV Sekolah Indihome yang tentunya melalui seleksi oleh tim penilai TV Sekolah.</p>
+							<p>Melalui kerjasama dengan berbagai lembaga sebagai pendukung peningkatan kwalitas TV Kampus seperti dengan Telkom Indonesia, Telkomsel, Youtuber se-Indonesia maka akan berdampak pada konten-konten terbaik tayangan TV Kampus.</p>
 
-							<p>Melalui kerjasama dengan berbagai lembaga sebagai pendukung peningkatan kwalitas TV Sekolah seperti dengan Telkom Indonesia, Telkomsel, Youtuber se-Indonesia maka akan berdampak pada konten-konten terbaik tayangan TV Sekolah.</p>
-
-							<p>Harapannya semoga TV Sekolah sebagai TV dengan program khusus Pendidikan akan memberikan warna model dan metode Pendidikan yang ASYIK, Menarik dan Edukatif. Semoga bermanfaat dan Terimakasih.</p>
+							<p>Harapannya semoga TV Kampus sebagai TV dengan program khusus Pendidikan akan memberikan warna model dan metode Pendidikan yang ASYIK, Menarik dan Edukatif. Semoga bermanfaat dan Terimakasih.</p>
 
 						</div>
 
@@ -90,7 +88,7 @@
 					<div class="widget widget_tags">
 						<h4>Karir</h4>
 						<div class="small-border"></div>
-						Raih kesempatan berkarir di TV Sekolah. Klik link untuk info lebih lanjut!
+						Raih kesempatan berkarir di TV Kampus. Klik link untuk info lebih lanjut!
 						<div class="spacer-single"></div>
 						<p>
 							<a href="<?php echo base_url();?>peluangkarir" class="btn-main btn-lg">Info
@@ -100,7 +98,7 @@
 					<div class="widget widget_tags">
 						<h4>Donasi</h4>
 						<div class="small-border"></div>
-						Kami memberikan kesempatan bagi Anda untuk turut berperan memajukan TV Sekolah melalui penyaluran donasi.
+						Kami memberikan kesempatan bagi Anda untuk turut berperan memajukan TV Kampus melalui penyaluran donasi.
 						<div class="spacer-single"></div>
 						<p>
 							<a href="<?php echo base_url();?>donasi" class="btn-main btn-lg">Info

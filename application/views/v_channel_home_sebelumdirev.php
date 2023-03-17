@@ -197,7 +197,7 @@ if ($punyalist) {
          style="background-color: transparent; font-weight: bold; font-size: 20px;
          position: relative ; top: 0px; text-align:center; color:black; margin-top:0px;">
         <?php
-        echo "CHANNEL TV SEKOLAH" . " - ";
+        echo "CHANNEL TV KAMPUS" . " - ";
         if ($id_playlist == null && $jmldaf_list > 0 && $idliveduluan != "")
             echo $nama_playlist[$idliveduluan]; else
             echo $namapaket; ?>

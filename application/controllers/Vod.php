@@ -77,31 +77,66 @@ class Vod extends CI_Controller
 
 	public function daftar_vod()
 	{
+		$data = array();
+		$data['konten'] = "v_vod";
+		
+		$kunci0 = "";
+		if(isset($_GET['cari']))
+			$kunci0 = $_GET['cari'];
+		
+		$page = 1;
+		if(isset($_GET['hal']))
+		$page = $_GET['hal'];
 
-		delete_cookie("cookie_vod");
-		delete_cookie("cookie_jempol");
-		$data = array('konten' => 'v_vodall');
+		$kunci0 = preg_replace('!\s+!', ' ', $kunci0);
+		$kunci0 = str_replace("%20%20", "%20", $kunci0);
+		$kunci0 = str_replace("%20", " ", $kunci0);
 
-		$data['dafvideo0'] = $this->M_vod->getVODAll(6);
-		$data['dafvideo1'] = $this->M_vod->getVODAll(4);
-		$data['dafvideo2'] = $this->M_vod->getVODAll(5);
-		$data['dafvideo3'] = $this->M_vod->getVODAll(3);
-		$data['dafvideo4'] = $this->M_vod->getVODAll(2);
-		$data['dafvideo5'] = $this->M_vod->getVODAll(1);
+		$data['message'] = "";
+		$data['page'] = $page;
 
-		$data['dafvideo6'] = $this->M_vod->getVODKategori();
+		$limit = 0;
+		$start = 0;
 
-		$data['dafjenjang'] = $this->M_vod->getJenjangAll();
-		$data['dafkategori'] = $this->M_vod->getKategoriAll();
-		$data['mapel'] = "";
+		//////////////////////// buat hitung data
+		if($kunci0 == "")
+			$dafvideo = $this->M_vod->getVODMapel($limit, $start);
+		else
+			$dafvideo = $this->M_vod->getVODCari($limit, $start, $kunci);
+
+		$config['total_rows'] = count($dafvideo);
+		
+		//////////////////////// buat ambil data per halaman
+		$limit = 8;
+		$start = ($page-1) * 8;
+
+		if($kunci0 == "")
+			$dafvideo = $this->M_vod->getVODMapel($limit, $start);
+		else
+			$dafvideo = $this->M_vod->getVODCari($limit, $start, $kunci);
+
+		$data['dafvideo'] = $dafvideo;
+
+		if (count($dafvideo)==0)
+			redirect( "/vod");
+			
+		$data['pagination'] = $this->pagination->create_links();
+
+		$data['kuncine'] = $kunci0;
+		$data['mapel'] = 0;
 		$data['jenjang'] = 0;
-		$data['kategori'] = 0;
-		$data['kuncine'] = "";
-		$data['message'] = $this->session->flashdata('message');
 
+		$data['asal'] = "mapel";
+
+		$data['kategori'] = 0;
+		$data['dafjenjang'] = $this->M_vod->getJenjangAll();
+		$data['dafmapel'] = "";//$this->M_vod->dafMapel($jenjangpendek);
+
+		$data['dafkategori'] = $this->M_vod->getKategoriAll();
+		$data['message'] = $this->session->flashdata('message');
+		$data['total_data'] = $config['total_rows'];
 
 		$this->load->view('layout/wrapper_umum', $data);
-
 	}
 
 	public function menujujenjang()
@@ -448,8 +483,11 @@ class Vod extends CI_Controller
 			$kunci = str_replace("%20%20", "%20", $kunci);
 			$kunci = str_replace("%20", " ", $kunci);
 			//$kunci = str_replace("dan","",$kunci);
-
+			// die();
 			$hitungdata = $data['dafvideo'] = $this->M_vod->getVODCari(0, 0, $kunci);
+
+			// echo var_dump($hitungdata);
+			// die();
 
 			$config['total_rows'] = count($hitungdata);
 
@@ -513,19 +551,19 @@ class Vod extends CI_Controller
 		}
 	}
 
-	// public function get_autocomplete()
-	// {
-	// 	if (isset($_GET['kunci'])) {
-	// 		$result = $this->M_vod->search_VOD($_GET['jenjang'], $_GET['mapel'], $_GET['kunci'], $_GET['asal']);
-	// 		if (count($result) > 0) {
-	// 			foreach ($result as $row)
-	// 				$arr_result[] = array(
-	// 					"value" => $row->judul,
-	// 					"deskripsi" => $row->deskripsi
-	// 				);
-	// 			echo json_encode($arr_result);
-	// 		}
-	// 	}
-	// }
+	public function get_autocomplete()
+	{
+		if (isset($_GET['kunci'])) {
+			$result = $this->M_vod->search_VOD($_GET['kunci']);
+			if (count($result) > 0) {
+				foreach ($result as $row)
+					$arr_result[] = array(
+						"value" => $row->judul,
+						"deskripsi" => $row->deskripsi
+					);
+				echo json_encode($arr_result);
+			}
+		}
+	}
 
 }

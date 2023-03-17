@@ -687,7 +687,7 @@ if (file_exists($filename . ".jpeg") || file_exists($filename . ".jpg") ||
 							<ul class="a">
 								<li style="margin-left: -20px;">
 									Berkas pertama ditandatangani di atas materai Rp 10.000,- kemudian dikirim ke alamat
-									TV Sekolah<br>(Jl. Patuha Utara II, RT 11 RW 16 No. 87, Kayuringin Jaya, Bekasi
+									TV Kampus<br>(Jl. Patuha Utara II, RT 11 RW 16 No. 87, Kayuringin Jaya, Bekasi
 									Selatan, 17144)
 								</li>
 								<li style="margin-left: -20px;">

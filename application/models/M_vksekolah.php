@@ -632,7 +632,7 @@ class M_vksekolah extends CI_Model {
 	public function ceknilai($linklist,$iduser)
 	{
 		$this->db->from('tb_soal_guru_nilai');
-		$this->db->where('(linklist="' . $linklist . '" AND iduser='.$iduser.')');
+		$this->db->where('(linklist="' . $linklist . '" AND iduser="'.$iduser.'")');
 		$query = $this->db->get();
 		$ret = $query->row();
 		if ($ret)
@@ -789,6 +789,7 @@ class M_vksekolah extends CI_Model {
 		$this->db->join('daf_mapel dm','dm.id = tp.id_mapel','left');
 		$this->db->join('tb_channel_video tc','tc.id_paket = tp.id','left');
 		$this->db->join('tb_video tv','tv.id_video = tc.id_video','left');
+		$this->db->join('daf_modulke dmo','tp.semester = dmo.semester_mod AND tp.modulke = dmo.modulke_mod','left');
 		$this->db->where('tp.id_user', $id_user);
 		$this->db->group_by('tp.id');
 		$this->db->order_by('tp.id_kelas', 'asc');
@@ -992,6 +993,7 @@ class M_vksekolah extends CI_Model {
 		AND te.created>='$batas1' AND te.created<='$batas2'";
 		//$this->db->select('*,tu2.first_name as first_nameguru,tu2.last_name as last_nameguru');
 		$this->db->from('tb_paket_channel tpc');
+		$this->db->join('daf_modulke dmk','dmk.semester_mod = tpc.semester AND dmk.modulke_mod = tpc.modulke','left');
 		$this->db->join('daf_mapel dm','dm.id = tpc.id_mapel','left');
 		$this->db->join('tb_vk_pilihguru te', $joinnya, 'both');
 		$this->db->join('tb_channel_video tcv', 'tcv.id_paket = tpc.id', 'left');
@@ -1019,6 +1021,11 @@ class M_vksekolah extends CI_Model {
 
 	public function getDafModulSayaSemua($idsaya)
 	{
+		$this->load->model('M_login');
+		$getuserdata = $this->M_login->getUser($idsaya);
+		$kdsaya = $getuserdata['kd_user'];
+		$npsn = $getuserdata['npsn'];
+		
 		$tglsekarang = new DateTime();
 		$tglsekarang->setTimezone(new DateTimeZone("Asia/Jakarta"));
 		$bulan = $tglsekarang->format("n");
@@ -1035,23 +1042,24 @@ class M_vksekolah extends CI_Model {
 		}
 		$joinnya = "te.id_guru = tpc.id_user AND te.id_mapel = tpc.id_mapel  
 		AND te.created>='$batas1' AND te.created<='$batas2'";
-		//$this->db->select('*,tu2.first_name as first_nameguru,tu2.last_name as last_nameguru');
+		$this->db->select('status_ver,tahun_ajaran,tpc.id AS id, tpc.link_list,tpc.id_kelas AS idkelas,dk.nama_kelas, tpc.semester, dm.nama_mapel, tu.first_name,tu.last_name,nama_paket,modulke,status_paket,statussoal,statustugas,uraianmateri,durasi_paket,tpc.id_mapel as idmapel,tanggal_tayang,tglvicon');
 		$this->db->from('tb_paket_channel tpc');
-		$this->db->join('tb_virtual_kelas tk','tk.link_paket = tpc.link_list','left');
 		$this->db->join('daf_kelas dk','dk.id = tpc.id_kelas','left');
 		$this->db->join('daf_mapel dm','dm.id = tpc.id_mapel','left');
-		$this->db->join('tb_vk_pilihguru te', $joinnya, 'left');
+		$this->db->join('tb_vk_pilihmodul te', 'te.link_list = tpc.link_list AND te.id_user="'. $idsaya.'"', 'left');
 		$this->db->join('tb_channel_video tcv', 'tcv.id_paket = tpc.id', 'left');
 		$this->db->join('tb_video tv', 'tv.id_video = tcv.id_video', 'left');
-		$this->db->join('tb_user tu', 'tu.id = tpc.id_user', 'left');
-		$this->db->join('tb_user tu2', 'tu2.id = te.id_guru', 'left');
-		$this->db->where('(tk.id_user="' . $idsaya . '")');
+		$this->db->join('tb_user tu', 'tu.kd_user = tpc.id_user', 'left');
+		$this->db->where('(durasi_paket<>"00:00:00")');
+		$this->db->where('(statussoal=1)');
+		$this->db->where('(statustugas=1)');
+		$this->db->where('(uraianmateri<>"")');
+		$this->db->where('(tpc.id_event=0)'); 
 		$this->db->group_by("tpc.link_list");
-		$this->db->order_by('tpc.id_kelas', 'desc');
-		$this->db->order_by('tpc.semester', 'desc');
-		$this->db->order_by('tpc.modulke', 'asc');
-		$this->db->order_by('tpc.id_mapel', 'asc');
-		$result = $this->db->get()->result();
+		$query1 = $this->db->get_compiled_select();
+
+		$query = $this->db->query($query1);
+		$result = $query->result();
 		return $result;
 	}
 
@@ -1449,5 +1457,44 @@ class M_vksekolah extends CI_Model {
 		$result = $this->db->get()->row();
 		return $result;
 	}
-	
+
+	public function getDafModul($semester)
+	{
+		$this->db->from('daf_modulke');
+		$this->db->where('semester_mod',$semester);
+		$result = $this->db->get()->result();
+		return $result;
+	}
+
+	public function getSetingKRS($npsn,$prodi)
+	{
+		$this->db->from('daf_chn_sekolah');
+		$this->db->where('npsn_sekolah',$npsn);
+		$this->db->where('kd_prodi',$prodi);
+		$result = $this->db->get()->row();
+		return $result;
+	}
+
+	public function updatejadwalkrs($npsn,$prodi,$semester,$tgl1,$tgl2)
+	{
+		$this->db->where('npsn_sekolah', $npsn);
+		$this->db->where('kd_prodi', $prodi);
+		$data = array(
+			'jadwal_krs_'.$semester.'_start' => $tgl1,
+			'jadwal_krs_'.$semester.'_end' => $tgl2,
+		);
+		return $this->db->update('daf_chn_sekolah', $data);
+	}
+
+	public function updatemulaikuliah($npsn,$prodi,$semester,$tgl,$bln)
+	{
+		$this->db->where('npsn_sekolah', $npsn);
+		$this->db->where('kd_prodi', $prodi);
+		$data = array(
+			'start_tgl'.$semester => $tgl,
+			'start_bln'.$semester => $bln,
+		);
+		return $this->db->update('daf_chn_sekolah', $data);
+	}
+
 }

@@ -17,7 +17,7 @@ class M_vod extends CI_Model {
         $this->db->from('tb_video tv');
         $this->db->join('tb_user tu', 'tu.id = tv.id_user','left');
         $this->db->where('(tv.durasi<>"")');
-        $this->db->where('(((status_verifikasi=4 || status_verifikasi=2) AND id_jenis=1) OR (status_verifikasi=2 AND id_jenis=2) 
+        $this->db->where('(((status_verifikasi=4 || status_verifikasi=2) AND id_jenis=0) OR (status_verifikasi=2 AND id_jenis=0) 
         OR (status_verifikasi=4 AND file_video!="") OR (status_verifikasi=4 AND link_video!=""))');
 		$this->db->where('(status_verifikasi_admin=4)');
 		$this->db->where('(sifat=0)');
@@ -31,20 +31,15 @@ class M_vod extends CI_Model {
         return $result;
     }
 
-    public function getVODMapel($namajenjang,$idmapel,$limit=null,$start=null){
+    public function getVODMapel($limit=null,$start=null){
         $this->db->select('tv.*,first_name');
         $this->db->from('tb_video tv');
         $this->db->join('tb_user tu', 'tu.id = tv.id_user','left');
         $this->db->join('daf_jenjang dj', 'dj.id = tv.id_jenjang','left');
         $this->db->where('(tv.durasi<>"")');
-		$this->db->where('(((status_verifikasi=4 || status_verifikasi=2) AND id_jenis=1) OR (status_verifikasi=2 AND id_jenis=2) 
-        OR (status_verifikasi=4 AND file_video!="") OR (status_verifikasi=4 AND link_video!=""))');
+		$this->db->where('((status_verifikasi=4 || status_verifikasi=2))');
 		$this->db->where('(status_verifikasi_admin=4)');
 		$this->db->where('(sifat=0)');
-        if ($idmapel==0)
-        $this->db->where('(nama_pendek="'.$namajenjang.'")');
-        else
-        $this->db->where('(id_mapel='.$idmapel.')');
         if ($limit!=null)
         {
             $this->db->limit($limit,$start);
@@ -218,27 +213,15 @@ class M_vod extends CI_Model {
 		$this->db->select('tv.*,first_name');
 		$this->db->from('tb_video tv');
 		$this->db->join('tb_user tu', 'tu.id = tv.id_user','left');
-		if ($asal=="mapel")
-			$this->db->where('(id_jenis=1)');
-		else if ($asal=="kategori")
-			$this->db->where('(id_jenis=2)');
-		if ($jenjangpendek=="kategori" && $jenjangpendek!="0")
-		{
-			$this->db->where('(id_kategori="'.$idmapel.'")');
-		}
-		else if ($idmapel!=0)
-		{
-			$this->db->where('(id_mapel="'.$idmapel.'")');
-		}
-		else if ($jenjangpendek!=0)
+		
+		if ($jenjangpendek!=0)
 		{
 			$this->db->join('daf_jenjang dj', 'dj.id = tv.id_jenjang','left');
 			$this->db->where('(nama_pendek="'.$jenjangpendek.'")');
 		}
 //		die();
 
-		$this->db->where('(((status_verifikasi=4 || status_verifikasi=2) AND id_jenis=1) OR (status_verifikasi=2 AND id_jenis=2)
-        OR (status_verifikasi=4 AND file_video!="") OR (status_verifikasi=4 AND link_video!=""))');
+		$this->db->where('((status_verifikasi=4 || status_verifikasi=2))');
 //		$this->db->where('(status_verifikasi=4)');
 		//$this->db->where("(judul like '%$kuncikunci%' OR topik like '%$kuncikunci%' OR keyword like '%$kuncikunci%')",NULL,FALSE);
 		$this->db->where('(status_verifikasi_admin=4)');
@@ -247,9 +230,9 @@ class M_vod extends CI_Model {
 		$this->db->order_by('modified','desc');
 
 		$isiwhere = "(judul like '%".$kuncikunci."%'";
-//		for ($a=0;$a<count($keywordsMany);$a++) {
-//			$isiwhere = $isiwhere . " OR judul like '%".$keywordsMany[$a]."%'";
-//		}
+		for ($a=0;$a<count($keywordsMany);$a++) {
+			$isiwhere = $isiwhere . " OR judul like '%".$keywordsMany[$a]."%'";
+		}
 
 		$isiwhere = $isiwhere." OR topik like '%".$kuncikunci."%'";
 //		for ($a=0;$a<count($keywordsMany);$a++) {
@@ -274,20 +257,10 @@ class M_vod extends CI_Model {
 		return $query;
 	}
 
-	public function search_VOD($jenjang,$mapel,$kunci,$asal){
+	public function search_VOD($kunci){
 		$this->db->like('judul', $kunci , 'both');
-		$this->db->where('(((status_verifikasi=4 || status_verifikasi=2) AND id_jenis=1) OR (status_verifikasi=2 AND id_jenis=2)
-        OR (status_verifikasi=4 AND file_video!="") OR (status_verifikasi=4 AND link_video!=""))');
-		$this->db->where('(status_verifikasi_admin=4)');
+		$this->db->where('((status_verifikasi=4 || status_verifikasi=2))');
 		$this->db->where('(sifat=0)');
-		if ($asal=="mapel")
-			$this->db->where('(id_jenis=1)');
-		else if ($asal=="kategori")
-			$this->db->where('(id_jenis=2)');
-		if ($jenjang!="" && $jenjang!="0")
-			$this->db->where('id_jenjang',$jenjang);
-		if ($mapel!="cari" && $mapel!="0")
-			$this->db->where('id_mapel',$mapel);
 		$this->db->order_by('judul', 'ASC');
 		$this->db->limit(10);
 		return $this->db->get('tb_video')->result();

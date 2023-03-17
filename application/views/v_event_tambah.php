@@ -1918,7 +1918,7 @@ if ($addedit == "add") {
 	// };
 
 	$("#datetime").datetimepicker({
-		format: 'dd-mm-yyyy hh:ii',
+		format: 'L',
 		// minView: 2,
 		autoclose: true,
 		todayBtn: true

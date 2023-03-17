@@ -47,7 +47,7 @@
 					<div class="de-flex">
 						<div class="de-flex-col">
 							<a href="<?php echo base_url();?>">
-								<img alt="" class="f-logo" src="<?php echo base_url();?>images/logo-2-light.png" /><span class="copy">&copy; Copyright 2021 - TV Sekolah</span>
+								<img alt="" class="f-logo" src="<?php echo base_url();?>images/logo-2-light.png" /><span class="copy">&copy; Copyright 2021 - TV Kampus</span>
 							</a>
 						</div>
 						<div class="de-flex-col">

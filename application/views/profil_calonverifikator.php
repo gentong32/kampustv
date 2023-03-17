@@ -41,7 +41,7 @@
 		<!-- footer -->
 		<div class="container-fluid">
 			<div class="footer">
-				<p>© Copyright 2021 - TV Sekolah. All rights reserved.</p>
+				<p>© Copyright 2021 - TV Kampus. All rights reserved.</p>
 			</div>
 		</div>
 	</div>

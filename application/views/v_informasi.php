@@ -26,7 +26,7 @@
 				<br><br>
 			</div>
 			<div style="font-size: larger; color: black">
-				<center>TV Sekolah adalah Wahana Belajar dan Berkreasi.</center>
+				<center>TV Kampus adalah Wahana Belajar dan Berkreasi.</center>
 				<br>
 			</div>
 		</div>

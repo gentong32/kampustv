@@ -39,7 +39,7 @@ foreach ($dafagency as $datane) {
 <!--</style>-->
 
 <div class="bgimg2" style="color:black; margin-top: 40px;padding-top: 30px;padding-bottom: 30px;">
-	<center><span style="font-size: 20px;font-weight: bold">KANTOR PERWAKILAN TV SEKOLAH</span></center>
+	<center><span style="font-size: 20px;font-weight: bold">KANTOR PERWAKILAN TV KAMPUS</span></center>
 
 	<div class="form-group" id="dnegara" style="width: 100%; margin:auto; max-width: 300px;height: 80px;">
 		<br><center>

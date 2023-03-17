@@ -27,6 +27,7 @@ foreach ($dafpaket as $datane) {
 	$nama_guru[$jml_paket] = $datane->first_name . " " . $datane->last_name;
 	$link_paket[$jml_paket] = $datane->link_list;
 	$nama_paket[$jml_paket] = $datane->nama_paket;
+	$keteranganmod[$jml_paket] = $datane->keterangan_mod;
 	if ($datane->modulke > 0 && $datane->modulke < 17)
 		$mingguke[$jml_paket] = $datane->modulke;
 	else
@@ -123,7 +124,7 @@ if ($adamapelkosong > 0)
 					<thead>
 					<tr>
 						<th style='padding:5;width:5px;'>No</th>
-						<th>Semester</th>
+						<th>Smst</th>
 						<th>Mata Kuliah</th>
 						<th>Dosen</th>
 						<th>Nama Modul</th>
@@ -154,7 +155,7 @@ if ($adamapelkosong > 0)
 							<td><?php echo $nama_mapel[$i]; ?></td>
 							<td><?php echo $nama_guru[$i]; ?></td>
 							<td><?php echo $nama_paket[$i]; ?></td>
-							<td><?php echo $mingguke[$i]; ?></td>
+							<td><?php echo $mingguke[$i]."<br> (".$keteranganmod[$i].")"; ?></td>
 							<td><?php echo $durasi_paket[$i]; ?></td>
 							<td><?php echo $tayang_paket[$i]; ?></td>
 							<td><?php echo $keterangan; ?></td>

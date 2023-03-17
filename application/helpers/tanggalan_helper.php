@@ -24,8 +24,7 @@ if ( ! function_exists('namabulan_panjang')) {
 if ( ! function_exists('jamnamabulan_panjang')) {
 	function jamnamabulan_panjang($strtanggaljam)
 	{
-		$namabulan = Array('', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September',
-			'Oktober', 'November', 'Desember');
+		$namabulan = Array('', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September','Oktober', 'November', 'Desember');
 
 		$hasiltanggal = substr($strtanggaljam,8,2)." ".$namabulan[intval(substr($strtanggaljam,5,2))]." ".
 			substr($strtanggaljam,0,4)." ".substr($strtanggaljam,11);
@@ -132,20 +131,26 @@ if ( ! function_exists('hitungmodulke')) {
 			$mingguke = 1;
 		}
 
-		if ($bulannya >= 1) {
+		if ($bulannya == 1) {
 			$semester = 2;
-			$nminggu = $mingguke + (($bulannya - 1) * 4);
+			$nminggu = 0;
+			$nmodul = 0;
+		}
+
+		if ($bulannya >= 2) {
+			$semester = 2;
+			$nminggu = $mingguke + (($bulannya - 2) * 4);
 			$nmodul = $nminggu;
 		}
 
-		if ($bulannya >= 3) {
-			if ($bulannya == 3 && $mingguke == 1)
+		if ($bulannya >= 4) {
+			if ($bulannya == 4 && $mingguke == 1)
 				$nmodul = "uts";
-			else if ($bulannya == 3 && $mingguke == 2)
+			else if ($bulannya == 4 && $mingguke == 2)
 				$nmodul = "remedial uts";
-			else if ($bulannya == 5 && $mingguke == 3)
+			else if ($bulannya == 6 && $mingguke == 3)
 				$nmodul = "uas";
-			else if ($bulannya == 5 && $mingguke == 4)
+			else if ($bulannya == 6 && $mingguke == 4)
 				$nmodul = "remedial uas";
 			else
 				$nmodul = $nminggu - 2;
@@ -263,6 +268,82 @@ if ( ! function_exists('moduldarike_bulan')) {
 		$hasil['ujian1'] = $ujian1;
 		$hasil['ujian2'] = $ujian2;
 		$hasil['semester'] = $semester;
+
+		return $hasil;
+	}
+}
+
+if ( ! function_exists('hitungtanggalmodul')) {
+	function hitungtanggalmodul($modulke,$semester,$tglmulai,$bulanmulai)
+	{
+		$namabulan = Array('', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September','Oktober', 'November', 'Desember');
+
+		// $modulke = 9;
+		// $semester = 1;
+		// $tglmulai = 8;
+		// $bulanmulai = 2;
+		// $tahunajar = 2022;
+		$tahunsekarang = date("Y");
+		$bulansekarang = date("n");
+		if ($bulansekarang<=6)
+		{
+			if ($semester==1)
+			$tahunsekarang++;
+		}
+		else if ($bulansekarang>6)
+		{
+			if ($semester==2)
+			$tahunsekarang++;
+		} 
+
+		$itg = array();
+		$itg[1] = '01 - 07 ';
+		$itg[8] = '08 - 14 ';
+		$itg[15] = '15 - 21 ';
+		$itg[20] = '22 - 28 ';
+		$itg[21] = '22 - 29 ';
+		$itg[22] = '22 - 30 ';
+		$itg[23] = '22 - 31 ';
+
+		$penambahan = ($tglmulai-1)/7;
+		$nbulan = intval(($modulke-1+$penambahan)/4)+$bulanmulai;
+		
+		
+		if ($nbulan>=13)
+		{
+			$nbulan=1;
+			$tahunsekarang++;
+		}
+		
+		$cektanggal = intval(($modulke-1+$penambahan)%4) * 7 +1;
+		
+		$cektanggal2 = $cektanggal;
+		if ($cektanggal==22)
+		{
+			if ($nbulan==1 || $nbulan==3 || $nbulan==5|| $nbulan==7|| $nbulan==8|| $nbulan==10|| $nbulan==12)
+				$cektanggal2 = 23;
+			else if ($nbulan==2)
+			{
+				if ($tahunsekarang%4==0)
+					$cektanggal2 = 21;
+				else
+					$cektanggal2 = 20;
+			} 
+
+		}
+
+		// echo $itg[$cektanggal2].$namabulan[$nbulan]." ".$tahunajar;
+
+		$hasil = array();
+
+		$hasil['tgl1'] = substr($itg[$cektanggal2],0,2);
+		if (substr($itg[$cektanggal2],0,1)=="0")
+		$hasil['tgl1'] = substr($itg[$cektanggal2],1,1);
+		$hasil['tgl2'] = substr($itg[$cektanggal2],5,2);
+		if (substr($itg[$cektanggal2],5,1)=="0")
+		$hasil['tgl2'] = substr($itg[$cektanggal2],6,1);
+		$hasil['bulan'] = $nbulan;
+		$hasil['fulltgl'] = $hasil['tgl1']." - ".$hasil['tgl2']." ".$namabulan[$nbulan]." ".$tahunsekarang;
 
 		return $hasil;
 	}

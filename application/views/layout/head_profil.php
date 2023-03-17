@@ -3,12 +3,12 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="viewport" content="initial-scale=1, maximum-scale=1">
-	<title>TV Sekolah</title>
+	<title>TV Kampus</title>
 
 	<link rel="icon" href="<?php echo base_url();?>images/icon.png" type="image/gif" sizes="16x16">
 	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
 	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
-	<meta content="TV Sekolah - Wahana Belajar dan Berkreasi" name="description" />
+	<meta content="TV Kampus - Wahana Belajar dan Berkreasi" name="description" />
 	<meta content="" name="keywords" />
 	<meta content="" name="author" />
 

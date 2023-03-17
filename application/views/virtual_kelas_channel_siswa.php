@@ -76,10 +76,11 @@ foreach ($dafplaylist as $datane) {
 	$thumbspaket = $thumbnail[$jmldaf_list];
 	$tayangpaket = $tgl_tayang[$jmldaf_list];
 
-	$npsnku = $datane->npsn;
-	$idguru = $datane->id;
+	$npsnku = $datane->npsn_user;
+	$idguru = $datane->id_guru;
 	$nama_sekolahku = $datane->sekolah;
 	$namaku = $datane->first_name . ' ' . $datane->last_name;
+	$keterangan_mod = "[".$datane->keterangan_mod."]";
 
 }
 
@@ -165,7 +166,7 @@ foreach ($playlist as $datane) {
 					<?php }
 					else
 					{ ?>
-					<span style="font-weight: bold;color: black">PERTEMUAN MINGGU KE-<?php echo $mingguke; ?> <br>MODUL KE-<?php echo $modulke; ?>
+					<span style="font-weight: bold;color: black">PERTEMUAN MINGGU KE-<?php echo $mingguke; ?> <br> <?=$keterangan_mod?><br>MODUL KE-<?php echo $modulke; ?>
 					<br><h3><?php echo $nama_paket; ?></h3></span>
 					<?php } ?>
 
@@ -370,124 +371,153 @@ foreach ($playlist as $datane) {
 
 <!---->
 <script>
+    var icekvicon;
 
-	var icekvicon;
+    function loadjitsi() {
 
-	function loadjitsi() {
+        <?php if ($koderoom != "" && $koderoom != "outside") {?>
+        icekvicon = setInterval(cekvicon, 10000);
+        var domain = "meet.jit.si";
+        var options = {
+            roomName: "<?php echo $koderoom;?>",
+            width: "100%",
+            height: 500,
+            userInfo: {
+                displayName: '<?php echo $this->session->userdata("first_name") . " " . $this->session->userdata("last_name");?>'
+            },
+            parentNode: document.querySelector('#jitsi'),
+            configOverwrite: {
+                <?php if($statusvicon != "moderator") {?>
+                disableRemoteMute: true,
+                disableInviteFunctions: true,
+                doNotStoreRoom: true,
+                disableProfile: true,
+                remoteVideoMenu: {
+                    disableKick: true
+                }
+                <?php }?>
+            },
+            interfaceConfigOverwrite: {
+                SHOW_JITSI_WATERMARK: true,
+                SHOW_WATERMARK_FOR_GUESTS: true,
+                DEFAULT_BACKGROUND: "#212529",
+                DEFAULT_LOCAL_DISPLAY_NAME: 'saya',
+                TOOLBAR_BUTTONS: [
+                    'microphone',
+                    'camera',
+                    'desktop',
+                    'fullscreen',
+                    'fodeviceselection',
+                    'profile',
+                    'chat',
+                    'raisehand',
+                    'info',
+                    'hangup',
+                    'videoquality',
+                    'filmstrip',
+                    'tileview',
+                    //'stats','settings'
+                ]
+            }
+        }
+        var api = new JitsiMeetExternalAPI(domain, options);
+        api.executeCommand('subject', ' ');
+        // api.executeCommand('password', 'apem');
+        <?php if($statusvicon == "moderator" || $statusvicon == "siswa") {?>
+        $.ajax({
+            url: "<?php echo base_url();?>bimbel/setpassword/<?php echo $jenis . "/" . $kodelink;?>",
+            method: "GET",
+            data: {},
+            success: function (result) {
+                {
+                    setTimeout(() => {
 
-		<?php if ($koderoom != "" && $koderoom != "outside") {?>
-		icekvicon = setInterval(cekvicon, 10000);
-		var domain = "meet.jit.si";
-		var options = {
-			roomName: "<?php echo $koderoom;?>",
-			width: "100%",
-			height: 500,
-			userInfo: {
-				displayName: '<?php echo $this->session->userdata("first_name") . " " . $this->session->userdata("last_name");?>'
-			},
-			parentNode: document.querySelector('#jitsi'),
-			configOverwrite: {
-				<?php if($statusvicon != "moderator") {?>
-				disableRemoteMute: true,
-				disableInviteFunctions: true,
-				doNotStoreRoom: true,
-				disableProfile: true,
-				remoteVideoMenu: {
-					disableKick: true,
-				}
-				<?php }?>
-			},
-			interfaceConfigOverwrite: {
-				SHOW_JITSI_WATERMARK: true, SHOW_WATERMARK_FOR_GUESTS: true, DEFAULT_BACKGROUND: "#212529",
-				DEFAULT_LOCAL_DISPLAY_NAME: 'saya', TOOLBAR_BUTTONS: [
-					'microphone', 'camera', 'desktop', 'fullscreen',
-					'fodeviceselection', 'profile', 'chat',
-					'raisehand', 'info', 'hangup',
-					'videoquality', 'filmstrip', 'tileview',
-					//'stats','settings'
-				]
-			}
-		}
-		var api = new JitsiMeetExternalAPI(domain, options);
-		api.executeCommand('subject', ' ');
-		// api.executeCommand('password', 'apem');
-		<?php if($statusvicon == "moderator" || $statusvicon == "siswa") {?>
-		$.ajax({
-			url: "<?php echo base_url();?>bimbel/setpassword/<?php echo $jenis . "/" . $kodelink;?>",
-			method: "GET",
-			data: {},
-			success: function (result) {
-				{
-					setTimeout(() => {
+                        api.addEventListener('videoConferenceJoined', (response) => {
+                            api.executeCommand('password', result);
+                        });
 
-						api.addEventListener('videoConferenceJoined', (response) => {
-							api.executeCommand('password', result);
-						});
+                        <?php if($statusvicon == "moderator" || $statusvicon == "siswa") {?>
+                        // when local user is trying to enter in a locked room
+                        api.addEventListener('passwordRequired', () => {
+                            api.executeCommand('password', result);
+                        });
+                        <?php } ?>
 
-						<?php if($statusvicon == "moderator" || $statusvicon == "siswa") {?>
-						// when local user is trying to enter in a locked room
-						api.addEventListener('passwordRequired', () => {
-							api.executeCommand('password', result);
-						});
-						<?php } ?>
+                }, 10);
+            }
+        }
+    });
 
-					}, 10);
-				}
-			}
-		});
+    <?php } ?>
 
-		<?php } ?>
+    var yourRoomPass = "pass";
 
-		var yourRoomPass = "pass";
+    setTimeout(() => {
+        // why timeout: I got some trouble calling event listeners without setting a
+        // timeout :)
 
+        api.addEventListener('videoConferenceJoined', (response) => {
+            api.executeCommand('password', yourRoomPass);
+        });
 
-		setTimeout(() => {
-// why timeout: I got some trouble calling event listeners without setting a timeout :)
+        <?php if($statusvicon == "moderator" || $statusvicon == "siswa") {?>
+        // when local user is trying to enter in a locked room
+        api.addEventListener('passwordRequired', () => {
+            api.executeCommand('password', yourRoomPass);
+        });
+        <?php } ?>
 
-			api.addEventListener('videoConferenceJoined', (response) => {
-				api.executeCommand('password', yourRoomPass);
-			});
+        //when local user has joined the video conference
 
-			<?php if($statusvicon == "moderator" || $statusvicon == "siswa") {?>
-			// when local user is trying to enter in a locked room
-			api.addEventListener('passwordRequired', () => {
-				api.executeCommand('password', yourRoomPass);
-			});
-			<?php } ?>
+    }, 10);
 
-			//when local user has joined the video conference
+    <?php } ?>
+}
 
+var player;
+var detikke = new Array();
+var idvideo = new Array();
+var durasike = new Array();
+var filler = new Array();
+var jatah = 0;
+var namabulan = new Array(
+    'Jan',
+    'Peb',
+    'Mar',
+    'Apr',
+    'Mei',
+    'Jun',
+    'Jul',
+    'Ags',
+    'Sep',
+    'Okt',
+    'Nop',
+    'Des'
+);
+var detiklokal = 0;
+var tgl,
+    bln,
+    thn,
+    jam,
+    menit,
+    detik,
+    jmmndt;
+var cekjatah = 0;
+var durasi = 0;
+var detikselisih;
+var loadsekali = false;
 
-		}, 10);
+var urlini = "<?php echo $_SERVER['REQUEST_URI'];?>";
+localStorage.setItem("akhirch", urlini);
+localStorage.setItem("akhir", urlini);
 
-		<?php } ?>
-	}
-
-	var player;
-	var detikke = new Array();
-	var idvideo = new Array();
-	var durasike = new Array();
-	var filler = new Array();
-	var jatah = 0;
-	var namabulan = new Array('Jan', 'Peb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nop', 'Des');
-	var detiklokal = 0;
-	var tgl, bln, thn, jam, menit, detik, jmmndt;
-	var cekjatah = 0;
-	var durasi = 0;
-	var detikselisih;
-	var loadsekali = false;
-
-	var urlini = "<?php echo $_SERVER['REQUEST_URI'];?>";
-	localStorage.setItem("akhirch", urlini);
-	localStorage.setItem("akhir", urlini);
-
-	<?php
+<?php
 	if ($idliveduluan != "") {
 	?>
-	//var statuslive = <?php //echo $iddaflist[$idliveduluan];?>//;
-	var statuslive = <?php echo $status[$idliveduluan];?>;
-	var tgljadwal = new Date("<?php echo $tgl_tayang1[$idliveduluan];?>");
-	<?php
+//var statuslive = <?php echo $iddaflist[$idliveduluan];?>//;
+var statuslive = <?php echo $status[$idliveduluan];?>;
+var tgljadwal = new Date("<?php echo $tgl_tayang1[$idliveduluan];?>");
+<?php
 	}
 
 	$now = new DateTime();
@@ -498,28 +528,29 @@ foreach ($playlist as $datane) {
 
 	?>
 
-	var jamnow = tglnow.getTime();
-	var jmljudul = 0;
-	var jmlterm = 0;
-	var jamjadwal, jamsaiki;
-	var masuksiaran = false;
-	var dalamsiaran = false;
+var jamnow = tglnow.getTime();
+var jmljudul = 0;
+var jmlterm = 0;
+var jamjadwal,
+    jamsaiki;
+var masuksiaran = false;
+var dalamsiaran = false;
 
-	filler[1] = 'X7R-q9rsrtU';
+filler[1] = 'X7R-q9rsrtU';
 
-	<?php
+<?php
 	if ($id_playlist == null) {
 	?>
-	//detikke[1] = '<?php //echo substr($tgl_tayang1[0], 11, 8);?>//';
-	detikke[1] = keJam(tglnow);
-	<?php } else {
+//detikke[1] = '<?php echo substr($tgl_tayang1[0], 11, 8);?>//';
+detikke[1] = keJam(tglnow);
+<?php } else {
 	?>
-	detikke[1] = keJam(tglnow);
-	<?php } ?>
+detikke[1] = keJam(tglnow);
+<?php } ?>
 
-	//console.log('JML LIST:'+<?php //echo $jml_list;?>//);
-	//console.log("Detik 1:"+detikke[1]);
-	<?php
+// console.log('JML LIST:'+<?php echo $jml_list;?>//); console.log("Detik
+// 1:"+detikke[1]);
+<?php
 	for ($q = 1; $q <= $jml_list; $q++) {
 		echo "idvideo[" . $q . "] = youtube_parser('" . $id_videolist[$q] . "'); \r\n";
 		echo "durasike[" . $q . "] = '" . $durasilist[$q] . "'; \r\n";
@@ -534,131 +565,144 @@ foreach ($playlist as $datane) {
 	};
 	?>
 
-	/*console.log("Durasi:"+durasi);
+/*console.log("Durasi:"+durasi);
 	console.log("Selisih waktu:"+(tglnow-tgljadwal));*/
 
-	detik2 = 0;
+detik2 = 0;
 
-	function ceklive() {
-		//alert ("HOLA0");
-		detik2++;
-		tglsaiki = new Date(tglnow.getTime() + (detik2 * 1000));
-		if (tglsaiki - tgljadwal < 0) {
-			//alert ("HOLA1");
-			$('#layartancap').show();
-//			$('#keteranganLive').html("SEGERA TAYANG TANGGAL: <?php //if ($id_playlist == null)
-			////				echo $tgl_tayang[$idliveduluan]; else
-			//					echo $tayangpaket; else
-			//				echo $tayangpaket; ?>//");
-			$('#divnamapaket').show();
-			$('#keteranganLive').show();
-			//$('#infolive<?php //echo $idliveduluan;?>//').html("Segera Tayang");
+function ceklive() {
+    //alert ("HOLA0");
+    detik2++;
+    tglsaiki = new Date(tglnow.getTime() + (detik2 * 1000));
+    if (tglsaiki - tgljadwal < 0) {
+        //alert ("HOLA1");
+        $('#layartancap').show();
+        // $('#keteranganLive').html("SEGERA TAYANG TANGGAL: <?php //if ($id_playlist ==
+        // null) //				echo $tgl_tayang[$idliveduluan]; else 					echo $tayangpaket;
+        // else 				echo $tayangpaket; ?>//");
+        $('#divnamapaket').show();
+        $('#keteranganLive').show();
+        //$('#infolive<?php echo $idliveduluan;?>//').html("Segera Tayang");
 
+    } else {
+        //alert ("HOLA2"); alert (tglsaiki-tgljadwal);
+        masuksiaran = true;
+        if ((tglsaiki - tgljadwal) < durasi) {
+            dalamsiaran = true;
+            if (loadsekali == false) {
+                loadsekali = true;
+                loadplayer();
+            }
 
-		} else {
-			//alert ("HOLA2");
-			//alert (tglsaiki-tgljadwal);
-			masuksiaran = true;
-			if ((tglsaiki - tgljadwal) < durasi) {
-				dalamsiaran = true;
-				if (loadsekali == false) {
-					loadsekali = true;
-					loadplayer();
-				}
+            $('#layartancap').show();
+            $('#keteranganLive').html("LIVE");
+            $('#divnamapaket').show();
+            $('#keteranganLive').show();
+            $('#infolive<?php echo $idliveduluan;?>').html("Live");
+        } else {
+            dalamsiaran = false;
+            $('#layartancap').hide();
+            $('#keteranganLive').html("");
+            $('#divnamapaket').hide();
+            $('#keteranganLive').hide();
+            $('#infolive<?php echo $idliveduluan;?>').html("");
+            if (statuslive == 1) {
+                gantistatusselesai();
+            }
+        }
+    }
+    $('#layartancap').show();
+}
 
-				$('#layartancap').show();
-				$('#keteranganLive').html("LIVE");
-				$('#divnamapaket').show();
-				$('#keteranganLive').show();
-				$('#infolive<?php echo $idliveduluan;?>').html("Live");
-			} else {
-				dalamsiaran = false;
-				$('#layartancap').hide();
-				$('#keteranganLive').html("");
-				$('#divnamapaket').hide();
-				$('#keteranganLive').hide();
-				$('#infolive<?php echo $idliveduluan;?>').html("");
-				if (statuslive == 1) {
-					gantistatusselesai();
-				}
-			}
-		}
-		$('#layartancap').show();
-	}
-
-
-	jmljudul = <?php echo $jml_list;?>;
-	/*if (durasi>0)
+jmljudul = <?php echo $jml_list;?>;
+/*if (durasi>0)
 	jmlterm = (86400 / (durasi/1000)) - 1;
 	*/
-	jmlterm = 1;
+jmlterm = 1;
 
-	/*jamakhir = new Date("1970-01-01T" + detikke[3] + "Z").getTime();
+/*jamakhir = new Date("1970-01-01T" + detikke[3] + "Z").getTime();
 	jamawal = new Date("1970-01-01T" + detikke[1] + "Z").getTime();*/
-	//	durasi = hitungDurasi(1) + hitungDurasi(2) + hitungDurasi(3);
+//	durasi = hitungDurasi(1) + hitungDurasi(2) + hitungDurasi(3);
 
-	if (jmlterm > 0) {
-		for (var y = 1; y <= jmlterm; y++) {
-			for (var z = 1; z <= jmljudul; z++) {
-				detikke[y * jmljudul + z] = keJam(new Date("1970-01-01T" + detikke[z]).getTime() + durasi * y);
-				durasike[y * jmljudul + z] = durasike[z];
-				idvideo[y * jmljudul + z] = idvideo[z];
-				//console.log("detikke"+(y * jmljudul + z)+":"+detikke[y * jmljudul + z]);
-			}
-		}
-	}
+if (jmlterm > 0) {
+    for (var y = 1; y <= jmlterm; y++) {
+        for (var z = 1; z <= jmljudul; z++) {
+            detikke[y * jmljudul + z] = keJam(
+                new Date("1970-01-01T" + detikke[z]).getTime() + durasi * y
+            );
+            durasike[y * jmljudul + z] = durasike[z];
+            idvideo[y * jmljudul + z] = idvideo[z];
+            //console.log("detikke"+(y * jmljudul + z)+":"+detikke[y * jmljudul + z]);
+        }
+    }
+}
 
-	function kerjakansoal() {
-		<?php if($this->session->userdata("a01"))
+function kerjakansoal() {
+    <?php if($this->session->userdata("a01"))
 		{ ?>
-		window.open("<?php echo base_url();?>virtualkelas/soal/tampilkan/<?php echo $id_playlist;?>", "_self");
-		<?php }
+    window.open(
+        "<?php echo base_url();?>virtualkelas/soal/tampilkan/<?php echo $id_playlist;?>",
+        "_self"
+    );
+    <?php }
 		else
 		{ ?>
-		window.open("<?php echo base_url();?>virtualkelas/soal/<?php echo $id_playlist;?>", "_self");
-		<?php } ?>
-	}
+    window.open(
+        "<?php echo base_url();?>virtualkelas/soal/<?php echo $id_playlist;?>",
+        "_self"
+    );
+    <?php } ?>
+}
 
-	function bukamateri() {
-		window.open("<?php echo base_url();?>virtualkelas/materi/<?php echo '/tampilkan/' . $id_playlist;?>", "_self");
-	}
+function bukamateri() {
+    window.open(
+        "<?php echo base_url();?>virtualkelas/materi/<?php echo '/tampilkan/' . $id_playlist;?>",
+        "_self"
+    );
+}
 
-	function bukatugas() {
-		<?php if($this->session->userdata("a01"))
+function bukatugas() {
+    <?php if($this->session->userdata("a01"))
 		{ ?>
-		window.open("<?php echo base_url();?>virtualkelas/tugas/saya/tampilkan/<?php echo $id_playlist;?>", "_self");
-		<?php }
+    window.open(
+        "<?php echo base_url();?>virtualkelas/tugas/saya/tampilkan/<?php echo $id_playlist;?>",
+        "_self"
+    );
+    <?php }
 		else
 		{ ?>
-		window.open("<?php echo base_url();?>virtualkelas/tugas/<?php echo $npsn . '/tampilkan/' . $id_playlist;?>", "_self");
-		<?php } ?>
+    window.open(
+        "<?php echo base_url();?>virtualkelas/tugas/<?php echo $npsn . '/tampilkan/'.$id_playlist;?>",
+        "_self"
+    );
+    <?php } ?>
 
-	}
+}
 
-	function youtube_parser(url) {
-		var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
-		var match = url.match(regExp);
-		return (match && match[7].length == 11) ? match[7] : false;
-	}
+function youtube_parser(url) {
+    var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+    var match = url.match(regExp);
+    return (match && match[7].length == 11)
+        ? match[7]
+        : false;
+}
 
+/*echo 'console.log('.$jml_list.');';*/
 
-	/*echo 'console.log('.$jml_list.');';*/
-
-
-	function onYouTubeIframeAPIReady() {
-		//loadjitsi();
-		<?php
+function onYouTubeIframeAPIReady() {
+    //loadjitsi();
+    <?php
 		/*echo "console.log('".$id_playlist."'); \r\n";
 		echo "console.log('status:".$status[1]."'); \r\n";*/
 		if (($id_playlist != null && $statuspaket >= 1)) {
 			echo "loadplayer(); \r\n";
 		}?>
-	}
+}
 
-	function loadplayer() {
-		idvideolain = "";
-		masuksiaran = true;
-		<?php
+function loadplayer() {
+    idvideolain = "";
+    masuksiaran = true;
+    <?php
 		if ($id_playlist != null) {
 			for ($x = 1; $x < $jml_list; $x++)
 				echo "idvideolain = idvideolain + idvideo[" . $x . "]+','; \r\n";
@@ -666,261 +710,270 @@ foreach ($playlist as $datane) {
 		echo "idvideolain = idvideolain + idvideo[" . $jml_list . "]; \r\n";
 		?>
 
-		//console.log(idvideo[1]);
-		//console.log(idvideolain);
+    //console.log(idvideo[1]); console.log(idvideolain);
 
-		player = new YT.Player('isivideoyoutube', {
-			width: 600,
-			height: 400,
-			videoId: <?php echo "idvideo[1]";?>,
-			showinfo: 0,
-			controls: 0,
-			autoplay: 0,
-			playerVars: {
-				color: 'white',
-				playlist: <?php echo "idvideolain";?>
-			},
-			events: {
-				'onReady': initialize,
-			}
-		});
-	}
+    player = new YT.Player('isivideoyoutube', {
+        width: 600,
+        height: 400,
+        videoId: <?php echo "idvideo[1]";?>,
+        showinfo: 0,
+        controls: 0,
+        autoplay: 0,
+        playerVars: {
+            color: 'white',
+            playlist: <?php echo "idvideolain";?>
+        },
+        events: {
+            'onReady': initialize
+        }
+    });
+}
 
-
-	function initialize() {
-		$(function () {
-			loadjitsi();
-			setInterval(updateTanggal, 1000);
-			<?php
+function initialize() {
+    $(function () {
+        loadjitsi();
+        setInterval(updateTanggal, 1000);
+        <?php
 			if ($status[1] == 1) {
 			?>
-			setInterval(ceklive, 1000);
-			<?php } ?>
+        setInterval(ceklive, 1000);
+        <?php } ?>
 
-		});
+    });
 
-		if (dalamsiaran)
-			player.playVideo();
-	}
+    if (dalamsiaran) 
+        player.playVideo();
+    }
 
+function jamHitung(ke) {
+    return new Date("1970-01-01T" + detikke[ke]).getTime();
+}
 
-	function jamHitung(ke) {
-		return new Date("1970-01-01T" + detikke[ke]).getTime();
-	}
+function hitungDurasi(ke) {
+    detikjam = parseInt(durasike[ke].substring(0, 2)) * 3600;
+    detikmenit = parseInt(durasike[ke].substring(3, 5)) * 60;
+    detikdetik = parseInt(durasike[ke].substring(6, 8));
+    totaldurasi = (detikjam + detikmenit + detikdetik) * 1000;
+    return totaldurasi;
+}
 
-	function hitungDurasi(ke) {
-		detikjam = parseInt(durasike[ke].substring(0, 2)) * 3600;
-		detikmenit = parseInt(durasike[ke].substring(3, 5)) * 60;
-		detikdetik = parseInt(durasike[ke].substring(6, 8));
-		totaldurasi = (detikjam + detikmenit + detikdetik) * 1000;
-		return totaldurasi;
-	}
+function updateTanggal() {
+    jamnow = jamnow + 1000;
+    tgl = new Date(jamnow).getDate();
+    bln = new Date(jamnow).getMonth();
+    thn = new Date(jamnow).getFullYear();
+    jam = new Date(jamnow).getHours();
+    if (jam < 10) 
+        jam = '0' + jam;
+    menit = new Date(jamnow).getMinutes();
+    if (menit < 10) 
+        menit = '0' + menit;
+    detik = new Date(jamnow).getSeconds();
+    if (detik < 10) 
+        detik = '0' + detik;
+    jmmndt = jam + ':' + menit + ':' + detik;
 
-	function updateTanggal() {
-		jamnow = jamnow + 1000;
-		tgl = new Date(jamnow).getDate();
-		bln = new Date(jamnow).getMonth();
-		thn = new Date(jamnow).getFullYear();
-		jam = new Date(jamnow).getHours();
-		if (jam < 10)
-			jam = '0' + jam;
-		menit = new Date(jamnow).getMinutes();
-		if (menit < 10)
-			menit = '0' + menit;
-		detik = new Date(jamnow).getSeconds();
-		if (detik < 10)
-			detik = '0' + detik;
-		jmmndt = jam + ':' + menit + ':' + detik;
+    $('#jamsekarang').html(
+        tgl + ' ' + namabulan[bln] + ' ' + thn + ', ' + jmmndt + ' WIB'
+    );
 
-		$('#jamsekarang').html(tgl + ' ' + namabulan[bln] + ' ' + thn + ', ' + jmmndt + ' WIB');
+    if (durasi > 0 && dalamsiaran) 
+        updatePlaying();
+    }
 
-		if (durasi > 0 && dalamsiaran)
-			updatePlaying();
-	}
+function keJam(jaminput) {
+    tgl1 = new Date(jaminput).getDate();
+    bln1 = new Date(jaminput).getMonth();
+    thn1 = new Date(jaminput).getFullYear();
+    jam1 = new Date(jaminput).getHours();
+    if (jam1 < 10) 
+        jam1 = '0' + jam1;
+    menit1 = new Date(jaminput).getMinutes();
+    if (menit1 < 10) 
+        menit1 = '0' + menit1;
+    detik1 = new Date(jaminput).getSeconds();
+    if (detik1 < 10) 
+        detik1 = '0' + detik1;
+    jame = jam1 + ':' + menit1 + ':' + detik1;
 
-	function keJam(jaminput) {
-		tgl1 = new Date(jaminput).getDate();
-		bln1 = new Date(jaminput).getMonth();
-		thn1 = new Date(jaminput).getFullYear();
-		jam1 = new Date(jaminput).getHours();
-		if (jam1 < 10)
-			jam1 = '0' + jam1;
-		menit1 = new Date(jaminput).getMinutes();
-		if (menit1 < 10)
-			menit1 = '0' + menit1;
-		detik1 = new Date(jaminput).getSeconds();
-		if (detik1 < 10)
-			detik1 = '0' + detik1;
-		jame = jam1 + ':' + menit1 + ':' + detik1;
+    return jame;
+    //updatePlaying();
+}
 
-		return jame;
-		//updatePlaying();
-	}
-
-
-	function updatePlaying() {
-		for (a = 1; a <= (jmljudul * jmlterm); a++) {
-			jamjadwal = new Date("1970-01-01T" + detikke[a] + "Z").getTime();
-			jamsaiki = new Date("1970-01-01T" + jmmndt + "Z").getTime();
-			//console.log(detikke[a]+":"+jmmndt);
-			terakhir = a;
-			if (jamsaiki >= jamjadwal) {
-				cekjatah = a;
-				detikselisih = (jamsaiki - jamjadwal) / 1000;
-				//break;
-			}
-			if (terakhir != cekjatah)
-				break;
-		}
-
-		/*console.log("Jatah:"+jatah);
+function updatePlaying() {
+    for (a = 1; a <= (jmljudul * jmlterm); a++) {
+        jamjadwal = new Date("1970-01-01T" + detikke[a] + "Z").getTime();
+        jamsaiki = new Date("1970-01-01T" + jmmndt + "Z").getTime();
+        //console.log(detikke[a]+":"+jmmndt);
+        terakhir = a;
+        if (jamsaiki >= jamjadwal) {
+            cekjatah = a;
+            detikselisih = (jamsaiki - jamjadwal) / 1000;
+            //break;
+        }
+        if (terakhir != cekjatah) 
+            break;
+        }
+    
+    /*console.log("Jatah:"+jatah);
 		console.log("CekJatah:"+cekjatah);*/
 
-		if (cekjatah != jatah) {
+    if (cekjatah != jatah) {
 
-			console.log(cekjatah);
-			console.log(idvideo[cekjatah]);
-			jatah = cekjatah;
+        console.log(cekjatah);
+        console.log(idvideo[cekjatah]);
+        jatah = cekjatah;
 
-			detiklokal = detikselisih;
+        detiklokal = detikselisih;
 
-			console.log("Jatah2:" + jatah);
-			console.log("Selisih:" + detikselisih);
+        console.log("Jatah2:" + jatah);
+        console.log("Selisih:" + detikselisih);
 
-			if (detiklokal > durasike[jatah]) {
-				detiklokal = 0;
-				player.loadVideoById(filler[1]);
-			} else {
-				player.loadVideoById(idvideo[jatah], detiklokal);
-			}
+        if (detiklokal > durasike[jatah]) {
+            detiklokal = 0;
+            player.loadVideoById(filler[1]);
+        } else {
+            player.loadVideoById(idvideo[jatah], detiklokal);
+        }
 
-			player.playVideo();
-		} else {
-			detiklokal = detiklokal + 1;
-			videoPos = !player.getCurrentTime ? 0.0 : player.getCurrentTime();
-			jarak = (videoPos - detiklokal);
-			if (player.getPlayerState() != 2) {
-				if (jarak > 5 || jarak < -5)
-					player.seekTo(detiklokal);
-				player.playVideo();
-			}
-		}
-	}
+        player.playVideo();
+    } else {
+        detiklokal = detiklokal + 1;
+        videoPos = !player.getCurrentTime
+            ? 0.0
+            : player.getCurrentTime();
+        jarak = (videoPos - detiklokal);
+        if (player.getPlayerState() != 2) {
+            if (jarak > 5 || jarak < -5) 
+                player.seekTo(detiklokal);
+            player.playVideo();
+        }
+    }
+}
 
-	<?php
+<?php
 	if ($idliveduluan) {
 	?>
 
-	function gantistatusselesai() {
-		$.ajax({
-			url: "<?php echo base_url();?>channel/gantistatuspaket",
-			method: "POST",
-			data: {id: <?php echo $iddaflist[$idliveduluan];?>},
-			success: function (result) {
-				statuslive = 1;
-				//detik2=0;
-			}
-		})
-	}
+function gantistatusselesai() {
+    $.ajax({
+        url: "<?php echo base_url();?>channel/gantistatuspaket",
+        method: "POST",
+        data: {
+            id: <?php echo $iddaflist[$idliveduluan];?>
+        },
+        success: function (result) {
+            statuslive = 1;
+            //detik2=0;
+        }
+    })
+}
 
-	<?php } ?>
+<?php } ?>
 
-	var count = 0;
-	var myInterval;
+var count = 0;
+var myInterval;
 
-	function timerHandler() {
-		if (player.getPlayerState() == 1) {
-			count++;
-		}
-		document.getElementById("seconds").innerHTML = "Durasi menonton: " + count + " detik. <br>(Refresh)";
-		<?php if ($this->session->userdata("loggedIn")) {?>
-		if (count >= 150 && count % 150 == 0)
-			updatenonton();
-		<?php } ?>
-	}
+function timerHandler() {
+    if (player.getPlayerState() == 1) {
+        count++;
+    }
+    document
+        .getElementById("seconds")
+        .innerHTML = "Durasi menonton: " + count + " detik. <br>(Refresh)";
+    <?php if ($this->session->userdata("loggedIn")) {?>
+    if (count >= 150 && count % 150 == 0) 
+        updatenonton();
+    
+    <?php } ?>
+}
 
-	function updatenonton() {
-		$.ajax({
-			url: "<?php echo base_url();?>channel/updatenonton",
-			method: "POST",
-			data: {
-				channel: 2, npsn: "<?php echo $npsnku;?>",
-				idguru: <?php echo $idguru;?>, linklist: "<?php echo $id_playlist;?>", durasi: count
-			},
-			success: function (result) {
-			},
-			error: function (XMLHttpRequest, textStatus, errorThrown) {
-				alert("Status: " + textStatus);
-				alert("Error: " + errorThrown);
-			}
-		})
-	}
+function updatenonton() {
+    $.ajax({
+        url: "<?php echo base_url();?>channel/updatenonton",
+        method: "POST",
+        data: {
+            channel: 2,
+            npsn: "<?php echo $npsnku;?>",
+            idguru: <?php echo $idguru;?>,
+            linklist: "<?php echo $id_playlist;?>",
+            durasi: count
+        },
+        success: function (result) {},
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert("Status: " + textStatus);
+            alert("Error: " + errorThrown);
+        }
+    })
+}
 
-	function startTimer() {
-		if (masuksiaran == true) {
-			window.clearInterval(myInterval);
-			myInterval = window.setInterval(timerHandler, 1000);
-		}
-	}
+function startTimer() {
+    if (masuksiaran == true) {
+        window.clearInterval(myInterval);
+        myInterval = window.setInterval(timerHandler, 1000);
+    }
+}
 
-	function stopTimer() {
-		window.clearInterval(myInterval);
-	}
+function stopTimer() {
+    window.clearInterval(myInterval);
+}
 
-	function onFocus() {
-		console.log('browser window activated');
-		startTimer()
-	}
+function onFocus() {
+    console.log('browser window activated');
+    startTimer()
+}
 
-	function onBlur() {
-		console.log('browser window deactivated');
-		stopTimer()
-	}
+function onBlur() {
+    console.log('browser window deactivated');
+    stopTimer()
+}
 
-	var inter;
-	var iframeFocused;
-	window.focus();      // I needed this for events to fire afterwards initially
-	addEventListener('focus', function (e) {
-		console.log('global window focused');
-		if (iframeFocused) {
-			console.log('iframe lost focus');
-			iframeFocused = false;
-			//clearInterval(inter);
-		} else onFocus();
-	});
+var inter;
+var iframeFocused;
+window.focus(); // I needed this for events to fire afterwards initially
+addEventListener('focus', function (e) {
+    console.log('global window focused');
+    if (iframeFocused) {
+        console.log('iframe lost focus');
+        iframeFocused = false;
+        //clearInterval(inter);
+    } else 
+        onFocus();
+    }
+);
 
-	addEventListener('blur', function (e) {
-		console.log('global window lost focus');
-		if (document.hasFocus()) {
-			console.log('iframe focused');
-			iframeFocused = true;
-			inter = setInterval(() => {
-				if (!document.hasFocus()) {
-					console.log('iframe lost focus');
-					iframeFocused = false;
-					onBlur();
-					clearInterval(inter);
-				}
-			}, 100);
-		} else onBlur();
-	});
+addEventListener('blur', function (e) {
+    console.log('global window lost focus');
+    if (document.hasFocus()) {
+        console.log('iframe focused');
+        iframeFocused = true;
+        inter = setInterval(() => {
+            if (!document.hasFocus()) {
+                console.log('iframe lost focus');
+                iframeFocused = false;
+                onBlur();
+                clearInterval(inter);
+            }
+        }, 100);
+    } else 
+        onBlur();
+    }
+);
 
-	function cekvicon() {
-		$.ajax({
-			url: "<?php echo base_url();?>virtualkelas/cekvicon/<?php echo $id_playlist;?>",
-			type: 'GET',
-			dataType: 'json',
-			cache: false,
-			success: function (result) {
-				if (result == "off") {
-					clearInterval(icekvicon);
-					location.reload();
-				}
-			}
-		})
-	}
-
-
+function cekvicon() {
+    $.ajax({
+        url: "<?php echo base_url();?>virtualkelas/cekvicon/<?php echo $id_playlist;?>",
+        type: 'GET',
+        dataType: 'json',
+        cache: false,
+        success: function (result) {
+            if (result == "off") {
+                clearInterval(icekvicon);
+                location.reload();
+            }
+        }
+    })
+}
 </script>
 
 

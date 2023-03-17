@@ -26,7 +26,7 @@
 						<div class="post-text">
 							<p><h4>Deskripsi Pekerjaan:</h4>
 							<ul>
-								<li>mencari sponsor/donasi untuk sekolah agar bisa memanfaatkan TV Sekolah</li>
+								<li>mencari sponsor/donasi untuk sekolah agar bisa memanfaatkan TV Kampus</li>
 								<li>membangun relasi yang bertujuan untuk memperoleh prospek beli baik perorangan maupun perusahaan</li>
 								<li>fee 20% - 30% dari sponsor/donasi</li>
 							</ul>

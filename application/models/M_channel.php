@@ -289,6 +289,7 @@ class M_channel extends CI_Model
 		$this->db->join('tb_video tv', 'tv.id_video = tcv.id_video', 'left');
 		$this->db->join('daf_kelas dk','dk.id = tpc.id_kelas','left');
 		$this->db->join('daf_mapel dm','dm.id = tpc.id_mapel','left');
+		$this->db->join('daf_modulke dmo','tpc.semester = dmo.semester_mod AND tpc.modulke = dmo.modulke_mod','left');
 //		$this->db->join('tb_virtual_kelas tk', 'tk.link_paket = tpc.link_list AND tk.kode_beli = "' .
 //			$kodebeli . '" AND tk.jenis_paket = ' . $jenis . ' AND tk.id_user = ' . $iduser, 'left');
 //		$this->db->where('(urutan=0 OR urutan=1)');
@@ -1765,11 +1766,12 @@ class M_channel extends CI_Model
 		return $ret;
 	}
 
-	public function getDataChannelVideo($id_paket)
+	public function getDataChannelVideo($id_paket, $prodi)
 	{
 		$this->db->from('tb_channel_video tcv');
 		$this->db->join('tb_video tv', 'tv.id_video = tcv.id_video', 'left');
 		$this->db->where('id_paket', $id_paket);
+		$this->db->where('prodi', $prodi);
 		$this->db->where('(tv.durasi<>"")');
 		$this->db->order_by('urutan', 'desc');
 		$result = $this->db->get()->result();

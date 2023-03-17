@@ -308,9 +308,9 @@ class Payment extends CI_Controller
 
 		if ($this->session->userdata('statusbayar') == 2 && $this->session->userdata('a02') == false) {
 			$iuran = $iuran + $standar->reaktivasi;
-			$namane = "Reaktivasi " . $bulanapa . " Bulan TV Sekolah";
+			$namane = "Reaktivasi " . $bulanapa . " Bulan TV Kampus";
 		} else {
-			$namane = "Pembayaran " . $bulanapa . " Bulan TV Sekolah";
+			$namane = "Pembayaran " . $bulanapa . " Bulan TV Kampus";
 		}
 
 		$this->load->model('M_login');
@@ -413,10 +413,10 @@ class Payment extends CI_Controller
 		$standar = $this->M_payment->getstandar();
 		if ($this->session->userdata('statusbayar') == 2 && $this->session->userdata('a02') == false) {
 			$iuran = $standar->reaktivasi;
-			$namane = "Reaktivasi Verifikator TV Sekolah";
+			$namane = "Reaktivasi Verifikator TV Kampus";
 		} else {
 			$iuran = $standar->iuran;
-			$namane = "Pembayaran Verifikator Bulan " . $nmbulan[intval($bulan->format("m"))] . " TV Sekolah";
+			$namane = "Pembayaran Verifikator Bulan " . $nmbulan[intval($bulan->format("m"))] . " TV Kampus";
 		}
 
 		$iduser = $this->session->userdata('id_user');
@@ -570,7 +570,7 @@ class Payment extends CI_Controller
 		$this->load->model("M_payment");
 		$standar = $this->M_payment->getstandar();
 
-		$namane = "Pembayaran Pro " . $bulanapa . " Bulan TV Sekolah";
+		$namane = "Pembayaran Pro " . $bulanapa . " Bulan TV Kampus";
 
 		$this->load->model('M_login');
 		$getuser = $this->M_login->getUser($this->session->userdata('id_user'));
@@ -715,7 +715,7 @@ class Payment extends CI_Controller
 		$this->load->model("M_payment");
 		$standar = $this->M_payment->getstandar();
 
-		$namane = "Pembayaran Premium " . $bulanapa . " Bulan TV Sekolah";
+		$namane = "Pembayaran Premium " . $bulanapa . " Bulan TV Kampus";
 
 		$this->load->model('M_login');
 		$getuser = $this->M_login->getUser($this->session->userdata('id_user'));

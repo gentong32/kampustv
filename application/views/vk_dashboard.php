@@ -181,10 +181,14 @@ $jmlmodulujian = $jmlmodul + $jmlujian;
 								if ($jmlgurupilih > 0) {
 									// echo "111111111111111111111111111111111111";
 									if (is_numeric($modulke))
-										echo "<a class=\"small text-white\" href=\"" . base_url() . "virtualkelas/pilih_modul/\">Modul ke-" . $modulke . "</a>";
+									{?>
+										<!-- <button class='tb_biruauto' onclick="window.open('<?php //echo base_url() .'virtualkelas/pilih_modul'; ?>','_self');">Matkul & Dosen</button> -->
+										<hr style="margin-top: 15px;margin-bottom: 5px; ">
+									<?php }
 									else
 										echo strtoupper($modulke); ?><br>
 								<?php }
+								
 								if ($jmlgurupilih <= 0 || $jmlmapelaktif <=0)
 									{
 										echo "<span style='font-size:13px;font-style:italic;'>[Silakan memilih dosen dan matakuliah terlebih dahulu]</span>";
@@ -199,25 +203,24 @@ $jmlmodulujian = $jmlmodul + $jmlujian;
 									// } else 
 									{
 										for ($a = 1; $a <= $jmlmodul; $a++) {
-											if ($statusbelipaket == "0") {
+											if ($statusbelipaket == "10") {
 												echo "<a class='small text-white' href='" . base_url() .
 													"virtualkelas/pilih_paket/saya/'>\n" .
 													"<div>\n<hr style='width:100%; border-color:white;margin-top: 5px;margin-bottom: 5px;'>\n[" .
 													$mapel[$a] . "" . $namaguru[$a] . "]<br> " . "<span style='font-size:16px;'>" .
 													$judulmodul[$a] . "<br><span style='font-size: 11px;font-style: italic'>Vicon: $tanggalvicon[$a]</span></span>\n</div>\n</a>\n";
-											} else {
-												echo "<a class='small text-white' href='" . base_url() .
-													"virtualkelas/modul/" . $linklist[$a] . "'>\n" .
-													"<div>\n<hr style='width:100%; border-color:white;margin-top: 5px;margin-bottom: 5px;'>\n[" .
-													$mapel[$a] . "" . $namaguru[$a] . "]<br> " . "<span style='font-size:16px;'>" .
-													$judulmodul[$a] . "<br><span style='font-size: 11px;font-style: italic'>Vicon: $tanggalvicon[$a]</span></span>\n</div>\n</a>\n";
-											}
+											} else {?>
+												<div>
+												<?=$mapel[$a]?><br>
+													<button class="tb_hijauauto" onclick="window.open('<?php echo base_url() .'virtualkelas/modul/'.$linklist[$a];?>')"><?=$judulmodul[$a]?></button>
+													<br><span style="font-size: 11px;font-style: italic">Vicon: <?=$tanggalvicon[$a]?></span></span></div>
+											<?php }
 										}
 									}
 								}
 								?>
 								<hr style="margin-top: 15px;margin-bottom: 5px; ">
-								<button class='tb_hijau' onclick="window.open('<?php echo base_url() .'virtualkelas/modul_semua'; ?>','_self');">Modul Saya</a>
+								<!-- <button class='tb_hijau' onclick="window.open('<?php //echo base_url() .'virtualkelas/modul_semua'; ?>','_self');">Modul Saya</button> -->
 
 								<div class="small text-white"></div>
 							</div>

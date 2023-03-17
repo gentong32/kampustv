@@ -1,9 +1,9 @@
 <head>
-	<title>TV Sekolah - Wahana Belajar dan Berkreasi</title>
+	<title>TV Kampus - Wahana Belajar dan Berkreasi</title>
 	<link rel="icon" href="<?php echo base_url();?>images/icon.png" type="image/gif" sizes="16x16">
 	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
 	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
-	<meta content="TV Sekolah - Wahana Belajar dan Berkreasi" name="description" />
+	<meta content="TV Kampus - Wahana Belajar dan Berkreasi" name="description" />
 	<meta content="" name="keywords" />
 	<meta content="" name="author" />
 	<!-- CSS Files	================================================== -->
