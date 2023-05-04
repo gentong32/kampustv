@@ -673,7 +673,31 @@ else if ($opsiuser=="kelasuser")
 
 									</table>
 
+									<form method="POST" enctype="multipart/form-data" id="fileUploadForm2">
+									</form>
+
+									<form class="form-horizontal" id="submit2">
+										<div class="form-group" style="margin-left: 5px">
+											<!--                                <span style="color: #3d773d;font-style:italic ">Klik tombol dibawah ini untuk mengubah foto. Kemudian "Terapkan" </span>-->
+											<input style="display:<?php echo $displayawal; ?>;" type="file" name="file2"
+												   id="file2" accept="image/*">
+
+											<button style="display:<?php echo $displayawal; ?>;" id="btn_upload2"
+													type="submit">
+												Terapkan
+											</button>
+											<!--								<div class="progress" style="display:none">-->
+											<!--									<div id="progressBar" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">-->
+											<!--										<span class="sr-only">0%</span>-->
+											<!--									</div>-->
+											<!--								</div>-->
+											<span style="margin-left: 30px" id="message2"></span>
+										</div>
+									</form>
+
+
 								</div>
+								<h4 style="display: none;" id='loading2'>uploading ... </h4>
 
 							</div>
 
@@ -1403,12 +1427,17 @@ else if ($opsiuser=="kelasuser")
 		document.getElementById('itgl_lahir').readOnly = false;
 		document.getElementById('ibln_lahir').disabled = false;
 		document.getElementById('ithn_lahir').readOnly = false;
+		
 		document.getElementById('file').style.display = "block";
 		document.getElementById('btn_upload').style.display = "block";
+		
 		<?php if($userData['sebagai'] == 1 && $userData['verifikator'] == 3) { ?>
+			
 		document.getElementById('file2').style.display = "block";
 		document.getElementById('btn_upload2').style.display = "block";
 		<?php } ?>
+		// alert ("bisos");
+		
 		<?php if($userData['verifikator'] == 3) {
 			if ($userData['npsn']=="" || $userData['npsn']==null)
 			{ ?>
@@ -1425,6 +1454,8 @@ else if ($opsiuser=="kelasuser")
 		document.getElementById('ibidang').readOnly = false;
 		document.getElementById('ikerja').readOnly = false;
 		document.getElementById('inomor2').readOnly = false;
+
+		
 		
 		<?php if ($userData['sebagai']==2)
 		{ ?>

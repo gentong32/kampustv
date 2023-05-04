@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class Login extends CI_Controller
 {
@@ -28,12 +28,10 @@ class Login extends CI_Controller
 			if ($this->session->userdata('activate') == 0)
 				redirect('/login/profile');
 			else {
-				if ($this->session->userdata("shared")!=null)
-					{
-						$this->session->unset_userdata("shared");
-						redirect ('/');
-					}
-				else
+				if ($this->session->userdata("shared") != null) {
+					$this->session->unset_userdata("shared");
+					redirect('/');
+				} else
 					redirect('/');
 			}
 		} else {
@@ -86,7 +84,6 @@ class Login extends CI_Controller
 
 					$isitabel = $this->M_login->tambahUserSosmed($userData);
 					$row = $isitabel->row();
-
 				}
 
 				$this->session->set_userdata('logoutFB', $this->facebook->logout_url());
@@ -156,13 +153,111 @@ class Login extends CI_Controller
 		}
 	}
 
+	public function loginjajal()
+	{
+		$this->load->view('vloginjajal');
+	}
+
+	public function moodle_login_token()
+	{
+		$username = 'admin'; //$this->input->post('username');
+		$password = 'Zppfar#66'; //$this->input->post('password');
+		$token = '3cbc0e6e23d794664d123decb21ed548';
+		$tokentv = '220d4dee12930fd1a53a9cafe4137720';
+
+		$url = 'http://localhost/tvsekolah2/kelasvirtual/login/token.php';
+		$url = 'https://kampus.tvsekolah.id/virtualkampus/login/index.php';
+		$data = array(
+			'username' => $username,
+			'password' => $password,
+			'service' => 'moodle_mobile_app'
+		);
+
+		$ch = curl_init();
+
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
+
+		$response = curl_exec($ch);
+
+		curl_close($ch);
+
+		$result = json_decode($response, true);
+
+		// echo var_dump ($result);
+		// die();
+
+		if (isset($result['errorcode'])) {
+			// Handle login error
+			echo $result['errorcode'];
+		} else {
+			// Save access token
+			$token = $result['token'];
+			// echo "SUKSES:$token";
+			$this->session->set_userdata('token', $token);
+			$_SESSION['moodle_token'] = $token;
+			// echo var_dump($this->session);
+			// redirect('http://localhost/tvsekolah2/kelasvirtual/my');
+			redirect('https://kampus.tvsekolah.id/virtualkampus/login/index.php');
+			// Redirect to appropriate page
+		}
+	}
+
+	public function moodle_login()
+	{
+
+		// Load library OAuth 2.0 untuk CodeIgniter
+		$this->load->library('oauth2');
+
+		// Konfigurasi OAuth 2.0 Client ID dan Secret Client
+		$config = array(
+			'clientId' => 'n84uHRf$*3j_7B',
+			'clientSecret' => '55gDFfbfd9876$_nmn21A',
+			'authorizationEndpoint' => 'https://example.com/oauth2/authorize',
+			'accessTokenEndpoint' => 'https://example.com/oauth2/token',
+			'redirectUri' => 'https://example.com/my',
+			'scopes' => array('openid', 'profile', 'email')
+		);
+
+		// Mendapatkan access token dengan melakukan autentikasi OAuth 2.0
+		$accessToken = $this->oauth2->authenticate($config);
+
+		// Menggunakan access token untuk mengakses API Moodle
+		$api_url = 'https://example.com/webservice/rest/server.php';
+		$function = 'core_webservice_get_site_info';
+		$format = 'json';
+
+		$params = array(
+			'wstoken' => $accessToken->access_token,
+			'wsfunction' => $function,
+			'moodlewsrestformat' => $format
+		);
+
+		$url = $api_url . '?' . http_build_query($params);
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$result = curl_exec($ch);
+		curl_close($ch);
+
+		// Menampilkan response JSON dari API Moodle
+		print_r($result);
+	}
+
+
 	public function menujujenjang()
 	{
-		$nmjenjang = array("", "PAUD", "SD", "SMP", "SMA", "SMK", "PT", "PKBM", "PPS", "Lain", "SD", "SMP", "SMP", "SMP", "SMA", "SMA",
-			"SMA", "kursus", "PKBM", "pondok", "PT");
+		$nmjenjang = array(
+			"", "PAUD", "SD", "SMP", "SMA", "SMK", "PT", "PKBM", "PPS", "Lain", "SD", "SMP", "SMP", "SMP", "SMA", "SMA",
+			"SMA", "kursus", "PKBM", "pondok", "PT"
+		);
 		$idjenjang = $this->session->userdata('id_jenjang');
-//        echo "IDJENJANG=".$idjenjang;
-//        die();
+		//        echo "IDJENJANG=".$idjenjang;
+		//        die();
 		if ($this->session->userdata('sebagai') == 4)
 			redirect(base_url());
 		else
@@ -181,9 +276,9 @@ class Login extends CI_Controller
 		//die();
 	}
 
-	public function shared($opsi,$id)
+	public function shared($opsi, $id)
 	{
-		$this->session->set_userdata('shared', $opsi.$id);
+		$this->session->set_userdata('shared', $opsi . $id);
 		redirect("/login");
 	}
 
@@ -212,10 +307,12 @@ class Login extends CI_Controller
 
 		if ($row) {
 
-//			if ($this->session->userdata("shared")!=null)
-//				echo $this->session->userdata("shared");
-//			echo "LOGIN beRHASIL";
-//			die();
+
+
+			//			if ($this->session->userdata("shared")!=null)
+			//				echo $this->session->userdata("shared");
+			//			echo "LOGIN beRHASIL";
+			//			die();
 
 			// login berhasil
 			date_default_timezone_set('Asia/Jakarta');
@@ -232,7 +329,6 @@ class Login extends CI_Controller
 
 				// simpan key di database
 				$update_key['cookie'] = $key;
-
 			}
 
 			if ($olehsuperadmin == false)
@@ -266,8 +362,10 @@ class Login extends CI_Controller
 					redirect("login/profile");
 			} else {
 
-				if ($row->gender == null || $row->tgl_lahir == "0000-00-00" ||
-					(($row->sebagai == 1 || $row->sebagai == 2) && $row->npsn == "")) {
+				if (
+					$row->gender == null || $row->tgl_lahir == "0000-00-00" ||
+					(($row->sebagai == 1 || $row->sebagai == 2) && $row->npsn == "")
+				) {
 					$this->session->set_userdata('activate', 0);
 					redirect("login/profile");
 				}
@@ -301,61 +399,45 @@ class Login extends CI_Controller
 					if ($this->session->userdata('a01'))
 						if (get_cookie('basis') == "channel")
 							redirect('/statistik');
-						else if (get_cookie('basis') == "vod")
-						{
+						else if (get_cookie('basis') == "vod") {
 							redirect('/statistik');
-						}
-
-						else {
+						} else {
 							if ($this->session->userdata('linkakhir')) {
 								$this->session->set_userdata('activate', 1);
 								redirect(base_url() . 'payment/free_event/' . $this->session->userdata('linkakhir'));
-							} else
-								{
-									redirect('/home');
-								}
+							} else {
+								redirect('/home');
+							}
 						}
 
 
 					else {
 						$cekkikimentor = get_cookie('mentor');
 
-						if (substr($cekkikimentor,0,2) == "2-")
-							{
-								$alamattujuan = substr($cekkikimentor,2,2)."/".
-								substr($cekkikimentor,4,4)."/".substr($cekkikimentor,8);
-								// echo "10e:".$alamattujuan;
-								// die();
-								redirect('/virtualkelas/event/'.$alamattujuan);
-							}
-						else if($this->session->userdata("shared")!=null)
-						{
-							if(substr($this->session->userdata("shared"),0,3)=="pkt")
-								redirect('/bimbel/pilih_paket/'.substr($this->session->userdata("shared"),3 ) );
-							else if(substr($this->session->userdata("shared"),0,3)=="ecr")
-								redirect('/bimbel/pilih_eceran/'.substr($this->session->userdata("shared"),3 ));
-						} else if($this->session->userdata("ikutevent")!=null)
-						{
-							redirect('/event/ikutevent/'.$this->session->userdata("ikutevent"));
+						if (substr($cekkikimentor, 0, 2) == "2-") {
+							$alamattujuan = substr($cekkikimentor, 2, 2) . "/" .
+								substr($cekkikimentor, 4, 4) . "/" . substr($cekkikimentor, 8);
+							// echo "10e:".$alamattujuan;
+							// die();
+							redirect('/virtualkelas/event/' . $alamattujuan);
+						} else if ($this->session->userdata("shared") != null) {
+							if (substr($this->session->userdata("shared"), 0, 3) == "pkt")
+								redirect('/bimbel/pilih_paket/' . substr($this->session->userdata("shared"), 3));
+							else if (substr($this->session->userdata("shared"), 0, 3) == "ecr")
+								redirect('/bimbel/pilih_eceran/' . substr($this->session->userdata("shared"), 3));
+						} else if ($this->session->userdata("ikutevent") != null) {
+							redirect('/event/ikutevent/' . $this->session->userdata("ikutevent"));
+						} else {
+							redirect('/' . get_cookie('basis'));
 						}
-						else
-							{
-								redirect('/' . get_cookie('basis'));
-							}
-
 					}
 				}
 			}
-
-		} else {
-
-			{
+		} else { {
 				$this->session->set_flashdata('message', 'Alamat Email atau Password Salah');
 				redirect('/login');
 			}
-
 		}
-
 	}
 
 	public function _daftarkan_session($row)
@@ -438,7 +520,6 @@ class Login extends CI_Controller
 		foreach ($dta->result() as $row) {
 			$this->session->set_userdata($row->kd_otoritas, true);
 		}
-
 	}
 
 	public function registrasi($sebagai, $referal = null, $npsn = null)
@@ -453,11 +534,11 @@ class Login extends CI_Controller
 			$this->load->model('M_user');
 
 			$findme   = 'Od';
-			$pos = strpos($referal, $findme,9);
-			if ($pos>=9)
-			$refaja = substr($referal,0,$pos);
+			$pos = strpos($referal, $findme, 9);
+			if ($pos >= 9)
+				$refaja = substr($referal, 0, $pos);
 			else
-			$refaja = $referal;
+				$refaja = $referal;
 
 			$cekreferal = $this->M_user->getUserbyReferal($refaja);
 			if ($cekreferal) {
@@ -466,23 +547,20 @@ class Login extends CI_Controller
 				echo "Kode referal salah";
 			}
 		}
-
 	}
 
 	public function register($sebagai = null, $referal = null, $npsn = null)
 	{
-		$kampusmerdeka="0";
-		$prodi=0;
-		if (isset($_GET["kampus"]))
-		{
-			$kampusmerdeka=$_GET["kampus"];
-			$prodimerdeka=$_GET["prodi"];
+		$kampusmerdeka = "0";
+		$prodi = 0;
+		if (isset($_GET["kampus"])) {
+			$kampusmerdeka = $_GET["kampus"];
+			$prodimerdeka = $_GET["prodi"];
 		}
 
-		if ($kampusmerdeka=="merdeka_2023")
-		{
-			$npsn="200101";
-			$prodi=$prodimerdeka;
+		if ($kampusmerdeka == "merdeka_2023") {
+			$npsn = "200101";
+			$prodi = $prodimerdeka;
 		}
 
 		setcookie('mentor', '--', time() + (86400), '/');
@@ -519,7 +597,7 @@ class Login extends CI_Controller
 
 			$this->load->view('layout/wrapper_umum', $data);
 		} else if ($sebagai == "calver") {
-			setcookie('mentor', '1-'.$referal, time() + (86400), '/');
+			setcookie('mentor', '1-' . $referal, time() + (86400), '/');
 			$data = array();
 			$data['konten'] = 'v_register_calver';
 			$data['referrer'] = $referal;
@@ -591,7 +669,6 @@ class Login extends CI_Controller
 		} else {
 			redirect("/");
 		}
-
 	}
 
 	public function getResponseCaptcha($str)
@@ -685,7 +762,7 @@ class Login extends CI_Controller
 	public function resetpassword()
 	{
 		if ($this->session->userdata('a01') || ($this->session->userdata('sebagai') == 1
-				&& $this->session->userdata('verifikator') == 3)) {
+			&& $this->session->userdata('verifikator') == 3)) {
 			$iduser = $this->input->get('iduser');
 			$this->load->model('M_login');
 			$this->M_login->resetpassword($iduser);
@@ -717,7 +794,7 @@ class Login extends CI_Controller
 		$data['referrer'] = $this->input->post('referrer');
 		$npsn = $this->input->post('npsn');
 		$prodi = $this->input->post('prodi');
-		
+
 		// echo "Prodi".$prodi;
 		// die();
 		$data['kontributor'] = 0;
@@ -726,11 +803,10 @@ class Login extends CI_Controller
 		if ($jabatan == "Dosen") {
 			$data['sebagai'] = 1;
 			$data['kontributor'] = 2;
-			if ($npsn!=null && $npsn!="")
-			{
+			if ($npsn != null && $npsn != "") {
 				$data['npsn'] = $npsn;
 				$data['kd_prodi'] = $prodi;
-				$this->session->set_userdata('npsn',$npsn);
+				$this->session->set_userdata('npsn', $npsn);
 				$this->load->Model('M_channel');
 				// if ($prodi==null || $prodi=="")
 				$sekolahku = $this->M_channel->getSekolahNpsn($npsn);
@@ -749,8 +825,7 @@ class Login extends CI_Controller
 			// echo "DISINI0:NPSN".$npsn;
 		} else if ($jabatan == "Mahasiswa") {
 			$data['sebagai'] = 2;
-			if ($npsn!=null && $npsn!="")
-			{
+			if ($npsn != null && $npsn != "") {
 				$data['npsn'] = $npsn;
 				$data['kd_prodi'] = $prodi;
 				$this->load->Model('M_channel');
@@ -783,29 +858,26 @@ class Login extends CI_Controller
 		$data['first_name'] = $this->input->post('ifirst_name');
 		$data['last_name'] = $this->input->post('ilast_name');
 		$data['email'] = $this->input->post('iemail');
-//		$data['referrer'] = $this->input->post('ireferrer');
+		//		$data['referrer'] = $this->input->post('ireferrer');
 		$data['token'] = md5($this->input->post('ipassword'));
 		$data['oauth_provider'] = "system";
 		$data['code'] = $code;
 
-		$id=hash('ripemd128', $data['email']).strtotime("now");
+		$id = hash('ripemd128', $data['email']) . strtotime("now");
 		$data['kd_user'] = $id;
 
 		$this->load->Model('M_marketing');
-		
+
 		$this->M_login->tambahuser($data);
 
-		if ($data['referrer']!=null && $data['referrer']!="")
-		{
-			
+		if ($data['referrer'] != null && $data['referrer'] != "") {
+
 			$getCalver = $this->M_marketing->getCalver($data['referrer'], $npsn);
 			$idcalver = $getCalver[0]->id_calver;
-			
-			if ($jabatan == "Guru")
-			{
+
+			if ($jabatan == "Guru") {
 				$this->M_marketing->updateCalVerDafUser("kontributor", $idcalver);
-			}
-			else if ($jabatan == "Siswa")
+			} else if ($jabatan == "Siswa")
 				$this->M_marketing->updateCalVerDafUser("siswa", $idcalver);
 		}
 
@@ -828,14 +900,12 @@ class Login extends CI_Controller
 		$this->session->set_userdata('activate', 0);
 
 		redirect("login/profile");
-
-
 	}
 
 	public function tambahuser_umum($opsi)
 	{
 
-		if ($this->session->userdata('sebagai')!=1 && $this->input->post('ifirst_name') == null) {
+		if ($this->session->userdata('sebagai') != 1 && $this->input->post('ifirst_name') == null) {
 			redirect('login');
 		}
 
@@ -843,32 +913,24 @@ class Login extends CI_Controller
 
 		$jabatan = $this->input->post('jabatan');
 
-		if ($opsi == "ae")
-		{
+		if ($opsi == "ae") {
 			$data['siae'] = 1;
 			$this->session->set_userdata('siae', 1);
+		} else if ($opsi == "am") {
+			$data['siam'] = 1;
+			$this->session->set_userdata('siam', 1);
+		} else if ($opsi == "tutor") {
+			$data['bimbel'] = 1;
+			$this->session->set_userdata('bimbel', 1);
+		} else if ($opsi == "ag") {
+			$data['siag'] = 1;
+			$this->session->set_userdata('siag', 1);
 		}
-		else if ($opsi == "am")
-			{
-				$data['siam'] = 1;
-				$this->session->set_userdata('siam', 1);
-			}
-		else if ($opsi == "tutor")
-			{
-				$data['bimbel'] = 1;
-				$this->session->set_userdata('bimbel', 1);
-			}
-		else if ($opsi == "ag")
-			{
-				$data['siag'] = 1;
-				$this->session->set_userdata('siag', 1);
-			}
 
 		$set = '123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 		$code = substr(str_shuffle($set), 0, 32);
 
-		if ($this->session->userdata('sebagai')==1)
-		{
+		if ($this->session->userdata('sebagai') == 1) {
 
 			if ($this->session->userdata('siae') == 1) {
 				$this->M_login->tambahuserassesment();
@@ -891,8 +953,7 @@ class Login extends CI_Controller
 			$this->M_login->updateuser($data);
 
 			redirect("assesment");
-		}
-		else {
+		} else {
 			$data['sebagai'] = 3;
 			$data['first_name'] = $this->input->post('ifirst_name');
 			$data['last_name'] = $this->input->post('ilast_name');
@@ -902,11 +963,11 @@ class Login extends CI_Controller
 			$data['alamat'] = $this->input->post('ialamat');
 			$data['nomor_nasional'] = $this->input->post('iktp');
 			$data['hp'] = $this->input->post('ihape');
-//		$data['referrer'] = $this->input->post('ireferrer');
+			//		$data['referrer'] = $this->input->post('ireferrer');
 			$data['token'] = md5($this->input->post('ipassword'));
 			$data['oauth_provider'] = "system";
 			$data['code'] = $code;
-			$id=hash('ripemd128', $data['email']).strtotime("now");
+			$id = hash('ripemd128', $data['email']) . strtotime("now");
 			$data['kd_user'] = $id;
 			$this->M_login->tambahuser($data);
 			$this->session->set_userdata('sebagai', 4);
@@ -984,20 +1045,18 @@ class Login extends CI_Controller
 		else
 			$data['nomor_nasional'] = "";
 
-		$id=hash('ripemd128', $data['email']).strtotime("now");
+		$id = hash('ripemd128', $data['email']) . strtotime("now");
 		$data['kd_user'] = $id;
 
 		$this->M_login->tambahuser($data);
 
 		redirect("user/narsum");
-		
-
 	}
 
 	private function send_email($id, $email, $code)
 	{
 
-		$config = Array(
+		$config = array(
 			'protocol' => 'smtp',
 			'smtp_host' => 'mail.tvsekolah.id',
 			'smtp_port' => 465,
@@ -1056,7 +1115,7 @@ class Login extends CI_Controller
 				redirect('/login/profile');
 			else {
 				$data = array();
-				$data['konten'] = "v_lengkapiprofil";				
+				$data['konten'] = "v_lengkapiprofil";
 
 				$this->load->view('layout/wrapper_umum', $data);
 			}
@@ -1086,8 +1145,7 @@ class Login extends CI_Controller
 
 	public function sebagai()
 	{
-		if ($this->session->userdata('loggedIn')) 
-		{
+		if ($this->session->userdata('loggedIn')) {
 			$data = array();
 			$data['konten'] = 'v_login_sosmed';
 
@@ -1105,13 +1163,14 @@ class Login extends CI_Controller
 		$data['loginURL'] = $this->google->loginURL();
 
 		$this->load->view('layout/wrapper_umum', $data);
-
 	}
 
 	public function tanya($kode = null)
 	{
-		$data = array('title' => 'Pendaftaran Baru', 'menuaktif' => '0',
-			'isi' => 'v_login_tanya');
+		$data = array(
+			'title' => 'Pendaftaran Baru', 'menuaktif' => '0',
+			'isi' => 'v_login_tanya'
+		);
 
 		if ($kode != null)
 			$this->session->set_userdata('linkakhir', $kode);
@@ -1122,7 +1181,6 @@ class Login extends CI_Controller
 		$data['loginURL'] = $this->google->loginURL();
 
 		$this->load->view('layout/wrapper3', $data);
-
 	}
 
 	public function activate()
@@ -1153,14 +1211,13 @@ class Login extends CI_Controller
 		}
 
 		redirect('/');
-
 	}
 
 	public function profile($opsi = null)
-	{	
+	{
 		// echo "<br><br><br><br><br><br><br><br>".$this->session->userdata('id_user');
 		if (!$this->session->userdata('loggedIn')) {
-			redirect ("/");
+			redirect("/");
 		}
 
 		if ($opsi == "siae" || $this->session->userdata('siae') >= 1)
@@ -1169,34 +1226,33 @@ class Login extends CI_Controller
 			$linkprofil = 'v_profile_am';
 		else if ($opsi == "siag" || $this->session->userdata('siag') >= 1 || $this->session->userdata('bimbel') == 4)
 			$linkprofil = 'v_profile_ag';
-		else if ($opsi == "bimbel" || ($this->session->userdata('bimbel') >= 2 && $this->session->userdata('sebagai')!=1))
+		else if ($opsi == "bimbel" || ($this->session->userdata('bimbel') >= 2 && $this->session->userdata('sebagai') != 1))
 			$linkprofil = 'v_profile_tutor';
 		else
 			$linkprofil = 'v_profile';
-			
+
 
 		if ($this->session->userdata('loggedIn')) {
 			$data = array();
 			$data['konten'] = $linkprofil;
 			//$data['userData']=$this->session->userdata('userData');
-			if ($this->input->post('pilsebagai') != null)
-				{
-					$this->session->set_userdata('sebagai', $this->input->post('pilsebagai'));
-					$data['sebagai'] = $this->session->userdata('sebagai');
-				}
+			if ($this->input->post('pilsebagai') != null) {
+				$this->session->set_userdata('sebagai', $this->input->post('pilsebagai'));
+				$data['sebagai'] = $this->session->userdata('sebagai');
+			}
 
 			$data['addedit'] = "edit";
 			$ambiluserdata = $this->M_login->getUser($this->session->userdata('id_user'));
 
 			// if ($opsi=="tes")
 			// {
-				// echo "<pre>";
-				// echo var_dump($ambiluserdata);
-				// echo "</pre>";
+			// echo "<pre>";
+			// echo var_dump($ambiluserdata);
+			// echo "</pre>";
 			// }
 			$statususer = getstatususer();
 			if (!$statususer)
-			redirect ("/login/logout");
+				redirect("/login/logout");
 
 			$data['ceknpwp'] = $statususer['npwp'];
 
@@ -1208,22 +1264,20 @@ class Login extends CI_Controller
 			$data['namapropinsi'] = "";
 			$data['negara_sekolah'] = $ambiluserdata["kd_negara"];
 
-			if ($ambiluserdata["npsn"]!="" && $ambiluserdata["npsn"]!=null)
-			{
-				
+			if ($ambiluserdata["npsn"] != "" && $ambiluserdata["npsn"] != null) {
+
 				$this->load->model('M_channel');
 				$getNamaKota = $this->M_channel->getNamaKota($ambiluserdata["kd_kota"]);
 				$getKampus = $this->M_channel->getInfoKampus($ambiluserdata["npsn"]);
 				$data['namapropinsi'] = $getKampus->nama_propinsi;
 			}
-			
+
 			$data['referrer'] = $cekref;
 			if ($cekref != "" && $cekref != null) {
 				$this->load->model('M_user');
 				$ambildataref = $this->M_user->getUserbyReferal($cekref);
 				if ($ambildataref) {
-					if ($ambildataref->jenis_event==1)
-					{
+					if ($ambildataref->jenis_event == 1) {
 						$npsnsekolah = $ambildataref->npsn_sekolah;
 						$data['npsn_sekolah'] = $npsnsekolah;
 						$ambildatasek = $this->M_login->getsekolah($npsnsekolah);
@@ -1232,7 +1286,7 @@ class Login extends CI_Controller
 					}
 				}
 			}
-			
+
 
 			$data['logosekolah'] = "";
 			if (isset($this->session->userdata['npsn'])) {
@@ -1242,7 +1296,7 @@ class Login extends CI_Controller
 
 
 			$data['dafnegara'] = $this->M_login->dafnegara();
-			if($data['userData']['kd_negara']==0)
+			if ($data['userData']['kd_negara'] == 0)
 				$data['dafpropinsi'] = $this->M_login->dafpropinsi(1);
 			else
 				$data['dafpropinsi'] = $this->M_login->dafpropinsi($data['userData']['kd_negara']);
@@ -1394,7 +1448,7 @@ class Login extends CI_Controller
 		}
 	}
 
-	public function upload_foto_sekolah()
+	public function upload_foto_sekolah_old()
 	{
 		$npsn = $_POST['kodekampus'];
 		$namakampus = $_POST['namakampus'];
@@ -1410,12 +1464,11 @@ class Login extends CI_Controller
 
 		$addsekolah = $this->M_login->addsekolah($datasek);
 
-		if ($addsekolah!="gagal")
-		{
+		if ($addsekolah != "gagal") {
 			if (isset($_FILES['logofile'])) {
 				$path1 = "sekolah/";
 				$allow = "jpg|png|jpeg";
-		
+
 				$config = array(
 					'upload_path' => "uploads/" . $path1,
 					'allowed_types' => $allow,
@@ -1424,9 +1477,9 @@ class Login extends CI_Controller
 					//'max_height' => "768",
 					//'max_width' => "1024"
 				);
-		
+
 				$this->upload->initialize($config);
-				
+
 				if ($this->upload->do_upload("logofile")) {
 
 					$gbr = $this->upload->data();
@@ -1463,15 +1516,81 @@ class Login extends CI_Controller
 					echo "sukses";
 
 					//$this->tambah($dataupload['upload_data']['file_name']);
-				}
-				else {
+				} else {
 					echo "Upload logo gagal";
 				}
-			}
-			else
+			} else
 				echo "File tidak valid";
 		} else {
 			echo "Kode Kampus / NPSN sudah ada!";
+		}
+	}
+
+	public function upload_foto_sekolah()
+	{
+
+		if (isset($_FILES['file2'])) {
+			echo "";
+		} else {
+			echo "ERROR";
+		}
+
+		$path1 = "sekolah/";
+		$allow = "jpg|png|jpeg";
+
+		$config = array(
+			'upload_path' => "uploads/" . $path1,
+			'allowed_types' => $allow,
+			'overwrite' => TRUE,
+			'max_size' => "204800000",
+			//'max_height' => "768",
+			//'max_width' => "1024"
+		);
+
+		$this->upload->initialize($config);
+		//$this->load->library('upload', $config);
+		if ($this->upload->do_upload("file2")) {
+
+			//$dataupload = array('upload_data' => $this->upload->data());
+			$gbr = $this->upload->data();
+
+			$config['image_library'] = 'gd2';
+			$config['source_image'] = './uploads/sekolah/' . $gbr['file_name'];
+			$config['create_thumb'] = FALSE;
+			$config['maintain_ratio'] = TRUE;
+			$config['quality'] = '50%';
+			$config['width'] = 250;
+			$config['new_image'] = './uploads/sekolah/' . $gbr['file_name'];
+			$this->load->library('image_lib', $config);
+			$this->load->library('image_lib');
+			$this->image_lib->initialize($config);
+			if (!$this->image_lib->resize()) {
+				echo $this->image_lib->display_errors();
+			}
+			$this->image_lib->clear();
+
+			$data['npsn'] = $this->session->userdata('npsn');
+
+			$namafile1 = $gbr['file_name'];
+			//$namafile1 = $dataupload['upload_data']['file_name'];
+			$namafile = preg_replace('/[^A-Za-z0-9.\-]/', '', $namafile1);
+			$namafile = preg_replace('/-+/', '-', $namafile);
+			$ext = pathinfo($namafile);
+
+			$alamat = $config['upload_path'];
+
+			$namafilebaru = "logo_" . $data['npsn'] . "." . $ext['extension'];
+
+			rename($alamat . $namafile1, $alamat . $namafilebaru);
+
+			$this->M_login->updatelogo($namafilebaru, $data['npsn']);
+
+			echo "Logo Berhasil Diubah";
+
+			//$this->tambah($dataupload['upload_data']['file_name']);
+		} else {
+
+			echo $this->upload->display_errors();
 		}
 	}
 
@@ -1489,7 +1608,7 @@ class Login extends CI_Controller
 		}
 
 		$idpropinsi = $this->input->post('ajuanbaru');
-		
+
 		// $getwilayah->nama_lembaga;
 
 		if ($idpropinsi > 0) {
@@ -1499,10 +1618,10 @@ class Login extends CI_Controller
 			$this->load->Model("M_login");
 			$getwilayah = $this->M_login->getlldikti($idpropinsi);
 			$idwilayah = $getwilayah->id_wilayah;
-			$datachn=[];
+			$datachn = [];
 			$datachn['npsn_sekolah'] = $kodekampus;
 			$datachn['kd_prodi'] = $kdprodi;
-			$datasekolah=[];
+			$datasekolah = [];
 			$datasekolah['id_propinsi'] = $idpropinsi;
 			$datasekolah['id_wilayah'] = $idwilayah;
 			$datasekolah['npsn_sekolah'] = $kodekampus;
@@ -1510,7 +1629,7 @@ class Login extends CI_Controller
 			$this->load->Model("M_user");
 			$getwilayah = $this->M_user->tambahsekolah($datachn, $datasekolah);
 		}
-	
+
 		$passlama = md5($this->input->post('ipasslama'));
 		$cekpass = $this->M_login->cekpass($this->session->userdata('email'));
 		$passbaru = md5($this->input->post('ipassbaru1'));
@@ -1608,7 +1727,7 @@ class Login extends CI_Controller
 			$data['nomor_nasional'] = $this->input->post('inomor');
 		$data['sekolah'] = $this->input->post('isearch');
 		$datakampus = $this->M_login->getkampus($this->input->post('isearch'));
-		
+
 		$data['npsn'] = $datakampus[0]->npsn_sekolah;
 		$data['kd_provinsi'] = $datakampus[0]->id_propinsi;
 		$data['bidang'] = $this->input->post('ibidang');
@@ -1620,22 +1739,18 @@ class Login extends CI_Controller
 		$dataprodi['npsn_sekolah'] = $this->input->post('inpsn');
 		$dataprodi['kd_prodi'] = $this->input->post('ikodeprodi');
 		$this->M_login->addprodibaru($dataprodi);
-		
+
 
 		$cekkikimentor = get_cookie('mentor');
-		if (substr($cekkikimentor,0,2) == "1-")
-		{
+		if (substr($cekkikimentor, 0, 2) == "1-") {
 			//echo "DAFTAR SEBAGAI CALON VER";
-			$kodeevent = substr($cekkikimentor,2);
+			$kodeevent = substr($cekkikimentor, 2);
 			$this->load->model("M_marketing");
 			$npsn = $this->input->post('inpsn');
-			if (!$this->M_marketing->cekadaver($npsn) && !$this->M_marketing->cekisiref($npsn))
-			{
+			if (!$this->M_marketing->cekadaver($npsn) && !$this->M_marketing->cekisiref($npsn)) {
 				$this->session->set_userdata('verifikator', 2);
 				$this->M_marketing->addtbMentorCalverDaf($kodeevent, $npsn);
-			}
-			else
-			{
+			} else {
 				$data['verifikator'] = 0;
 				$this->session->set_userdata('verifikator', 0);
 			}
@@ -1649,13 +1764,11 @@ class Login extends CI_Controller
 		// echo var_dump($datakampus);
 		// die();
 
-		if ($this->session->userdata('kontributor') == 2)
-		{
+		if ($this->session->userdata('kontributor') == 2) {
 			$this->M_user->updateKonfirmUser("KONTRI");
 		}
 
-		if ($this->session->userdata('sebagai') == 2)
-		{
+		if ($this->session->userdata('sebagai') == 2) {
 			$this->M_user->updateKonfirmUser("SISWA");
 		}
 
@@ -1673,8 +1786,10 @@ class Login extends CI_Controller
 		if (isset($this->session->userdata['linkakhir'])) {
 			redirect("payment/free_event/" . $this->session->userdata('linkakhir'));
 		} else {
-			if ($this->session->userdata('siae') == 2 || $this->session->userdata('siam') == 2
-				|| $this->session->userdata('bimbel') == 2) {
+			if (
+				$this->session->userdata('siae') == 2 || $this->session->userdata('siam') == 2
+				|| $this->session->userdata('bimbel') == 2
+			) {
 				redirect("assesment");
 			} else if ($this->session->userdata('siag') == 2) {
 				redirect(base_url() . "informasi/tungguhasilagency");
@@ -1719,14 +1834,15 @@ class Login extends CI_Controller
 			redirect("/");
 		}
 
-		$data = array('title' => 'Tambahkan Berkas', 'menuaktif' => '0',
+		$data = array(
+			'title' => 'Tambahkan Berkas', 'menuaktif' => '0',
 			'isi' => 'v_profile_dok_upload',
-			'error' => '');
+			'error' => ''
+		);
 		//	if ($judul!=null)
 		//		$data['judulvideo'] = $judul;
 
 		$this->load->view('layout/wrapper', $data);
-
 	}
 
 	public function do_upload_dok()
@@ -1843,28 +1959,30 @@ class Login extends CI_Controller
 			$data['iuran'] = $kodedefault->iuran;
 		}
 
-//		if ($this->is_connected()) {
-//			//echo "KODE 02";
-//			if (isset($this->session->userdata['oauth_provider'])) {
-//				if ($this->session->userdata('oauth_provider') == 'google') {
-//					$this->google->revokeToken();
-//				} else if ($this->session->userdata('oauth_provider') == 'facebook') {
-//					$this->facebook->destroy_session();
-//				}
-//			}
-//		}
-//		// Remove token and user data from the session
-//		$this->session->unset_userdata('loggedIn');
-//		$this->session->unset_userdata('userData');
-//		delete_cookie('harviacode');
-//		$this->session->sess_destroy();
+		//		if ($this->is_connected()) {
+		//			//echo "KODE 02";
+		//			if (isset($this->session->userdata['oauth_provider'])) {
+		//				if ($this->session->userdata('oauth_provider') == 'google') {
+		//					$this->google->revokeToken();
+		//				} else if ($this->session->userdata('oauth_provider') == 'facebook') {
+		//					$this->facebook->destroy_session();
+		//				}
+		//			}
+		//		}
+		//		// Remove token and user data from the session
+		//		$this->session->unset_userdata('loggedIn');
+		//		$this->session->unset_userdata('userData');
+		//		delete_cookie('harviacode');
+		//		$this->session->sess_destroy();
 		$this->load->view('layout/wrapper_umum', $data);
 	}
 
 	public function timeerror()
 	{
-		$data = array('title' => 'Login Ulang', 'menuaktif' => '0',
-			'isi' => 'v_timeerror');
+		$data = array(
+			'title' => 'Login Ulang', 'menuaktif' => '0',
+			'isi' => 'v_timeerror'
+		);
 
 		$data['message'] = $this->session->flashdata('message');
 		$data['authURL'] = $this->facebook->login_url();
@@ -1965,10 +2083,9 @@ class Login extends CI_Controller
 			$datanya['kd_provinsi'] = $this->M_login->getidpropinsi($datanya['kd_kota']);
 			echo "KD_PROV:" . $datanya['kd_provinsi'] . "<br>";
 
-			if ($datanya['kd_kota'] != 0 AND $datanya['kd_provinsi'] != 0)
+			if ($datanya['kd_kota'] != 0 and $datanya['kd_provinsi'] != 0)
 				$this->M_login->updatekotapropinsi($datanya, $dataisi->id);
 		}
-
 	}
 
 	public function cekstatusverifikator($row = null)
@@ -2095,10 +2212,10 @@ class Login extends CI_Controller
 
 		$cekstatusbayar = $this->M_payment->getlastsekolahpayment($this->session->userdata('npsn'));
 
-//		echo "<pre>";
-//		echo var_dump($cekstatusbayar);
-//		echo "</pre>";
-//		die();
+		//		echo "<pre>";
+		//		echo var_dump($cekstatusbayar);
+		//		echo "</pre>";
+		//		die();
 
 
 		if ($cekstatusbayar) {
@@ -2116,14 +2233,13 @@ class Login extends CI_Controller
 				$this->session->set_userdata('a02', true);
 				$this->session->set_userdata('statusbayar', 3);
 				$this->session->set_userdata('kodestatusverifikator', 112);
-
 			} else {
 
 				if ($selisih >= 2) {
-//					if ($this->proaktif())
-//					{
-//						return true;
-//					}
+					//					if ($this->proaktif())
+					//					{
+					//						return true;
+					//					}
 					$this->session->set_userdata('kodestatusverifikator', 110);
 
 					if ($this->aktifolehsiswa()) {
@@ -2141,18 +2257,17 @@ class Login extends CI_Controller
 					$this->session->set_userdata('a03', true);
 					if ($this->session->userdata("bimbel") == 2) {
 						redirect("assesment");
-					} else
-						{
-							//redirect("payment/pembayaran");
-							redirect("/profil");
-						}
+					} else {
+						//redirect("payment/pembayaran");
+						redirect("/profil");
+					}
 				} else if ($selisih == 1) {
 
-//					if ($this->proaktif())
-//						return true;
+					//					if ($this->proaktif())
+					//						return true;
 					if ($this->aktifolehsiswa()) {
 						return true;
-					} else if($this->aktifolehekskul()) {
+					} else if ($this->aktifolehekskul()) {
 						return true;
 					}
 
@@ -2170,22 +2285,20 @@ class Login extends CI_Controller
 							//$this->cekkontributor($iduser);
 							if ($this->session->userdata("bimbel") == 2) {
 								redirect("assesment");
-							} else
-								{
-									//redirect("payment/pembayaran");
-									redirect("/profil");
-								}
+							} else {
+								//redirect("payment/pembayaran");
+								redirect("/profil");
+							}
 						} else if ($statusbayar == 1) {
 							if ($datesekarang > $batasorder) {
 								$datax = array("status" => 0);
 								$this->M_payment->update_payment($datax, $iduser, $cekstatusbayar->order_id);
 								if ($this->session->userdata("bimbel") == 2) {
 									redirect("assesment");
-								} else
-									{
-										//redirect("payment/pembayaran");
-										redirect("/profil");
-									}
+								} else {
+									//redirect("payment/pembayaran");
+									redirect("/profil");
+								}
 							} else {
 								if ($this->session->userdata("bimbel") == 2) {
 									redirect("assesment");
@@ -2194,16 +2307,15 @@ class Login extends CI_Controller
 							}
 						}
 					}
-
 				} else {
 					if ($statusbayar == 1) {
 
 						$this->session->set_userdata('kodestatusverifikator', 111);
-//						if ($this->proaktif())
-//							return true;
+						//						if ($this->proaktif())
+						//							return true;
 						if ($this->aktifolehsiswa()) {
 							return true;
-						} else if($this->aktifolehekskul()) {
+						} else if ($this->aktifolehekskul()) {
 							return true;
 						}
 						$this->session->set_userdata('a03', true);
@@ -2212,8 +2324,7 @@ class Login extends CI_Controller
 							$this->M_payment->update_payment($datax, $iduser, $cekstatusbayar->order_id);
 							if ($this->session->userdata("bimbel") == 2) {
 								redirect("assesment");
-							} else
-							{
+							} else {
 								//redirect("payment/pembayaran");
 								redirect("/profil");
 							}
@@ -2247,13 +2358,12 @@ class Login extends CI_Controller
 				}
 			} else if ($this->aktifolehsiswa()) {
 				return true;
-			} else if($this->aktifolehekskul()) {
+			} else if ($this->aktifolehekskul()) {
 				return true;
 			}
 
-				//redirect("payment/pembayaran");
-				redirect("/profil");
-
+			//redirect("payment/pembayaran");
+			redirect("/profil");
 		}
 	}
 
@@ -2264,9 +2374,11 @@ class Login extends CI_Controller
 		$datesekarang->setTimezone(new DateTimezone('Asia/Jakarta'));
 		$tglsekarang = $datesekarang->format("Y-m-d H:i:s");
 
-		$data = array('iduser' => $iduser, 'npsn_sekolah' => $npsn, 'order_id' => 'TVS-' . $iduser . '-' . rand(10000, 99999),
+		$data = array(
+			'iduser' => $iduser, 'npsn_sekolah' => $npsn, 'order_id' => 'TVS-' . $iduser . '-' . rand(10000, 99999),
 			'tgl_order' => $tglsekarang, 'iuran' => 0, 'tipebayar' => "free awal", 'tgl_bayar' => $tglsekarang,
-			'namabank' => "", 'rektujuan' => "", 'status' => 3);
+			'namabank' => "", 'rektujuan' => "", 'status' => 3
+		);
 
 		$this->M_payment->addDonasi($data);
 	}
@@ -2299,8 +2411,10 @@ class Login extends CI_Controller
 			else if ($ceksiswapremium >= 1)
 				$kodebeli = "prem1_" . rand(10001, 99999);
 			$kodeacak = "TVS-" . $kodebeli;
-			$datapay = array('tgl_order' => $tglsekarang, 'tipebayar' => "TV-FreeBySiswa", 'tgl_bayar' => $tglsekarang,
-				'namabank' => "", 'rektujuan' => "", 'status' => 3);
+			$datapay = array(
+				'tgl_order' => $tglsekarang, 'tipebayar' => "TV-FreeBySiswa", 'tgl_bayar' => $tglsekarang,
+				'namabank' => "", 'rektujuan' => "", 'status' => 3
+			);
 			$this->load->model("M_payment");
 
 			$iduser = $this->session->userdata('id_user');
@@ -2313,50 +2427,44 @@ class Login extends CI_Controller
 			$this->M_payment->tambahbayar($datapay, $kodeacak, $id);
 			$this->session->set_userdata('a02', true);
 			$this->session->set_userdata('statusbayar', 3);
-			if (substr($kodeversekarang,1,1)==1)
-				{
-					$kodeversekarang = $kodeversekarang + 10;
-					$this->session->set_userdata('kodestatusverifikator',$kodeversekarang);
-				}
-			return true;
-		} else
-			{
-				if (substr($kodeversekarang,1,1)==2)
-					{
-						$kodeversekarang = $kodeversekarang - 10;
-						$this->session->set_userdata('kodestatusverifikator',$kodeversekarang);
-					}
-				return false;
+			if (substr($kodeversekarang, 1, 1) == 1) {
+				$kodeversekarang = $kodeversekarang + 10;
+				$this->session->set_userdata('kodestatusverifikator', $kodeversekarang);
 			}
+			return true;
+		} else {
+			if (substr($kodeversekarang, 1, 1) == 2) {
+				$kodeversekarang = $kodeversekarang - 10;
+				$this->session->set_userdata('kodestatusverifikator', $kodeversekarang);
+			}
+			return false;
+		}
 	}
 
 	private function aktifolehekskul()
-{
-
-	$ceksiswaekskul = $this->M_payment->getbayarEkskul($this->session->userdata('npsn'),null,3,true);
-	$jmlsiswabayar = count($ceksiswaekskul);
-	$kodeversekarang = $this->session->userdata('kodestatusverifikator');
-
-	if ($jmlsiswabayar >= 10) {
-
-		$this->session->set_userdata('a02', true);
-		$this->session->set_userdata('statusbayar', 3);
-		if (substr($kodeversekarang,0,1)==1)
-		{
-			$kodeversekarang = $kodeversekarang + 100;
-			$this->session->set_userdata('kodestatusverifikator',$kodeversekarang);
-		}
-		return true;
-	} else
 	{
-		if (substr($kodeversekarang,0,1)==2)
-		{
-			$kodeversekarang = $kodeversekarang - 100;
-			$this->session->set_userdata('kodestatusverifikator',$kodeversekarang);
+
+		$ceksiswaekskul = $this->M_payment->getbayarEkskul($this->session->userdata('npsn'), null, 3, true);
+		$jmlsiswabayar = count($ceksiswaekskul);
+		$kodeversekarang = $this->session->userdata('kodestatusverifikator');
+
+		if ($jmlsiswabayar >= 10) {
+
+			$this->session->set_userdata('a02', true);
+			$this->session->set_userdata('statusbayar', 3);
+			if (substr($kodeversekarang, 0, 1) == 1) {
+				$kodeversekarang = $kodeversekarang + 100;
+				$this->session->set_userdata('kodestatusverifikator', $kodeversekarang);
+			}
+			return true;
+		} else {
+			if (substr($kodeversekarang, 0, 1) == 2) {
+				$kodeversekarang = $kodeversekarang - 100;
+				$this->session->set_userdata('kodestatusverifikator', $kodeversekarang);
+			}
+			return false;
 		}
-		return false;
 	}
-}
 
 	private function cekstatussekolah($npsn)
 	{
@@ -2380,25 +2488,21 @@ class Login extends CI_Controller
 
 			$selisih = ($tahun - $tahunorder) * 12 + ($bulan - $bulanorder);
 
-//			echo "Test:".$cekstatusbayar->order_id;
-//			die();
+			//			echo "Test:".$cekstatusbayar->order_id;
+			//			die();
 
 			if ($statusbayar == 4) {
-
 			} else if ($selisih >= 2) {
 				redirect("channel/sekolahoff");
 			} else if ($selisih == 1) {
 				if ($tanggal <= 5) {
-
 				} else {
 					redirect("channel/sekolahoff");
 				}
-
 			} else {
 				if ($statusbayar == 1) {
 					redirect("channel/sekolahoff");
 				} else if ($statusbayar == 3) {
-
 				}
 			}
 		} else {
@@ -2415,12 +2519,12 @@ class Login extends CI_Controller
 		$id = $getuser['id'];
 		$this->load->model("M_payment");
 		$cekpremium = $this->M_payment->cekpremium($npsn);
-//		echo "<pre>";
-//		echo var_dump($cekpremium);
-//		echo "</pre>";
+		//		echo "<pre>";
+		//		echo var_dump($cekpremium);
+		//		echo "</pre>";
 
 		if ($cekpremium) {
-//			echo "KODE BIRU HASIL PREMIUM";
+			//			echo "KODE BIRU HASIL PREMIUM";
 			$datesekarang = new DateTime();
 			$datesekarang->setTimezone(new DateTimezone('Asia/Jakarta'));
 			$tglsekarang = $datesekarang->format("Y-m-d H:i:s");
@@ -2438,8 +2542,8 @@ class Login extends CI_Controller
 
 			$selisih = ($tahun - $tahunorder) * 12 + ($bulan - $bulanorder);
 
-//			echo "Test:".$cekstatusbayar->order_id;
-//			die();
+			//			echo "Test:".$cekstatusbayar->order_id;
+			//			die();
 
 			if ($selisih >= 2) {
 				echo "GAK BAYAR";
@@ -2451,13 +2555,15 @@ class Login extends CI_Controller
 				echo "BAYAR";
 			}
 
-//			echo "CEK0001:" . $cekpremium->tgl_order;
-//			die();
+			//			echo "CEK0001:" . $cekpremium->tgl_order;
+			//			die();
 
 			$kodeacak = "TVS-" . $kodebeli;
 			$iuran = 0;
-			$datapay = array('npsn_user' => $npsn, 'tgl_order' => $tgl_order, 'tipebayar' => "TV-Premium", 'tgl_bayar' => $tglsekarang,
-				'namabank' => "", 'rektujuan' => "", 'status' => 3);
+			$datapay = array(
+				'npsn_user' => $npsn, 'tgl_order' => $tgl_order, 'tipebayar' => "TV-Premium", 'tgl_bayar' => $tglsekarang,
+				'namabank' => "", 'rektujuan' => "", 'status' => 3
+			);
 			$this->load->model("M_payment");
 			$this->M_payment->insertkodeorder($kodeacak, $id, $npsn, $prodi, $iuran);
 			$this->M_payment->tambahbayar($datapay, $kodeacak, $id);
@@ -2465,8 +2571,8 @@ class Login extends CI_Controller
 			$this->session->set_userdata('statusbayar', 3);
 			return true;
 		} else {
-//			echo "BLUE CODE";
-//			die();
+			//			echo "BLUE CODE";
+			//			die();
 			return false;
 		}
 	}
@@ -2475,10 +2581,10 @@ class Login extends CI_Controller
 	{
 		$this->load->model('M_payment');
 		$cekstatus = $this->M_payment->ambilorder($orderid);
-//		echo var_dump($cekstatus);
+		//		echo var_dump($cekstatus);
 		if ($cekstatus[0]->status == 3) {
 			//$iduser = $cekstatus[0]->iduser;
-//			$email = $cekstatus[0]->email;
+			//			$email = $cekstatus[0]->email;
 			$data['donasi'] = $cekstatus;
 			$data['orderid'] = $orderid;
 			$this->load->view('v_sertifikat', $data);
@@ -2558,13 +2664,12 @@ class Login extends CI_Controller
 
 	public function get_autocomplete2()
 	{
-		if (isset($_GET['term'])) 
-		{
+		if (isset($_GET['term'])) {
 			$result = $this->M_login->search_prodi($_GET['term']);
 			if (count($result) > 0) {
 				foreach ($result as $row)
 					$arr_result[] = array(
-						"value" => $row->nama_prodi." (".$row->jenjang.")",
+						"value" => $row->nama_prodi . " (" . $row->jenjang . ")",
 						"kode" => $row->kd_prodi,
 						"jenjang" => $row->jenjang
 					);
@@ -2572,5 +2677,4 @@ class Login extends CI_Controller
 			}
 		}
 	}
-
 }

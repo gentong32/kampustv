@@ -231,6 +231,9 @@ else
 						<li><a href="<?php echo base_url() . 'profil/pembayaran'; ?>"><i
 									class="fa fa-money yellow_color"></i> <span>Iuran</span></a>
 						</li>
+						<li><a href="<?php echo base_url() . 'eksekusi'; ?>"><i
+									class="fa fa-info yellow_color"></i> <span>Promosi Sekolah</span></a>
+						</li>
 						<?php }
 						else
 					{ ?>

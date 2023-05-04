@@ -477,8 +477,8 @@ class Profil extends CI_Controller
 			$data['keteranganbayar2'] = "Tagihan Lunas";
 			$data['keteranganstatus'] = "<b>".$statussekolahskr."</b> aktif hingga ".$tglkadaluwarsa;
 		} else {
-			$data['keteranganbayar1'] = number_format($standarbayar->pro, 0, ',', '.');
-			$data['keteranganbayar2'] = "Tagihan Bulan Ini";
+			$data['keteranganbayar1'] = number_format($standarbayar->pro12bulan, 0, ',', '.');
+			$data['keteranganbayar2'] = "Tagihan TVKampus";
 		}
 
 		if ($getstatus['status_bayar3'] == "lunas") {
@@ -1111,7 +1111,7 @@ class Profil extends CI_Controller
 			$data['status_bayar'] = $getstatus['status_bayar'];
 			$data['status_tunggu'] = $getstatus['status_tunggu'];
 			$data['keteranganbayartunggu'] = "";
-			$data['keteranganbayar'] = "Silakan pilih salah satu metode pembayaran";
+			$data['keteranganbayar'] = "Silakan melakukan pembayaran";
 			$data['keteranganbayar2'] = "";
 			$data['keteranganbayar3'] = "";
 			$data['keteranganekskul'] = "";

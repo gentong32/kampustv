@@ -45,7 +45,7 @@ $selpkt[$strata] = " selected ";
 				<div class="row">
 
 					<div class="col-md-12 text-center wow fadeInRight" data-wow-delay=".5s">
-						<h1>Paket Gratis Sekolah</h1>
+						<h1>Free untuk Prodi Kampus</h1>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -61,7 +61,7 @@ $selpkt[$strata] = " selected ";
 			echo form_open('channel/updatefreepremium');
 			?>
 
-			<center><h3>PAKET GRATIS UNTUK SEKOLAH</h3></center>
+			<center><h3>FORM  FREE PRODI KAMPUS</h3></center>
 			<div class="form-group">
 
 				<div style="margin-left:auto;margin-right:auto;border: black solid 1px;padding:10px">
@@ -108,14 +108,15 @@ $selpkt[$strata] = " selected ";
 				<div style="width: 160px">
 					<select class="form-control" name="istrata" id="istrata">
 						<option value="0">- pilih -</option>
-						<option <?php echo $selpkt[7];?> value="freelite">Free Lite</option>
+						<!-- <option <?php //echo $selpkt[7];?> value="freelite">Free Lite</option> -->
 						<option <?php echo $selpkt[8];?> value="freepro">Free Pro</option>
-						<option <?php echo $selpkt[9];?> value="freepremium">Free Premium</option>
+						<!-- <option <?php //echo $selpkt[9];?> value="freepremium">Free Premium</option> -->
 					</select>
 				</div>
 			</div>
 
-			<input type="hidden" name="npsnuser" id="npsnuser" value="<?php echo $datasekolah->npsn;?>">
+			<input type="hidden" name="npsnsekolah" id="npsnsekolah" value="<?php echo $datasekolah->npsn_sekolah;?>">
+			<input type="hidden" name="kdprodi" id="kdprodi" value="<?php echo $datasekolah->kd_prodi;?>">
 			<input type="hidden" name="iduser" id="iduser" value="<?php echo $idver;?>">
 			<input type="hidden" name="strataawal" id="strataawal" value="<?php echo $strata;?>">
 			<input type="hidden" name="orderid" id="orderid" value="<?php echo $order_id;?>">

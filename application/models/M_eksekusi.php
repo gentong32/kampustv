@@ -25,11 +25,12 @@ class M_eksekusi extends CI_Model
 		return $result;
 	}
 
-	public function addeksekusi($iduser)
+	public function addeksekusi($iduser, $orderid, $jmlsekolah)
 	{
 		$set = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 		$code = substr(str_shuffle($set), 0, 20);
-		$data = array("id_user" => $iduser, "kode_eks" => "ae_" . $iduser . "_" . $code);
+		$data = array("id_user" => $iduser, "kode_eks" => "ae_" . $iduser . "_" . $code,
+				"order_id" => $orderid, 'total_sekolah' => $jmlsekolah);
 		$this->db->insert('tb_eksekusi_ae', $data);
 		$insert_id = $this->db->insert_id();
 		$this->db->from('tb_eksekusi_ae');
@@ -40,7 +41,7 @@ class M_eksekusi extends CI_Model
 
 	public function updateeksekusi($data, $kodeeks, $iduser)
 	{
-		$this->db->where('kode_eks', $kodeeks);;
+		$this->db->where('kode_eks', $kodeeks);
 		$this->db->where('id_user', $iduser);
 		return $this->db->update('tb_eksekusi_ae', $data);
 	}
@@ -128,6 +129,21 @@ class M_eksekusi extends CI_Model
 		}
 
 		$result = $this->db->get()->result();
+		return $result;
+	}
+
+	public function updatesponsortvsekolah($data)
+	{
+		$db2 = $this->load->database('sekolah', TRUE);
+
+		// $db2->from('daf_chn_sekolah');
+		// $db2->limit(10);
+		// $result = $db2->get()->result();
+
+		// echo var_dump($data);
+		// die();
+
+		$result = $db2->update_batch('daf_chn_sekolah', $data, 'npsn');
 		return $result;
 	}
 
@@ -524,6 +540,14 @@ class M_eksekusi extends CI_Model
 		$this->db->from('tb_eksekusi_ae');
 		$this->db->where('id', $id);
 		$this->db->where('id_user', $iduser);
+		$result = $this->db->get()->row();
+		return $result;
+	}
+
+	public function getordereksbykode($kodeeks)
+	{
+		$this->db->from('tb_eksekusi_ae');
+		$this->db->where('kode_eks', $kodeeks);
 		$result = $this->db->get()->row();
 		return $result;
 	}

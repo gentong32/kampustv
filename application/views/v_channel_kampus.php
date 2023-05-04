@@ -43,8 +43,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <div class="kartuchannel">
                             <a href="<?=base_url().'channel/siaran/'.$datarow->npsn_sekolah.'/'.$datarow->kd_prodi?>">
                             <img src="<?=$foto;?>" alt=""><br>
+                            <div class="namakampus">
                             <?=$datarow->nama_prodi;?><br>
                             <?=$datarow->nama_sekolah;?>
+                            </div>
                             </a>
                         </div>
                     <?php } ?>

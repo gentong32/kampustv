@@ -20,7 +20,7 @@
 	<link href="<?php echo base_url();?>css/magnific-popup.css" rel="stylesheet" type="text/css" />
 	<link href="<?php echo base_url();?>css/jquery.countdown.css" rel="stylesheet" type="text/css" />
 	<link href="<?php echo base_url();?>css/style.css?ver=4" rel="stylesheet" type="text/css" />
-	<link href="<?php echo base_url();?>css/style2.css?v1.0" rel="stylesheet" type="text/css" />
+	<link href="<?php echo base_url();?>css/style2.css?v2.0" rel="stylesheet" type="text/css" />
 
 	<!-- color scheme -->
 	<link id="colors" href="<?php echo base_url();?>css/colors/scheme-03.css" rel="stylesheet" type="text/css" />

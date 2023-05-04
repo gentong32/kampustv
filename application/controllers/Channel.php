@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -20,85 +20,85 @@ class Channel extends CI_Controller
 
 		$this->kampus();
 
-//     	setcookie('acara', null, -1, '/');
-// 		unset($_COOKIE['acara']); 
-// 		setcookie('basis', "channel", time() + (86400), '/');
-// 		$data = array();
-// 		$data['konten'] = "v_channel_home";
-// 		$npsn = "";
-// 		if ($this->session->userdata('loggedIn')) {
-// 			if ($this->session->userdata('sebagai') == 4)
-// 				$npsn = "";
-// 			else
-// 				{
-// 					$npsn = $this->session->userdata('npsn');
-// 					$iduser = $this->session->userdata('id_user');
-// 					$getuser = $this->M_login->getUser($iduser);
-// 					$prodi = $getuser['kd_prodi'];
-// 				}
-// 		}
+		//     	setcookie('acara', null, -1, '/');
+		// 		unset($_COOKIE['acara']); 
+		// 		setcookie('basis', "channel", time() + (86400), '/');
+		// 		$data = array();
+		// 		$data['konten'] = "v_channel_home";
+		// 		$npsn = "";
+		// 		if ($this->session->userdata('loggedIn')) {
+		// 			if ($this->session->userdata('sebagai') == 4)
+		// 				$npsn = "";
+		// 			else
+		// 				{
+		// 					$npsn = $this->session->userdata('npsn');
+		// 					$iduser = $this->session->userdata('id_user');
+		// 					$getuser = $this->M_login->getUser($iduser);
+		// 					$prodi = $getuser['kd_prodi'];
+		// 				}
+		// 		}
 
-// 		if ($npsn == "")
-// 			$npsn = "000";
+		// 		if ($npsn == "")
+		// 			$npsn = "000";
 
-// 		$now = new DateTime();
-// 		$now->setTimezone(new DateTimezone('Asia/Jakarta'));
-// 		$hari = $now->format('N');
+		// 		$now = new DateTime();
+		// 		$now->setTimezone(new DateTimezone('Asia/Jakarta'));
+		// 		$hari = $now->format('N');
 
-// 		$data['dafplaylist'] = $this->M_channel->getDafPlayListTVE(0, $hari);
+		// 		$data['dafplaylist'] = $this->M_channel->getDafPlayListTVE(0, $hari);
 
-// 		$durasiplaylist = $data['dafplaylist'][0]->durasi_paket;
+		// 		$durasiplaylist = $data['dafplaylist'][0]->durasi_paket;
 
-// 		if ($durasiplaylist != "00:00:00") {
-// 			// echo "Disini-02";
-// 			$data['punyalist'] = true;
-// 			$statusakhir = $data['dafplaylist'][0]->link_list;
-// 			$data['playlist'] = $this->M_channel->getPlayListTVE($statusakhir);
-// 			$linklist = $statusakhir;
-
-
-// 		} else {
-// 			//echo "Belum punya daftar siaran";
-// 			$data['punyalist'] = false;
-// //            if (!$this->session->userdata('loggedIn')) {
-// //                redirect('/');
-// //            }
-// 		}
-
-// 		//die();
-
-// 		if ($npsn == "000")
-// 			{
-// 				$npsn = "10101010101";
-// 				$prodi= "0";
-// 			}
-
-// 		$iduser = $this->session->userdata('id_user');
-		
-
-// 		$data['channelku'] = $this->M_channel->getSekolahKu($npsn, $prodi);
-// 		$data['dafchannel'] = $this->M_channel->getSekolahLain($npsn, "");
-
-// 		//unset($data['dafchannel'][0]);
-
-// 		$indeks = 0;
-// 		$batas10 = 0;
-// 		foreach ($data['dafchannel'] as $row) {
-// 			if ($this->cekstatusbayarchannel($row->npsn) == "off") {
-// 				unset($data['dafchannel'][$indeks]);
-// 			} else {
-// 				$batas10++;
-// 			}
-// 			$indeks++;
-// 			if ($batas10 > 9)
-// 				unset($data['dafchannel'][$indeks]);
-// //			echo $row->npsn."==".$this->cekstatusbayarchannel($row->npsn)."<br>";
-// 		}
+		// 		if ($durasiplaylist != "00:00:00") {
+		// 			// echo "Disini-02";
+		// 			$data['punyalist'] = true;
+		// 			$statusakhir = $data['dafplaylist'][0]->link_list;
+		// 			$data['playlist'] = $this->M_channel->getPlayListTVE($statusakhir);
+		// 			$linklist = $statusakhir;
 
 
-// 		$data['dafvideo'] = $this->M_channel->getVodAll();
+		// 		} else {
+		// 			//echo "Belum punya daftar siaran";
+		// 			$data['punyalist'] = false;
+		// //            if (!$this->session->userdata('loggedIn')) {
+		// //                redirect('/');
+		// //            }
+		// 		}
 
-// 		$this->load->view('layout/wrapper_umum', $data);
+		// 		//die();
+
+		// 		if ($npsn == "000")
+		// 			{
+		// 				$npsn = "10101010101";
+		// 				$prodi= "0";
+		// 			}
+
+		// 		$iduser = $this->session->userdata('id_user');
+
+
+		// 		$data['channelku'] = $this->M_channel->getSekolahKu($npsn, $prodi);
+		// 		$data['dafchannel'] = $this->M_channel->getSekolahLain($npsn, "");
+
+		// 		//unset($data['dafchannel'][0]);
+
+		// 		$indeks = 0;
+		// 		$batas10 = 0;
+		// 		foreach ($data['dafchannel'] as $row) {
+		// 			if ($this->cekstatusbayarchannel($row->npsn) == "off") {
+		// 				unset($data['dafchannel'][$indeks]);
+		// 			} else {
+		// 				$batas10++;
+		// 			}
+		// 			$indeks++;
+		// 			if ($batas10 > 9)
+		// 				unset($data['dafchannel'][$indeks]);
+		// //			echo $row->npsn."==".$this->cekstatusbayarchannel($row->npsn)."<br>";
+		// 		}
+
+
+		// 		$data['dafvideo'] = $this->M_channel->getVodAll();
+
+		// 		$this->load->view('layout/wrapper_umum', $data);
 	}
 
 	public function kampus()
@@ -106,7 +106,7 @@ class Channel extends CI_Controller
 		$data['konten'] = "v_channel_kampus";
 		$data['dafkampus'] =  $this->M_channel->getKampusAktifSiaran();
 		// echo var_dump ($data['dafkampus']);
-		
+
 		$this->load->view('layout/wrapper_umum', $data);
 	}
 
@@ -114,27 +114,27 @@ class Channel extends CI_Controller
 	{
 
 		if ($npsn != null) {
-			$npsn = substr($npsn, 2);
+			// $npsn = substr($npsn, 2);
 
 			$data = array();
 
 			$this->load->Model('M_channel');
 			$getsekolah = $this->M_channel->getSekolahKu($npsn, $prodi);
 			$stratasekolah = $getsekolah->strata_sekolah;
-			$dafstratasekolah=array('-', 'Lite', 'Pro', 'Premium');
-			$statussekolahskr = " [".$dafstratasekolah[$stratasekolah]."]";
+			$dafstratasekolah = array('-', 'Lite', 'Pro', 'Premium');
+			$statussekolahskr = " [" . $dafstratasekolah[$stratasekolah] . "]";
+			// echo var_dump($getsekolah);
+			// die();
 
-			if (($statussekolah=="Pro" && $this->session->userdata('loggedIn'))  || $statussekolah=="Premium")
-				{
-					$getpilihansiaran = $this->M_channel->getsiaranaktif($npsn, $prodi);
-					$data['siaranaktif'] = $getpilihansiaran->siaranaktif;
-					$data['urllive'] = $getpilihansiaran->urllive;
-				}
-			else
-				{
-					$data['siaranaktif'] = 1;
-					$data['urllive'] = "";
-				}
+			if (($statussekolah == "Pro" && $this->session->userdata('loggedIn'))  || $statussekolah == "Premium") {
+
+				$getpilihansiaran = $this->M_channel->getsiaranaktif($npsn, $prodi);
+				$data['siaranaktif'] = $getpilihansiaran->siaranaktif;
+				$data['urllive'] = $getpilihansiaran->urllive;
+			} else {
+				$data['siaranaktif'] = 1;
+				$data['urllive'] = "";
+			}
 
 			// echo $npsn;
 			// echo $data['siaranaktif'];
@@ -145,9 +145,9 @@ class Channel extends CI_Controller
 			else
 				$cekuser = 2;
 
-			
+
 			$data['konten'] = "v_channel_siaran";
-			
+
 
 			$now = new DateTime();
 			$now->setTimezone(new DateTimezone('Asia/Jakarta'));
@@ -178,10 +178,10 @@ class Channel extends CI_Controller
 
 
 				$data['dafplaylist'] = $this->M_channel->getDafPlayListSekolah($npsn, $prodi, 0, $hari);
-//					echo "<pre>";
-//					echo var_dump($data['dafplaylist']);
-//					echo "</pre>";
-//					die();
+				//					echo "<pre>";
+				//					echo var_dump($data['dafplaylist']);
+				//					echo "</pre>";
+				//					die();
 
 				if ($data['dafplaylist']) {
 					//echo "Disini-1";
@@ -189,22 +189,19 @@ class Channel extends CI_Controller
 					$statusakhir = $data['dafplaylist'][0]->link_list;
 					if ($linklist == null) {
 						$data['playlist'] = $this->M_channel->getPlayListSekolah($npsn, $prodi, $statusakhir);
-
 					} else {
 						$data['playlist'] = $this->M_channel->getPlayListSekolah($npsn, $prodi, $linklist);
-
 					}
 
 					/////////paksa dulu ------------
 					$data['playlist'] = $this->M_channel->getPlayListSekolah($npsn, $prodi, $statusakhir);
 					$linklist = $statusakhir;
-
 				} else {
 					//echo "Disini-2";
 					$data['punyalist'] = false;
-//            if (!$this->session->userdata('loggedIn')) {
-//                redirect('/');
-//            }
+					//            if (!$this->session->userdata('loggedIn')) {
+					//                redirect('/');
+					//            }
 				}
 
 				//die();
@@ -228,8 +225,6 @@ class Channel extends CI_Controller
 					$data['infosekolah'] = $cekinfosekolah;
 				}
 				$data['dafvideo'] = $this->M_channel->getVodSekolah($npsn, $prodi);
-
-
 			}
 
 			$data['id_playlist'] = $linklist;
@@ -253,10 +248,10 @@ class Channel extends CI_Controller
 				$data['dafchannel'] = $this->M_channel->getAllSekolah();
 			}
 
-//			echo "<pre>";
-//			echo var_dump($data['dafchannel']);
-//			echo "</pre>";
-//			die();
+			//			echo "<pre>";
+			//			echo var_dump($data['dafchannel']);
+			//			echo "</pre>";
+			//			die();
 
 			$datakosong = array();
 
@@ -267,18 +262,19 @@ class Channel extends CI_Controller
 					//unset($data['dafchannel'][$indeks]);
 				}
 				$indeks++;
-//			echo $row->npsn."==".$this->cekstatusbayarchannel($row->npsn)."<br>";
+				//			echo $row->npsn."==".$this->cekstatusbayarchannel($row->npsn)."<br>";
 			}
 
 			$this->load->view('layout/wrapper_umum', $data);
 		}
-
 	}
 
 	public function edit()
 	{
-		$data = array('title' => 'Playing VOD', 'menuaktif' => '4',
-			'isi' => 'v_channel_edit');
+		$data = array(
+			'title' => 'Playing VOD', 'menuaktif' => '4',
+			'isi' => 'v_channel_edit'
+		);
 		$data['message'] = $this->session->flashdata('message');
 		$data['authURL'] = $this->facebook->login_url();
 		$data['loginURL'] = $this->google->loginURL();
@@ -337,7 +333,7 @@ class Channel extends CI_Controller
 				rename($alamat . $namafile1, $alamat . $namafilebaru);
 				//$idvideo = $datavideo['id_video'];
 			}
-//			redirect('video/edit/'.$idvideo);
+			//			redirect('video/edit/'.$idvideo);
 
 			$this->sirkel($namafilebaru);
 			redirect('/channel');
@@ -352,8 +348,8 @@ class Channel extends CI_Controller
 
 		//$_GET['image']
 		$filename = base_url() . "uploads/channel/" . $image;
-//		echo $filename;
-//		die();
+		//		echo $filename;
+		//		die();
 		$image_s = imagecreatefromstring(file_get_contents($filename));
 		$width = imagesx($image_s);
 		$height = imagesy($image_s);
@@ -362,7 +358,7 @@ class Channel extends CI_Controller
 		$image = imagecreatetruecolor($newwidth, $newheight);
 		imagealphablending($image, true);
 		imagecopyresampled($image, $image_s, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
-//create masking
+		//create masking
 		$mask = imagecreatetruecolor($newwidth, $newheight);
 		$transparent = imagecolorallocate($mask, 255, 0, 0);
 		imagecolortransparent($mask, $transparent);
@@ -371,7 +367,7 @@ class Channel extends CI_Controller
 		imagecopymerge($image, $mask, 0, 0, 0, 0, $newwidth, $newheight, 100);
 		imagecolortransparent($image, $red);
 		imagefill($image, 0, 0, $red);
-//output, save and free memory
+		//output, save and free memory
 		header('Content-type: image/png');
 		imagepng($image);
 		imagepng($image, 'uploads/channel/image.png');
@@ -384,8 +380,10 @@ class Channel extends CI_Controller
 		$this->load->model('M_vod');
 		delete_cookie("cookie_vod");
 		delete_cookie("cookie_jempol");
-		$data = array('title' => 'Daftar VOD', 'menuaktif' => '4',
-			'isi' => 'v_vod');
+		$data = array(
+			'title' => 'Daftar VOD', 'menuaktif' => '4',
+			'isi' => 'v_vod'
+		);
 
 		$data['dafvideo'] = $this->M_vod->getVODAll();
 
@@ -394,13 +392,12 @@ class Channel extends CI_Controller
 		$data['loginURL'] = $this->google->loginURL();
 
 		$this->load->view('layout/wrapper3', $data);
-
 	}
 
-	public function daftarprodi($opsi=null)
+	public function daftarprodi($opsi = null)
 	{
-		if (!$this->session->userdata('a01') && $this->session->userdata('siag')!=3)
-		redirect ("/");
+		if (!$this->session->userdata('a01') && $this->session->userdata('siag') != 3)
+			redirect("/");
 
 		$this->load->model('M_channel');
 		$data = array();
@@ -410,13 +407,12 @@ class Channel extends CI_Controller
 		$data['dafchannel'] = $getchannel;
 
 		$this->load->view('layout/wrapper_tabel', $data);
-
 	}
 
 	public function daftarchannel()
 	{
-		if (!$this->session->userdata('a01') && $this->session->userdata('siag')!=3)
-		redirect ("/");
+		if (!$this->session->userdata('a01') && $this->session->userdata('siag') != 3)
+			redirect("/");
 
 		$this->load->model('M_channel');
 		$data = array();
@@ -427,7 +423,7 @@ class Channel extends CI_Controller
 		// echo var_dump($getchannel);
 
 		// $ceksekolahpremium = ceksekolahpremium('69877907');
-			
+
 		$batascek = new DateTime('2000-01-01 00:00:00');
 		$tglbatas = $batascek->format('Y-m-d H:i:s');
 		$batascek2 = new DateTime('2001-01-01 00:00:00');
@@ -439,71 +435,58 @@ class Channel extends CI_Controller
 		$adaupdate = false;
 		$baris = 0;
 
-		if ($opsi=="refresh") {
-			foreach ($getchannel as $rowdata)
-			{
+		if ($opsi == "refresh") {
+			foreach ($getchannel as $rowdata) {
 				$baris++;
 				$adaupdate = true;
 				$statussekolah = "NON";
 				$ceksekolahpremium = ceksekolahpremium($rowdata->npsn);
 				$data['statussekolah'] = " [ - ]";
-				if ($ceksekolahpremium['status_sekolah'] != "non")
-				{
+				if ($ceksekolahpremium['status_sekolah'] != "non") {
 					$statussekolah = $ceksekolahpremium['status_sekolah'];
 					if ($statussekolah == "Lite Siswa")
 						$statussekolah = "Lite";
 					$data['statussekolah'] = " [ " . $statussekolah . " ] ";
 				}
 
-				if($statussekolah=="Premium")
-				{
+				if ($statussekolah == "Premium") {
 					$strata = 3;
-					if ($ceksekolahpremium['tipebayar']=="freepremium")
+					if ($ceksekolahpremium['tipebayar'] == "freepremium")
 						$strata = 9;
-				}
-				else if($statussekolah=="Pro")
-				{
+				} else if ($statussekolah == "Pro") {
 					$strata = 2;
-					if ($ceksekolahpremium['tipebayar']=="freepro")
+					if ($ceksekolahpremium['tipebayar'] == "freepro")
 						$strata = 8;
-				}
-				else if($statussekolah=="Lite")
-				{
+				} else if ($statussekolah == "Lite") {
 					$strata = 1;
-					if ($ceksekolahpremium['tipebayar']=="freelite")
+					if ($ceksekolahpremium['tipebayar'] == "freelite")
 						$strata = 7;
-				}
-				else
+				} else
 					$strata = 0;
 
 				$dataupdate[$baris]['npsn'] = $rowdata->npsn;
 				$dataupdate[$baris]['strata'] = $strata;
 
-				if ($strata>0)
-				{
+				if ($strata > 0) {
 					$dataupdate[$baris]['kadaluwarsa'] = $ceksekolahpremium['tgl_berakhir'];
 				}
-				
 			}
 		}
 
-		if ($adaupdate)
-		{			
+		if ($adaupdate) {
 			// $this->load->model('M_channel');
 			$this->M_channel->updatedafchannel($dataupdate);
 			$getchannel = $this->M_channel->getChannelSiap();
 		}
-		
-		$data['dafchannel'] = $getchannel;
-		
-		$this->load->view('layout/wrapper_tabel', $data);
 
+		$data['dafchannel'] = $getchannel;
+
+		$this->load->view('layout/wrapper_tabel', $data);
 	}
 
 	public function daftaragency()
 	{
-		if (!$this->session->userdata("a01"))
-		{
+		if (!$this->session->userdata("a01")) {
 			redirect("/");
 		}
 		$this->load->model('M_channel');
@@ -516,8 +499,7 @@ class Channel extends CI_Controller
 
 	public function daftarkampus()
 	{
-		if (!$this->session->userdata("a01"))
-		{
+		if (!$this->session->userdata("a01")) {
 			redirect("/");
 		}
 		$this->load->model('M_channel');
@@ -542,8 +524,7 @@ class Channel extends CI_Controller
 		$data = array();
 		$this->load->model('M_login');
 		$data['dafkampus'] = $this->M_login->dafkampus();
-		if ($this->session->userdata('siag')==3)
-		{
+		if ($this->session->userdata('siag') == 3) {
 			$kampus = $this->M_channel->getInfoKampus($this->session->userdata('npsn'));
 			$data['namakampus'] = $kampus->nama_sekolah;
 		}
@@ -589,20 +570,17 @@ class Channel extends CI_Controller
 		$password = $this->input->post('ipassword');
 		$iwilayah = $this->input->post('iwilayah');
 		$namalembaga = $this->input->post('namalembaga');
-	
+
 		$data = array();
 
 		$ceklldikti = $this->M_channel->getInfoLLDIKTI($iwilayah);
-		if ($ceklldikti->email==$email)
-		{
+		if ($ceklldikti->email == $email) {
 			$data['token'] = md5($password);
 			$this->M_channel->updateuser($data, $ceklldikti->kd_user);
-		}
-		else
-		{
+		} else {
 			$data['sekolah'] = $namalembaga;
 			$data['npsn'] = $iwilayah;
-			$id=hash('ripemd128', $data['email']).strtotime("now");
+			$id = hash('ripemd128', $data['email']) . strtotime("now");
 			$data['kd_user'] = $id;
 			$data['email'] = $email;
 			$data['first_name'] = "";
@@ -617,11 +595,11 @@ class Channel extends CI_Controller
 			$data['siag'] = 3;
 
 			$this->M_channel->insertuser($data);
-			$this->M_channel->updateidagency($iwilayah,$id);
+			$this->M_channel->updateidagency($iwilayah, $id);
 		}
-		
-		
-		
+
+
+
 
 		redirect("/channel/daftaragency/");
 	}
@@ -635,50 +613,51 @@ class Channel extends CI_Controller
 		}
 	}
 
-	public function export(){
-		$stratasekolah = Array('-', 'Lite', 'Pro', 'Premium','','','','Free Lite','Free Pro','Free Premium');
+	public function export()
+	{
+		$stratasekolah = array('-', 'Lite', 'Pro', 'Premium', '', '', '', 'Free Lite', 'Free Pro', 'Free Premium');
 		$spreadsheet = new Spreadsheet();
 		$sheet = $spreadsheet->getActiveSheet();
 		// Buat sebuah variabel untuk menampung pengaturan style dari header tabel
 		$style_col = [
-		  'font' => ['bold' => true], // Set font nya jadi bold
-		  'alignment' => [
-			'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, // Set text jadi ditengah secara horizontal (center)
-			'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER // Set text jadi di tengah secara vertical (middle)
-		  ],
-		  'borders' => [
-			'top' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN], // Set border top dengan garis tipis
-			'right' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN],  // Set border right dengan garis tipis
-			'bottom' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN], // Set border bottom dengan garis tipis
-			'left' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN] // Set border left dengan garis tipis
-		  ]
+			'font' => ['bold' => true], // Set font nya jadi bold
+			'alignment' => [
+				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, // Set text jadi ditengah secara horizontal (center)
+				'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER // Set text jadi di tengah secara vertical (middle)
+			],
+			'borders' => [
+				'top' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN], // Set border top dengan garis tipis
+				'right' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN],  // Set border right dengan garis tipis
+				'bottom' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN], // Set border bottom dengan garis tipis
+				'left' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN] // Set border left dengan garis tipis
+			]
 		];
 		// Buat sebuah variabel untuk menampung pengaturan style dari isi tabel
 		$style_row = [
-		  'alignment' => [
-			'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER // Set text jadi di tengah secara vertical (middle)
-		  ],
-		  'borders' => [
-			'top' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN], // Set border top dengan garis tipis
-			'right' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN],  // Set border right dengan garis tipis
-			'bottom' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN], // Set border bottom dengan garis tipis
-			'left' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN] // Set border left dengan garis tipis
-		  ]
+			'alignment' => [
+				'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER // Set text jadi di tengah secara vertical (middle)
+			],
+			'borders' => [
+				'top' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN], // Set border top dengan garis tipis
+				'right' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN],  // Set border right dengan garis tipis
+				'bottom' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN], // Set border bottom dengan garis tipis
+				'left' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN] // Set border left dengan garis tipis
+			]
 		];
 
 		$style_row2 = [
-			'numberFormat' => ['formatCode'=> \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER],
+			'numberFormat' => ['formatCode' => \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER],
 			'alignment' => [
-			  'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER // Set text jadi di tengah secara vertical (middle)
+				'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER // Set text jadi di tengah secara vertical (middle)
 			],
 			'borders' => [
-			  'top' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN], // Set border top dengan garis tipis
-			  'right' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN],  // Set border right dengan garis tipis
-			  'bottom' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN], // Set border bottom dengan garis tipis
-			  'left' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN] // Set border left dengan garis tipis
+				'top' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN], // Set border top dengan garis tipis
+				'right' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN],  // Set border right dengan garis tipis
+				'bottom' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN], // Set border bottom dengan garis tipis
+				'left' => ['borderStyle'  => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN] // Set border left dengan garis tipis
 			],
-			
-		  ];
+
+		];
 
 		$sheet->setCellValue('A1', "DAFTAR CHANNEL"); // Set kolom A1 dengan tulisan "DATA SISWA"
 		$sheet->mergeCells('A1:I1'); // Set Merge Cell pada kolom A1 sampai E1
@@ -705,57 +684,57 @@ class Channel extends CI_Controller
 		$sheet->getStyle('H3')->applyFromArray($style_col);
 		$sheet->getStyle('I3')->applyFromArray($style_col);
 		// Panggil function view yang ada di SiswaModel untuk menampilkan semua data siswanya
-	
+
 		$this->load->model("M_channel");
 		$siswa = $data['dafchannel'] = $this->M_channel->getChannelSiap(0);
 		$no = 1; // Untuk penomoran tabel, di awal set dengan 1
 		$numrow = 4; // Set baris pertama untuk isi tabel adalah baris ke 4
-		foreach($siswa as $data){ // Lakukan looping pada variabel siswa
+		foreach ($siswa as $data) { // Lakukan looping pada variabel siswa
 
-			$stratane=$stratasekolah[$data->strata_sekolah];
-			if ($data->strata_sekolah==0)
+			$stratane = $stratasekolah[$data->strata_sekolah];
+			if ($data->strata_sekolah == 0)
 				$tstrata = $stratane;
 			else
-				$tstrata =  $stratane . " [ " . namabulantahun_pendek($data->kadaluwarsa)." ]";
+				$tstrata =  $stratane . " [ " . namabulantahun_pendek($data->kadaluwarsa) . " ]";
 
-		  $sheet->setCellValue('A'.$numrow, $no);
-		  $sheet->setCellValue('B'.$numrow, $data->nama_sekolah);
-		  $sheet->setCellValue('C'.$numrow, $data->jenjang);
-		  $sheet->setCellValue('D'.$numrow, $data->first_name.' '.$data->last_name);
-		  $sheet->setCellValue('E'.$numrow, $data->hp);
-		  $sheet->setCellValue('F'.$numrow, $tstrata);
-		  if ($data->strata_sekolah==0)
-		  	$sheet->getStyle('F'.$numrow)->getAlignment()->setHorizontal('center');
-		  $sheet->setCellValue('G'.$numrow, $data->npsn);
-		  $sheet->setCellValue('H'.$numrow, $data->email);
-		  $sheet->setCellValue('I'.$numrow, $data->nama_kota);
-		  
-		  // Apply style row yang telah kita buat tadi ke masing-masing baris (isi tabel)
-		  $sheet->getStyle('A'.$numrow)->applyFromArray($style_row);
-		  $sheet->getStyle('B'.$numrow)->applyFromArray($style_row);
-		  $sheet->getStyle('C'.$numrow)->applyFromArray($style_row);
-		  $sheet->getStyle('D'.$numrow)->applyFromArray($style_row);
-		  $sheet->getStyle('E'.$numrow)->applyFromArray($style_row2);
-		  $sheet->getStyle('F'.$numrow)->applyFromArray($style_row);
-		  $sheet->getStyle('G'.$numrow)->applyFromArray($style_row);
-		  $sheet->getStyle('H'.$numrow)->applyFromArray($style_row);
-		  $sheet->getStyle('I'.$numrow)->applyFromArray($style_row);
-		  
-		  $no++; // Tambah 1 setiap kali looping
-		  $numrow++; // Tambah 1 setiap kali looping
+			$sheet->setCellValue('A' . $numrow, $no);
+			$sheet->setCellValue('B' . $numrow, $data->nama_sekolah);
+			$sheet->setCellValue('C' . $numrow, $data->jenjang);
+			$sheet->setCellValue('D' . $numrow, $data->first_name . ' ' . $data->last_name);
+			$sheet->setCellValue('E' . $numrow, $data->hp);
+			$sheet->setCellValue('F' . $numrow, $tstrata);
+			if ($data->strata_sekolah == 0)
+				$sheet->getStyle('F' . $numrow)->getAlignment()->setHorizontal('center');
+			$sheet->setCellValue('G' . $numrow, $data->npsn);
+			$sheet->setCellValue('H' . $numrow, $data->email);
+			$sheet->setCellValue('I' . $numrow, $data->nama_kota);
+
+			// Apply style row yang telah kita buat tadi ke masing-masing baris (isi tabel)
+			$sheet->getStyle('A' . $numrow)->applyFromArray($style_row);
+			$sheet->getStyle('B' . $numrow)->applyFromArray($style_row);
+			$sheet->getStyle('C' . $numrow)->applyFromArray($style_row);
+			$sheet->getStyle('D' . $numrow)->applyFromArray($style_row);
+			$sheet->getStyle('E' . $numrow)->applyFromArray($style_row2);
+			$sheet->getStyle('F' . $numrow)->applyFromArray($style_row);
+			$sheet->getStyle('G' . $numrow)->applyFromArray($style_row);
+			$sheet->getStyle('H' . $numrow)->applyFromArray($style_row);
+			$sheet->getStyle('I' . $numrow)->applyFromArray($style_row);
+
+			$no++; // Tambah 1 setiap kali looping
+			$numrow++; // Tambah 1 setiap kali looping
 		}
 		// Set width kolom
 		$sheet->getColumnDimension('A')->setWidth(5); // Set width kolom A
 		$sheet->getColumnDimension('B')->setWidth(35); // Set width kolom B
-		$sheet->getColumnDimension('C')->setWidth(20);// Set width kolom E
+		$sheet->getColumnDimension('C')->setWidth(20); // Set width kolom E
 		$sheet->getColumnDimension('D')->setWidth(25); // Set width kolom C
 		$sheet->getColumnDimension('E')->setWidth(15); // Set width kolom D
-		$sheet->getColumnDimension('F')->setWidth(25);// Set width kolom E
-		$sheet->getColumnDimension('G')->setWidth(20);// Set width kolom E
-		$sheet->getColumnDimension('H')->setWidth(30);// Set width kolom E
-		$sheet->getColumnDimension('I')->setWidth(20);// Set width kolom E
-		
-		
+		$sheet->getColumnDimension('F')->setWidth(25); // Set width kolom E
+		$sheet->getColumnDimension('G')->setWidth(20); // Set width kolom E
+		$sheet->getColumnDimension('H')->setWidth(30); // Set width kolom E
+		$sheet->getColumnDimension('I')->setWidth(20); // Set width kolom E
+
+
 		// Set height semua kolom menjadi auto (mengikuti height isi dari kolommnya, jadi otomatis)
 		$sheet->getDefaultRowDimension()->setRowHeight(-1);
 		// Set orientasi kertas jadi LANDSCAPE
@@ -768,7 +747,7 @@ class Channel extends CI_Controller
 		header('Cache-Control: max-age=0');
 		$writer = new Xlsx($spreadsheet);
 		$writer->save('php://output');
-	  }
+	}
 
 	public function gantistatus()
 	{
@@ -791,7 +770,6 @@ class Channel extends CI_Controller
 
 		if ($this->session->userdata("loggedIn")) {
 			$iduser = $this->session->userdata("id_user");
-
 		} else {
 			$kodebeli = '-';
 			$jenis = 0;
@@ -817,7 +795,6 @@ class Channel extends CI_Controller
 					$jenis = 2;
 				$nilaiuser = $this->M_channel->ceknilai($linklist, $iduser);
 				$cekbeli = $this->M_channel->getlast_kdbeli($iduser, $jenis);
-
 			} else {
 				$data['masuk'] = 0;
 				$kodebeli = "-";
@@ -868,19 +845,15 @@ class Channel extends CI_Controller
 			$statusakhir = $data['dafplaylist'][0]->link_list;
 			if ($linklist == null) {
 				$data['playlist'] = $this->M_channel->getPlayListSaya($kd_user, $statusakhir);
-
 			} else {
 				$data['playlist'] = $this->M_channel->getPlayListSaya($kd_user, $linklist);
-
 			}
-
-
 		} else {
-//            $data['playlist'] = $this->M_channel->getPlayListGuru($kd_user);
+			//            $data['playlist'] = $this->M_channel->getPlayListGuru($kd_user);
 			$data['punyalist'] = false;
-//			if (!$this->session->userdata('loggedIn')) {
-//				redirect('/');
-//			}
+			//			if (!$this->session->userdata('loggedIn')) {
+			//				redirect('/');
+			//			}
 		}
 
 
@@ -901,35 +874,33 @@ class Channel extends CI_Controller
 		if ($this->session->userdata('bimbel') == 3) {
 
 			$this->load->model('M_channel');
-			$data = array('title' => 'BIMBEL', 'menuaktif' => 0,
-				'isi' => 'v_channel_bimbel', 'menuaktif' => '17');
+			$data = array(
+				'title' => 'BIMBEL', 'menuaktif' => 0,
+				'isi' => 'v_channel_bimbel', 'menuaktif' => '17'
+			);
 
 			$data['dafplaylist'] = $this->M_channel->getDafPlayListBimbel($iduser);
 
 			if ($data['dafplaylist']) {
 				$data['punyalist'] = true;
 				$statusakhir = $data['dafplaylist'][0]->link_list;
-//				echo "<br><br><br><br><br>SattusAkhir:".$statusakhir;
+				//				echo "<br><br><br><br><br>SattusAkhir:".$statusakhir;
 				if ($linklist == null) {
 					$data['playlist'] = $this->M_channel->getPlayListBimbel($statusakhir, $iduser);
-
 				} else {
 					$data['playlist'] = $this->M_channel->getPlayListBimbel($linklist, $iduser);
-
 				}
-
-
 			} else {
-//            $data['playlist'] = $this->M_channel->getPlayListGuru($kd_user);
+				//            $data['playlist'] = $this->M_channel->getPlayListGuru($kd_user);
 				$data['punyalist'] = false;
-//			if (!$this->session->userdata('loggedIn')) {
-//				redirect('/');
-//			}
+				//			if (!$this->session->userdata('loggedIn')) {
+				//				redirect('/');
+				//			}
 			}
 
 
 			$data['infoguru'] = $this->M_channel->getInfoGuru($iduser);
-//			$data['dafvideo'] = $this->M_channel->getVodGuru($iduser);
+			//			$data['dafvideo'] = $this->M_channel->getVodGuru($iduser);
 			$data['message'] = $this->session->flashdata('message');
 			$data['authURL'] = $this->facebook->login_url();
 			$data['loginURL'] = $this->google->loginURL();
@@ -944,18 +915,23 @@ class Channel extends CI_Controller
 
 	public function saya()
 	{
-		if (!$this->session->userdata('loggedIn') || $this->session->userdata('tukang_verifikasi') > 2
-			|| $this->session->userdata('tukang_kontribusi') > 2) {
+		if (
+			!$this->session->userdata('loggedIn') || $this->session->userdata('tukang_verifikasi') > 2
+			|| $this->session->userdata('tukang_kontribusi') > 2
+		) {
 			redirect('/');
 		} else {
 			$this->load->model('M_channel');
-			$data = array('title' => 'Daftar Video', 'menuaktif' => '16',
-				'isi' => 'v_channel_seting');
+			$data = array(
+				'title' => 'Daftar Video', 'menuaktif' => '16',
+				'isi' => 'v_channel_seting'
+			);
 
 			$data['statusvideo'] = 'semua';
 
 			if ($this->is_connected())
-				$data['nyambung'] = true; else
+				$data['nyambung'] = true;
+			else
 				$data['nyambung'] = false;
 
 			$id_user = $this->session->userdata('id_user');
@@ -983,7 +959,7 @@ class Channel extends CI_Controller
 		}
 	}
 
-	public function playlistkampus($opsi=null,$kodeevent=null)
+	public function playlistkampus($opsi = null, $kodeevent = null)
 	{
 
 		if (!$this->session->userdata('loggedIn')) {
@@ -1010,7 +986,6 @@ class Channel extends CI_Controller
 		$data['dafpaket'] = $this->M_channel->getPaketSekolah($npsn, $prodi);
 
 		$this->load->view('layout/wrapper_tabel', $data);
-
 	}
 
 	private function cekstatus($dataekskul)
@@ -1039,9 +1014,9 @@ class Channel extends CI_Controller
 		$getuser = getstatususer();
 		$prodi = $getuser["kelasku"];
 		$this->load->Model('M_payment');
-		
+
 		$getbayarekskul = $this->M_payment->getbayarEkskul($npsn, $prodi, null, 3, true);
-		
+
 		$jmlsiswabayar = 0;
 		$jmlverbayar = 0;
 		foreach ($getbayarekskul as $databayar) {
@@ -1067,18 +1042,20 @@ class Channel extends CI_Controller
 		}
 
 		$this->load->model('M_channel');
-		$data = array('title' => 'Playlist TVSekolah', 'menuaktif' => '20',
-			'isi' => 'v_channel_playlisttve');
+		$data = array(
+			'title' => 'Playlist TVSekolah', 'menuaktif' => '20',
+			'isi' => 'v_channel_playlisttve'
+		);
 
 		$npsn = $this->session->userdata('npsn');
 		$data['dafpaket'] = $this->M_channel->getPaketTVE($npsn);
 
-//        $url = 'https://worldtimeapi.org/api/timezone/Asia/Jakarta';
-//        $obj = json_decode(file_get_contents($url), true);
-//        $stampdate = substr($obj['datetime'], 0, 19);
-//
-//        $date = strtotime($stampdate);
-//        $tglnow = date('Y-M-d H:i:s', $date);
+		//        $url = 'https://worldtimeapi.org/api/timezone/Asia/Jakarta';
+		//        $obj = json_decode(file_get_contents($url), true);
+		//        $stampdate = substr($obj['datetime'], 0, 19);
+		//
+		//        $date = strtotime($stampdate);
+		//        $tglnow = date('Y-M-d H:i:s', $date);
 
 		$data['dafpaket'] = $this->M_channel->getPaketTVE($npsn);
 
@@ -1094,14 +1071,15 @@ class Channel extends CI_Controller
 		if ($linklist != null) {
 			$cekevent = $this->M_channel->cekevent_pl_guru($linklist);
 			if ($cekevent) {
-
 			} else
 				redirect("/");
 		}
 
 		$this->load->model('M_channel');
-		$data = array('title' => 'DAFTAR KELAS SAYA', 'menuaktif' => '19',
-			'isi' => 'v_channel_playlistguru');
+		$data = array(
+			'title' => 'DAFTAR KELAS SAYA', 'menuaktif' => '19',
+			'isi' => 'v_channel_playlistguru'
+		);
 
 		$id_user = $this->session->userdata('id_user');
 		$data['linklist'] = $linklist;
@@ -1119,34 +1097,34 @@ class Channel extends CI_Controller
 		}
 
 		$data['dafpaket'] = $this->M_channel->getPaketGuru($id_user, $id_event);
-//        echo "<pre>";
-//        echo var_dump($data['dafpaket']);
-//        echo "</pre>";
-//        die();
+		//        echo "<pre>";
+		//        echo var_dump($data['dafpaket']);
+		//        echo "</pre>";
+		//        die();
 
-//		if ($this->is_connected()) {
-////            $url = 'https://worldtimeapi.org/api/timezone/Asia/Jakarta';
-////            $obj = json_decode(file_get_contents($url), true);
-////            $stampdate = substr($obj['datetime'], 0, 19);
-////
-////            $date = strtotime($stampdate);
-////			echo "<br><br><br><br><br>";
-////			$url = 'https://worldtimeapi.org/api/timezone/Asia/Jakarta';
-//			$url = false;
-//			if ($url) {
-//				$content = file_get_contents($url);
-//				$obj = json_decode($content, true);
-//				$stampdate = substr($obj['datetime'], 0, 19);
-//
-//				$date = strtotime($stampdate);
-//				//$tglnow = date('Y-M-d H:i:s', $date);
-//				//echo "PUSAT";
-//			} else {
-//				date_default_timezone_set('Asia/Jakarta');
-//				$date = strtotime("now");
-//				//echo "KOMPUTER";
-//			}
-//		}
+		//		if ($this->is_connected()) {
+		////            $url = 'https://worldtimeapi.org/api/timezone/Asia/Jakarta';
+		////            $obj = json_decode(file_get_contents($url), true);
+		////            $stampdate = substr($obj['datetime'], 0, 19);
+		////
+		////            $date = strtotime($stampdate);
+		////			echo "<br><br><br><br><br>";
+		////			$url = 'https://worldtimeapi.org/api/timezone/Asia/Jakarta';
+		//			$url = false;
+		//			if ($url) {
+		//				$content = file_get_contents($url);
+		//				$obj = json_decode($content, true);
+		//				$stampdate = substr($obj['datetime'], 0, 19);
+		//
+		//				$date = strtotime($stampdate);
+		//				//$tglnow = date('Y-M-d H:i:s', $date);
+		//				//echo "PUSAT";
+		//			} else {
+		//				date_default_timezone_set('Asia/Jakarta');
+		//				$date = strtotime("now");
+		//				//echo "KOMPUTER";
+		//			}
+		//		}
 
 		date_default_timezone_set('Asia/Jakarta');
 		$date = strtotime("now");
@@ -1179,8 +1157,10 @@ class Channel extends CI_Controller
 		}
 
 		$this->load->model('M_channel');
-		$data = array('title' => 'DAFTAR MODUL BIMBEL', 'menuaktif' => '31',
-			'isi' => 'v_channel_playlistbimbel');
+		$data = array(
+			'title' => 'DAFTAR MODUL BIMBEL', 'menuaktif' => '31',
+			'isi' => 'v_channel_playlistbimbel'
+		);
 
 		$id_user = $this->session->userdata('id_user');
 		$data['linklist'] = $linklist;
@@ -1224,31 +1204,31 @@ class Channel extends CI_Controller
 
 		$data['dafpaket'] = $this->M_channel->getPaketBimbel($id_user, $id_event);
 
-//		else {
-//			if ($tambah == "tambah") {
-//				$this->load->model('M_video');
-//				$cekevent = $this->M_video->getAllEvent($linklist);
-//				if ($this->session->userdata('a01') || $this->session->userdata('sebagai') == 4 || $this->session->userdata('bimbel')==1) {
-//						$data = array('title' => 'Daftar Video Bimbel Event Spesial', 'menuaktif' => '23',
-//							'isi' => 'v_video');
-//						$data['message'] = $this->session->flashdata('message');
-//						$data['authURL'] = $this->facebook->login_url();
-//						$data['loginURL'] = $this->google->loginURL();
-//						$data['statusvideo'] = 'semua';
-//						$data['linkdari'] = 'bimbel';
-//						$data['linkevent'] = $linklist;
-//						$data['dataevent'] = $cekevent;
-//						$data['kodeevent'] = $data['dataevent'][0]->code_event;
-//						$data['dafvideo'] = $this->M_video->getVideobyEvent($data['dataevent'][0]->id_event, 0);
-//
-//						$this->load->view('layout/wrapper2', $data);
-//				} else {
-//					redirect('/event/spesial/acara');
-//				}
-//			} else if ($tambah == "tambah") {
-//				$this->tambah($linklist);
-//			}
-//		}
+		//		else {
+		//			if ($tambah == "tambah") {
+		//				$this->load->model('M_video');
+		//				$cekevent = $this->M_video->getAllEvent($linklist);
+		//				if ($this->session->userdata('a01') || $this->session->userdata('sebagai') == 4 || $this->session->userdata('bimbel')==1) {
+		//						$data = array('title' => 'Daftar Video Bimbel Event Spesial', 'menuaktif' => '23',
+		//							'isi' => 'v_video');
+		//						$data['message'] = $this->session->flashdata('message');
+		//						$data['authURL'] = $this->facebook->login_url();
+		//						$data['loginURL'] = $this->google->loginURL();
+		//						$data['statusvideo'] = 'semua';
+		//						$data['linkdari'] = 'bimbel';
+		//						$data['linkevent'] = $linklist;
+		//						$data['dataevent'] = $cekevent;
+		//						$data['kodeevent'] = $data['dataevent'][0]->code_event;
+		//						$data['dafvideo'] = $this->M_video->getVideobyEvent($data['dataevent'][0]->id_event, 0);
+		//
+		//						$this->load->view('layout/wrapper2', $data);
+		//				} else {
+		//					redirect('/event/spesial/acara');
+		//				}
+		//			} else if ($tambah == "tambah") {
+		//				$this->tambah($linklist);
+		//			}
+		//		}
 
 		$this->load->view('layout/wrapperinduk2', $data);
 	}
@@ -1256,8 +1236,10 @@ class Channel extends CI_Controller
 	public function seting($kode = null)
 	{
 		$this->load->model('M_channel');
-		$data = array('title' => 'Setting', 'menuaktif' => '4',
-			'isi' => 'v_channel_seting');
+		$data = array(
+			'title' => 'Setting', 'menuaktif' => '4',
+			'isi' => 'v_channel_seting'
+		);
 
 		$data['dafchannel'] = $this->M_channel->getSekolah();
 		$data['dafvideo'] = $this->M_channel->getVodAll();
@@ -1279,10 +1261,10 @@ class Channel extends CI_Controller
 			echo "jangan";
 		else {
 			$this->M_channel->updatesifat($id, $statusnya);
-			if ($statusnya==2)
-				echo $cekdulu->status_verifikasi_bimbel.$cekdulu->catatan3;
+			if ($statusnya == 2)
+				echo $cekdulu->status_verifikasi_bimbel . $cekdulu->catatan3;
 			else
-				echo $cekdulu->status_verifikasi.$cekdulu->catatan1;
+				echo $cekdulu->status_verifikasi . $cekdulu->catatan1;
 		}
 	}
 
@@ -1319,7 +1301,6 @@ class Channel extends CI_Controller
 		}
 
 		$this->M_channel->insertplaylist($data);
-
 	}
 
 	public function addplaylist()
@@ -1408,9 +1389,9 @@ class Channel extends CI_Controller
 			redirect('channel/playlistbimbel/' . $linklist_event);
 	}
 
-	public function addplaylist_kampus($opsi=null,$kodeevent=null)
+	public function addplaylist_kampus($opsi = null, $kodeevent = null)
 	{
-		
+
 		$data = array();
 		$data['jam_tayang'] = $_POST['time'] . ":00:00";
 		$data['hari'] = $_POST['hari'];
@@ -1425,12 +1406,9 @@ class Channel extends CI_Controller
 		$getuser = getstatususer();
 		$prodi = $getuser['kelasku'];
 
-		if ($kodeevent!=null)
-		{
-			$kodeevent = "/".$kodeevent;
-		}
-		else
-		{
+		if ($kodeevent != null) {
+			$kodeevent = "/" . $kodeevent;
+		} else {
 			$kodeevent = "";
 		}
 
@@ -1448,15 +1426,14 @@ class Channel extends CI_Controller
 			$this->M_channel->updatePlaylist_sekolah($link_list, $data);
 		}
 
-		if ($opsi=="calver")
-			{
-				$this->load->model('M_marketing');
-				$this->M_marketing->updateCalVerDafUser("playlist",$iduser);
-			}
+		if ($opsi == "calver") {
+			$this->load->model('M_marketing');
+			$this->M_marketing->updateCalVerDafUser("playlist", $iduser);
+		}
 
 		$this->updateharitayang_channel($npsn, $prodi);
 
-		redirect('channel/playlistkampus/'.$opsi.$kodeevent);
+		redirect('channel/playlistkampus/' . $opsi . $kodeevent);
 	}
 
 	public function addplaylist_tve()
@@ -1484,7 +1461,6 @@ class Channel extends CI_Controller
 		$this->load->model('M_channel');
 		$id_paket = $_POST['id'];
 		$this->M_channel->gantistatuspaket($id_paket);
-
 	}
 
 	public function gantistatuspaketbimbel()
@@ -1492,7 +1468,6 @@ class Channel extends CI_Controller
 		$this->load->model('M_channel');
 		$id_paket = $_POST['id'];
 		$this->M_channel->gantistatuspaketbimbel($id_paket);
-
 	}
 
 	public function gantistatuspaket_sekolah()
@@ -1500,7 +1475,6 @@ class Channel extends CI_Controller
 		$this->load->model('M_channel');
 		$id_paket = $_POST['id'];
 		$this->M_channel->gantistatuspaket_sekolah($id_paket);
-
 	}
 
 	public function tambahplaylist($linklist_event = null)
@@ -1512,13 +1486,14 @@ class Channel extends CI_Controller
 		if ($linklist_event != null) {
 			$cekevent = $this->M_channel->cekevent_pl_guru($linklist_event);
 			if ($cekevent) {
-
 			} else
 				redirect("/");
 		}
 
-		$data = array('title' => 'Tambahkan Playlist', 'menuaktif' => '15',
-			'isi' => 'v_channel_tambahplaylist');
+		$data = array(
+			'title' => 'Tambahkan Playlist', 'menuaktif' => '15',
+			'isi' => 'v_channel_tambahplaylist'
+		);
 		$data['addedit'] = "add";
 		$this->load->Model('M_video');
 		$data['dafkurikulum'] = $this->M_video->getKurikulum();
@@ -1531,13 +1506,13 @@ class Channel extends CI_Controller
 		$data['linklist_event'] = $linklist_event;
 
 		if ($linklist_event == null) {
-//			$id_event = null;
+			//			$id_event = null;
 		} else {
 			$this->load->model('M_channel');
 			$judulevent = $this->M_channel->cekevent_pl_guru($linklist_event);
 			$data['judulevent'] = $judulevent->nama_event;
 			$data['subjudulevent'] = $judulevent->sub2_nama_event;
-//			$id_event = $judulevent->id_event;
+			//			$id_event = $judulevent->id_event;
 		}
 
 		$this->load->view('layout/wrapperinduk2', $data);
@@ -1548,8 +1523,10 @@ class Channel extends CI_Controller
 		if ($linklist_event == null && (!$this->session->userdata('a03') && !$this->session->userdata('a02') && $this->session->userdata('bimbel') != 3)) {
 			redirect('/');
 		}
-		$data = array('title' => 'Tambahkan Playlist', 'menuaktif' => '15',
-			'isi' => 'v_channel_tambahplaylist_bimbel');
+		$data = array(
+			'title' => 'Tambahkan Playlist', 'menuaktif' => '15',
+			'isi' => 'v_channel_tambahplaylist_bimbel'
+		);
 
 		$this->load->Model('M_video');
 		$data['dafkurikulum'] = $this->M_video->getKurikulum();
@@ -1563,7 +1540,6 @@ class Channel extends CI_Controller
 		$data['linklist_event'] = $linklist_event;
 
 		if ($linklist_event == null) {
-
 		} else {
 			$this->load->model('M_channel');
 			$judulevent = $this->M_channel->cekevent_pl_guru($linklist_event);
@@ -1573,28 +1549,24 @@ class Channel extends CI_Controller
 			} else {
 				redirect("/");
 			}
-
 		}
 
 		$this->load->view('layout/wrapperinduk2', $data);
 	}
 
-	public function tambahplaylist_kampus($hari=null,$opsi=null)
+	public function tambahplaylist_kampus($hari = null, $opsi = null)
 	{
-//		if (!$this->session->userdata('a02')) {
-//			redirect('/');
-//		}
+		//		if (!$this->session->userdata('a02')) {
+		//			redirect('/');
+		//		}
 
-		if ($hari>=1 && $hari<=7)
-		{
+		if ($hari >= 1 && $hari <= 7) {
 			$data = array();
 			$data['konten'] = "v_channel_tambahplaylist_sekolah";
 			$data['addedit'] = "add";
 			$data['opsi'] = $opsi;
 			$data['hari'] = $hari;
-		}
-		else
-		{
+		} else {
 			redirect("/");
 		}
 
@@ -1611,13 +1583,14 @@ class Channel extends CI_Controller
 		if ($linklist != null) {
 			$cekevent = $this->M_channel->cekevent_pl_guru($linklist);
 			if ($cekevent) {
-
 			} else
 				redirect("/");
 		}
 
-		$data = array('title' => 'Edit Playlist Modul', 'menuaktif' => '4',
-			'isi' => 'v_channel_tambahplaylist');
+		$data = array(
+			'title' => 'Edit Playlist Modul', 'menuaktif' => '4',
+			'isi' => 'v_channel_tambahplaylist'
+		);
 		$data['addedit'] = "edit";
 
 		$this->load->model('M_channel');
@@ -1658,8 +1631,10 @@ class Channel extends CI_Controller
 		if ($linklist == null && (!$this->session->userdata('a03') && !$this->session->userdata('a02') && $this->session->userdata('bimbel') != 3)) {
 			redirect('/');
 		}
-		$data = array('title' => 'Edit Playlist', 'menuaktif' => '4',
-			'isi' => 'v_channel_tambahplaylist_bimbel');
+		$data = array(
+			'title' => 'Edit Playlist', 'menuaktif' => '4',
+			'isi' => 'v_channel_tambahplaylist_bimbel'
+		);
 		$data['addedit'] = "edit";
 
 		$this->load->model('M_channel');
@@ -1720,8 +1695,10 @@ class Channel extends CI_Controller
 		if (!$this->session->userdata('a01')) {
 			redirect('/');
 		}
-		$data = array('title' => 'Edit Playlist TVE', 'menuaktif' => '4',
-			'isi' => 'v_channel_tambahplaylist_tve');
+		$data = array(
+			'title' => 'Edit Playlist TVE', 'menuaktif' => '4',
+			'isi' => 'v_channel_tambahplaylist_tve'
+		);
 		$data['addedit'] = "edit";
 
 		$this->load->model('M_channel');
@@ -1760,11 +1737,9 @@ class Channel extends CI_Controller
 
 
 			redirect('/virtualkelas/modul');
-
 		} else {
 			redirect('/');
 		}
-
 	}
 
 	public function hapusplaylist_bimbel($kodepaket = null, $kodeevent = null)
@@ -1795,7 +1770,6 @@ class Channel extends CI_Controller
 		} else {
 			redirect('/');
 		}
-
 	}
 
 	public function hapusplaylist_sekolah($kodepaket = null)
@@ -1823,7 +1797,6 @@ class Channel extends CI_Controller
 		} else {
 			redirect('/');
 		}
-
 	}
 
 	public function inputplaylist($kodepaket = null, $kodeevent = null)
@@ -1835,20 +1808,21 @@ class Channel extends CI_Controller
 		if ($kodeevent != null) {
 			$cekevent = $this->M_channel->cekevent_pl_guru($kodeevent);
 			if ($cekevent) {
-
 			} else
 				redirect("/");
 		}
 
-		$data = array('title' => 'Masukkan Video Playlist', 'menuaktif' => '19',
-			'isi' => 'v_channel_inputplaylist');
+		$data = array(
+			'title' => 'Masukkan Video Playlist', 'menuaktif' => '19',
+			'isi' => 'v_channel_inputplaylist'
+		);
 		$this->load->model('M_channel');
 		$id_user = $this->session->userdata('id_user');
 		$data['dafvideo'] = $this->M_channel->getVideoUser($id_user, $kodepaket, $kodeevent);
 
-//		echo "<br><br><br><br><br><br><br><br><pre>";
-//		echo var_dump($data['dafvideo']);
-//		echo "</pre>";
+		//		echo "<br><br><br><br><br><br><br><br><pre>";
+		//		echo var_dump($data['dafvideo']);
+		//		echo "</pre>";
 
 		if (!$kodepaket == null)
 			$data['kodepaket'] = $kodepaket;
@@ -1861,7 +1835,6 @@ class Channel extends CI_Controller
 		$data['loginURL'] = $this->google->loginURL();
 
 		$this->load->view('layout/wrapperinduk2', $data);
-
 	}
 
 	public function urutanplaylist_guru($kodepaket = null)
@@ -1869,8 +1842,10 @@ class Channel extends CI_Controller
 		if (!$this->session->userdata('a03') && !$this->session->userdata('a02')) {
 			redirect('/');
 		}
-		$data = array('title' => 'Masukkan Video Playlist', 'menuaktif' => '4',
-			'isi' => 'v_channel_urutanplaylist_guru');
+		$data = array(
+			'title' => 'Masukkan Video Playlist', 'menuaktif' => '4',
+			'isi' => 'v_channel_urutanplaylist_guru'
+		);
 		$this->load->model('M_channel');
 		$id_user = $this->session->userdata('id_user');
 		$data['dafvideo'] = $this->M_channel->getVideoUserPaket($id_user, $kodepaket);
@@ -1885,18 +1860,19 @@ class Channel extends CI_Controller
 		$data['loginURL'] = $this->google->loginURL();
 
 		$this->load->view('layout/wrapperinduk2', $data);
-
 	}
 
 	public function inputplaylist_bimbel($kodepaket = null, $kodeevent = null)
 	{
 
 		if ($kodeevent == null && (!$this->session->userdata('a03') && !$this->session->userdata('a02')
-				&& !$this->session->userdata('bimbel'))) {
+			&& !$this->session->userdata('bimbel'))) {
 			redirect('/');
 		}
-		$data = array('title' => 'Masukkan Video Playlist', 'menuaktif' => '31',
-			'isi' => 'v_channel_inputplaylist_bimbel');
+		$data = array(
+			'title' => 'Masukkan Video Playlist', 'menuaktif' => '31',
+			'isi' => 'v_channel_inputplaylist_bimbel'
+		);
 		$this->load->model('M_channel');
 		$id_user = $this->session->userdata('id_user');
 
@@ -1927,7 +1903,6 @@ class Channel extends CI_Controller
 		}
 
 		$this->load->view('layout/wrapperinduk2', $data);
-
 	}
 
 	public function urutanplaylist_bimbel($kodepaket = null)
@@ -1935,8 +1910,10 @@ class Channel extends CI_Controller
 		if (!$this->session->userdata('a03') && !$this->session->userdata('a02')) {
 			redirect('/');
 		}
-		$data = array('title' => 'Masukkan Video Playlist', 'menuaktif' => '4',
-			'isi' => 'v_channel_urutanplaylist_bimbel');
+		$data = array(
+			'title' => 'Masukkan Video Playlist', 'menuaktif' => '4',
+			'isi' => 'v_channel_urutanplaylist_bimbel'
+		);
 		$this->load->model('M_channel');
 		$id_user = $this->session->userdata('id_user');
 		$data['dafvideo'] = $this->M_channel->getVideoBimbelPaket($id_user, $kodepaket);
@@ -1951,7 +1928,6 @@ class Channel extends CI_Controller
 		$data['loginURL'] = $this->google->loginURL();
 
 		$this->load->view('layout/wrapperinduk2', $data);
-
 	}
 
 	public function inputplaylist_sekolah_old($kodepaket = null, $opsi = null, $kodeevent = null)
@@ -1981,43 +1957,42 @@ class Channel extends CI_Controller
 			$data['dafvideo'] = $this->M_channel->getVideoSekolahEkskul($npsn, $id, $idpaket);
 			$data['jml_video'] = sizeof($data['dafvideo']);
 
-//				echo "IDPAKET:".$idpaket;
-//				echo "<br>NAMAPAKET:".$data['nama_paket'];
-//				echo "<br>HARIKE:".$data['harike'];
-//				die();
+			//				echo "IDPAKET:".$idpaket;
+			//				echo "<br>NAMAPAKET:".$data['nama_paket'];
+			//				echo "<br>HARIKE:".$data['harike'];
+			//				die();
 
 
-//				echo "KODEPAKET:".$kodepaket."===".$data['nama_paket'];
-//				die();
-//				echo "<pre>";
-//				echo var_dump($data['dafvideo']);
-//				echo "</pre>";
-//				die();
+			//				echo "KODEPAKET:".$kodepaket."===".$data['nama_paket'];
+			//				die();
+			//				echo "<pre>";
+			//				echo var_dump($data['dafvideo']);
+			//				echo "</pre>";
+			//				die();
 		} else if ($this->session->userdata('sebagai') == 1) {
-			
+
 			$getpaketsekolah = $this->M_channel->getPaketChannelSekolah($kodepaket);
 			$idpaket = $getpaketsekolah['id'];
 			$data['nama_paket'] = $getpaketsekolah['nama_paket'];
 			$data['harike'] = $getpaketsekolah['hari'];
-			if ($opsi=="calver")
+			if ($opsi == "calver")
 				$data['dafvideo'] = $this->M_channel->getVideoSekolahCalver($npsn, $kodepaket, 3);
-			else 
-			{
+			else {
 				if ($this->session->userdata('verifikator') == 3)
 					$data['dafvideo'] = $this->M_channel->getVideoSekolah($npsn, $kodepaket, 3);
 				else
 					$data['dafvideo'] = $this->M_channel->getVideoSekolahCalver($npsn, $kodepaket, 3);
 			}
-			if ($opsi=="tes")
-			$data['dafvideo'] = $this->M_channel->getVideoSekolahtes($npsn, $kodepaket, 3);
-			
+			if ($opsi == "tes")
+				$data['dafvideo'] = $this->M_channel->getVideoSekolahtes($npsn, $kodepaket, 3);
+
 			$data['jml_video'] = sizeof($data['dafvideo']);
 
 			// if ($opsi=="calver")
 			// {
-				// echo "<pre>";
-				// echo var_dump($data['dafvideo']);
-				// echo "</pre>";
+			// echo "<pre>";
+			// echo var_dump($data['dafvideo']);
+			// echo "</pre>";
 			// }
 
 		} else {
@@ -2033,7 +2008,6 @@ class Channel extends CI_Controller
 			$data['kodepaket'] = "0";
 
 		$this->load->view('layout/wrapper_tabel', $data);
-
 	}
 
 	public function inputplaylist_kampus($kodepaket = null, $opsi = null, $kodeevent = null)
@@ -2065,46 +2039,41 @@ class Channel extends CI_Controller
 			$data['dafvideo'] = $this->M_channel->getVideoSekolahEkskul($npsn, $prodi, $id, $idpaket);
 			$data['jml_video'] = sizeof($data['dafvideo']);
 
-//				echo "IDPAKET:".$idpaket;
-//				echo "<br>NAMAPAKET:".$data['nama_paket'];
-//				echo "<br>HARIKE:".$data['harike'];
-//				die();
+			//				echo "IDPAKET:".$idpaket;
+			//				echo "<br>NAMAPAKET:".$data['nama_paket'];
+			//				echo "<br>HARIKE:".$data['harike'];
+			//				die();
 
 
-//				echo "KODEPAKET:".$kodepaket."===".$data['nama_paket'];
-//				die();
-//				echo "<pre>";
-//				echo var_dump($data['dafvideo']);
-//				echo "</pre>";
-//				die();
+			//				echo "KODEPAKET:".$kodepaket."===".$data['nama_paket'];
+			//				die();
+			//				echo "<pre>";
+			//				echo var_dump($data['dafvideo']);
+			//				echo "</pre>";
+			//				die();
 		} else if ($this->session->userdata('sebagai') == 1) {
-			
+
 			$getpaketsekolah = $this->M_channel->getPaketChannelSekolah($kodepaket);
 			$idpaket = $getpaketsekolah['id'];
 			$data['nama_paket'] = $getpaketsekolah['nama_paket'];
 			$data['harike'] = $getpaketsekolah['hari'];
 			$data['mulaitayang'] = $getpaketsekolah['jam_tayang'];
-			
-			if ($opsi=="calver")
-				{
-					
-					$data['dafvideo'] = $this->M_channel->getVideoSekolahCalver($npsn, $prodi, $kodepaket, 3);
-				}
-			else 
-			{
-				if ($this->session->userdata('verifikator') == 3)
-					{
-						$data['dafvideo'] = $this->M_channel->getVideoSekolah($npsn, $prodi, $kodepaket, 0);
-						// echo "<pre>";
-						// echo var_dump($data['dafvideo']);
-						// echo "</pre>";
-					}
-				else
+
+			if ($opsi == "calver") {
+
+				$data['dafvideo'] = $this->M_channel->getVideoSekolahCalver($npsn, $prodi, $kodepaket, 3);
+			} else {
+				if ($this->session->userdata('verifikator') == 3) {
+					$data['dafvideo'] = $this->M_channel->getVideoSekolah($npsn, $prodi, $kodepaket, 0);
+					// echo "<pre>";
+					// echo var_dump($data['dafvideo']);
+					// echo "</pre>";
+				} else
 					$data['dafvideo'] = $this->M_channel->getVideoSekolahCalver($npsn, $prodi, $kodepaket, 3);
 			}
-			if ($opsi=="tes")
-			$data['dafvideo'] = $this->M_channel->getVideoSekolahtes($npsn, $prodi, $kodepaket, 3);
-			
+			if ($opsi == "tes")
+				$data['dafvideo'] = $this->M_channel->getVideoSekolahtes($npsn, $prodi, $kodepaket, 3);
+
 			$data['jml_video'] = sizeof($data['dafvideo']);
 
 			// echo $npsn.",".$prodi.",".$kodepaket;
@@ -2118,9 +2087,9 @@ class Channel extends CI_Controller
 
 			// if ($opsi=="calver")
 			// {
-				// echo "<pre>";
-				// echo var_dump($data['dafvideo']);
-				// echo "</pre>";
+			// echo "<pre>";
+			// echo var_dump($data['dafvideo']);
+			// echo "</pre>";
 			// }
 
 		} else {
@@ -2138,7 +2107,7 @@ class Channel extends CI_Controller
 		////////////////////////////////////////////////////////
 		$now = new DateTime();
 		$now->setTimezone(new DateTimezone('Asia/Jakarta'));
-		$hari = $data['harike'];//$now->format('N');
+		$hari = $data['harike']; //$now->format('N');
 
 		$data['hari'] = $hari;
 		// echo "hari:".$hari;
@@ -2152,22 +2121,19 @@ class Channel extends CI_Controller
 			$statusakhir = $data['dafplaylist'][0]->link_list;
 			if ($linklist == null) {
 				$data['playlist'] = $this->M_channel->getPlayListSekolah($npsn, $prodi, $statusakhir);
-
 			} else {
 				$data['playlist'] = $this->M_channel->getPlayListSekolah($npsn, $prodi, $linklist);
-
 			}
 
 			/////////paksa dulu ------------
 			$data['playlist'] = $this->M_channel->getPlayListSekolah($npsn, $prodi, $statusakhir);
 			$linklist = $statusakhir;
-
 		} else {
 			//echo "Disini-2";
 			$data['punyalist'] = false;
-//            if (!$this->session->userdata('loggedIn')) {
-//                redirect('/');
-//            }
+			//            if (!$this->session->userdata('loggedIn')) {
+			//                redirect('/');
+			//            }
 		}
 
 		//die();
@@ -2194,7 +2160,6 @@ class Channel extends CI_Controller
 		$data['id_playlist'] = $linklist;
 
 		$this->load->view('layout/wrapper_tabel', $data);
-
 	}
 
 	public function urutanplaylist_sekolah_old($kodepaket = null, $opsi = null, $kodeevent = null)
@@ -2213,19 +2178,16 @@ class Channel extends CI_Controller
 		$data['nama_paket'] = $getpaketsekolah['nama_paket'];
 		$data['harike'] = $getpaketsekolah['hari'];
 		$data['mulaijam'] = $getpaketsekolah['jam_tayang'];
-		if ($this->session->userdata('sebagai')==10)
-		{
+		if ($this->session->userdata('sebagai') == 10) {
 			$npsn = $this->session->userdata('npsn');
 			$data['dafvideo'] = $this->M_channel->getVideoSekolah($npsn, $kodepaket, 3);
-		}
-		else
-		{
-			if ($opsi=="calver")
+		} else {
+			if ($opsi == "calver")
 				$data['dafvideo'] = $this->M_channel->getVideoSekolahEkskulUrut($idpaket);
 			else
 				$data['dafvideo'] = $this->M_channel->getVideoSekolahEkskulUrut($idpaket);
 		}
-		
+
 		$data['jml_video'] = sizeof($data['dafvideo']);
 
 		$data['opsi'] = $opsi;
@@ -2236,7 +2198,6 @@ class Channel extends CI_Controller
 			$data['kodepaket'] = "0";
 
 		$this->load->view('layout/wrapper_umum', $data);
-
 	}
 
 	public function urutanplaylist_kampus($kodepaket = null, $opsi = null, $kodeevent = null)
@@ -2260,18 +2221,15 @@ class Channel extends CI_Controller
 		$getuser = getstatususer();
 		$prodi = $getuser['kelasku'];
 
-		if ($this->session->userdata('sebagai')==10)
-		{
+		if ($this->session->userdata('sebagai') == 10) {
 			$data['dafvideo'] = $this->M_channel->getVideoSekolah($npsn, $prodi, $kodepaket, 3);
-		}
-		else
-		{
-			if ($opsi=="calver")
+		} else {
+			if ($opsi == "calver")
 				$data['dafvideo'] = $this->M_channel->getVideoSekolahEkskulUrut($kodepaket);
 			else
 				$data['dafvideo'] = $this->M_channel->getVideoSekolahEkskulUrut($kodepaket);
 		}
-		
+
 		$data['jml_video'] = sizeof($data['dafvideo']);
 
 		$data['opsi'] = $opsi;
@@ -2284,7 +2242,7 @@ class Channel extends CI_Controller
 		///////////////////////////
 		$now = new DateTime();
 		$now->setTimezone(new DateTimezone('Asia/Jakarta'));
-		$hari = $data['harike'];//$now->format('N');
+		$hari = $data['harike']; //$now->format('N');
 
 		$data['hari'] = $hari;
 		$data['dafplaylist'] = $this->M_channel->getDafPlayListSekolah($npsn, $prodi, 0, $hari);
@@ -2294,10 +2252,8 @@ class Channel extends CI_Controller
 			$statusakhir = $data['dafplaylist'][0]->link_list;
 			if ($linklist == null) {
 				$data['playlist'] = $this->M_channel->getPlayListSekolah($npsn, $prodi, $statusakhir);
-
 			} else {
 				$data['playlist'] = $this->M_channel->getPlayListSekolah($npsn, $prodi, $linklist);
-
 			}
 
 			/////////paksa dulu ------------
@@ -2312,9 +2268,9 @@ class Channel extends CI_Controller
 		} else {
 			//echo "Disini-2";
 			$data['punyalist'] = false;
-//            if (!$this->session->userdata('loggedIn')) {
-//                redirect('/');
-//            }
+			//            if (!$this->session->userdata('loggedIn')) {
+			//                redirect('/');
+			//            }
 		}
 
 		//die();
@@ -2341,7 +2297,6 @@ class Channel extends CI_Controller
 		$data['id_playlist0'] = $linklist;
 
 		$this->load->view('layout/wrapper_umum', $data);
-
 	}
 
 	public function updateurutan_sekolah()
@@ -2353,8 +2308,8 @@ class Channel extends CI_Controller
 		//    $this->db->update_batch('tb_channel_video_sekolah', $data, 'id');
 		$this->load->model('M_channel');
 		$this->M_channel->updateurutan_sekolah($data);
-//        echo "Data_ID 3 = ".$data['id'][2];
-//        echo "Data_URUTAN 3 = ".$data['urutan'][2];
+		//        echo "Data_ID 3 = ".$data['id'][2];
+		//        echo "Data_URUTAN 3 = ".$data['urutan'][2];
 	}
 
 	public function updateurutan_guru()
@@ -2366,8 +2321,8 @@ class Channel extends CI_Controller
 		//    $this->db->update_batch('tb_channel_video_sekolah', $data, 'id');
 		$this->load->model('M_channel');
 		$this->M_channel->updateurutan_guru($data);
-//        echo "Data_ID 3 = ".$data['id'][2];
-//        echo "Data_URUTAN 3 = ".$data['urutan'][2];
+		//        echo "Data_ID 3 = ".$data['id'][2];
+		//        echo "Data_URUTAN 3 = ".$data['urutan'][2];
 	}
 
 	public function updateurutan_bimbel()
@@ -2379,8 +2334,8 @@ class Channel extends CI_Controller
 		//    $this->db->update_batch('tb_channel_video_sekolah', $data, 'id');
 		$this->load->model('M_channel');
 		$this->M_channel->updateurutan_bimbel($data);
-//        echo "Data_ID 3 = ".$data['id'][2];
-//        echo "Data_URUTAN 3 = ".$data['urutan'][2];
+		//        echo "Data_ID 3 = ".$data['id'][2];
+		//        echo "Data_URUTAN 3 = ".$data['urutan'][2];
 	}
 
 	public function inputplaylist_tve($kodepaket = null)
@@ -2388,8 +2343,10 @@ class Channel extends CI_Controller
 		if (!$this->session->userdata('a01')) {
 			redirect('/');
 		}
-		$data = array('title' => 'Masukkan Video Playlist TVE', 'menuaktif' => '4',
-			'isi' => 'v_channel_inputplaylist_tve');
+		$data = array(
+			'title' => 'Masukkan Video Playlist TVE', 'menuaktif' => '4',
+			'isi' => 'v_channel_inputplaylist_tve'
+		);
 		$this->load->model('M_channel');
 
 		$data['dafvideo'] = $this->M_channel->getVideoTVE($kodepaket);
@@ -2401,7 +2358,6 @@ class Channel extends CI_Controller
 		$data['loginURL'] = $this->google->loginURL();
 
 		$this->load->view('layout/wrapperinduk2', $data);
-
 	}
 
 	public function urutanplaylist_tve($kodepaket = null)
@@ -2409,8 +2365,10 @@ class Channel extends CI_Controller
 		if (!$this->session->userdata('a01')) {
 			redirect('/');
 		}
-		$data = array('title' => 'Masukkan Video Playlist TVE', 'menuaktif' => '4',
-			'isi' => 'v_channel_urutanplaylist_tve');
+		$data = array(
+			'title' => 'Masukkan Video Playlist TVE', 'menuaktif' => '4',
+			'isi' => 'v_channel_urutanplaylist_tve'
+		);
 		$this->load->model('M_channel');
 
 		$data['dafvideo'] = $this->M_channel->getVideoTVEPaket($kodepaket);
@@ -2425,7 +2383,6 @@ class Channel extends CI_Controller
 		$data['loginURL'] = $this->google->loginURL();
 
 		$this->load->view('layout/wrapperinduk2', $data);
-
 	}
 
 	public function updateurutan_tve()
@@ -2525,9 +2482,9 @@ class Channel extends CI_Controller
 		$data1['urutan'] = 0;
 		$data1['id_video'] = $id_video;
 
-//		echo "Id_paket:".$infopaket->id."<br>";
-//		echo "ID_VIDeo:".$id_video."<br>";
-//		echo "Statusnya:".$status_video."<br>";
+		//		echo "Id_paket:".$infopaket->id."<br>";
+		//		echo "ID_VIDeo:".$id_video."<br>";
+		//		echo "Statusnya:".$status_video."<br>";
 
 
 		if ($status_video == 1) {
@@ -2565,7 +2522,7 @@ class Channel extends CI_Controller
 		//$this->M_channel->gantistatuspaket($id_paket);
 	}
 
-	public function masukinlist_sekolah($opsi=null)
+	public function masukinlist_sekolah($opsi = null)
 	{
 		$id_video = $_POST['id'];
 		$status_video = $_POST['status'];
@@ -2605,7 +2562,7 @@ class Channel extends CI_Controller
 		}
 
 		$datachannelvideo = $this->M_channel->getDataChannelVideoSekolah($link_list_paket);
-		
+
 		$durasi = 0;
 		foreach ($datachannelvideo as $datane) {
 			$hitungdurasi = $this->durasikedetik($datane->durasi);
@@ -2633,12 +2590,11 @@ class Channel extends CI_Controller
 
 		$this->M_channel->updateDurasiPaketSekolah($link_list_paket, $data2);
 
-		if ($opsi=="calver")
-			{
-				$iduser = $this->session->userdata('id_user');
-				$this->load->model('M_marketing');
-				$this->M_marketing->updateCalVerDafUser("playlist",$iduser);
-			}
+		if ($opsi == "calver") {
+			$iduser = $this->session->userdata('id_user');
+			$this->load->model('M_marketing');
+			$this->M_marketing->updateCalVerDafUser("playlist", $iduser);
+		}
 
 		$this->updateharitayang_channel($npsn, $prodi);
 
@@ -2746,7 +2702,7 @@ class Channel extends CI_Controller
 				$date1 = date_create($tgldata);
 				$date2 = date_create($tglsekarang);
 				$diff = date_diff($date1, $date2);
-				if ($cek[0]->durasi < $durasi AND intval($diff->format("%a")) == 0)
+				if ($cek[0]->durasi < $durasi and intval($diff->format("%a")) == 0)
 					$this->M_channel->updatenonton($channel, $npsn, $idguru, $linklist, $durasi);
 				else
 					$this->M_channel->insertnonton($channel, $npsn, $idguru, $linklist, $durasi);
@@ -2757,49 +2713,48 @@ class Channel extends CI_Controller
 		} else {
 			redirect("/");
 		}
-
 	}
 
 	public function updatenpsnvideo()
 	{
-//		$this->load->model('M_channel');
-//		$daftarvideo = $this->M_channel->getVideoAll();
-//		$data = array();
-//		$dobel = array();
-//		$baris = 0;
-//		foreach ($daftarvideo as $row) {
-//			if (in_array($row->id_user,$dobel)){
-//				continue;
-//			} else {
-//				$dobel[] = $row->id_user;
-//				$baris++;
-//				$npsn = $this->M_channel->getNPSN($row->id_user);
-//				$data[$baris]['npsn_user'] = $npsn;
-//				$data[$baris]['id_user'] = $row->id_user;
-//			}
-//		}
-//		$this->M_channel->updateNPSNvideo($data);
+		//		$this->load->model('M_channel');
+		//		$daftarvideo = $this->M_channel->getVideoAll();
+		//		$data = array();
+		//		$dobel = array();
+		//		$baris = 0;
+		//		foreach ($daftarvideo as $row) {
+		//			if (in_array($row->id_user,$dobel)){
+		//				continue;
+		//			} else {
+		//				$dobel[] = $row->id_user;
+		//				$baris++;
+		//				$npsn = $this->M_channel->getNPSN($row->id_user);
+		//				$data[$baris]['npsn_user'] = $npsn;
+		//				$data[$baris]['id_user'] = $row->id_user;
+		//			}
+		//		}
+		//		$this->M_channel->updateNPSNvideo($data);
 	}
 
 	public function updatenpsnpaket()
 	{
-//		$this->load->model('M_channel');
-//		$daftarvideo = $this->M_channel->getPaketAll();
-//		$data = array();
-//		$dobel = array();
-//		$baris = 0;
-//		foreach ($daftarvideo as $row) {
-//			if (in_array($row->id_user,$dobel)){
-//				continue;
-//			} else {
-//				$dobel[] = $row->id_user;
-//				$baris++;
-//				$npsn = $this->M_channel->getNPSN($row->id_user);
-//				$data[$baris]['npsn_user'] = $npsn;
-//				$data[$baris]['id_user'] = $row->id_user;
-//			}
-//		}
-//		$this->M_channel->updateNPSNpaket($data);
+		//		$this->load->model('M_channel');
+		//		$daftarvideo = $this->M_channel->getPaketAll();
+		//		$data = array();
+		//		$dobel = array();
+		//		$baris = 0;
+		//		foreach ($daftarvideo as $row) {
+		//			if (in_array($row->id_user,$dobel)){
+		//				continue;
+		//			} else {
+		//				$dobel[] = $row->id_user;
+		//				$baris++;
+		//				$npsn = $this->M_channel->getNPSN($row->id_user);
+		//				$data[$baris]['npsn_user'] = $npsn;
+		//				$data[$baris]['id_user'] = $row->id_user;
+		//			}
+		//		}
+		//		$this->M_channel->updateNPSNpaket($data);
 	}
 
 	public function updateidkotaall()
@@ -2819,14 +2774,15 @@ class Channel extends CI_Controller
 		if ($kodeevent != null) {
 			$cekevent = $this->M_channel->cekevent_pl_guru($kodeevent);
 			if ($cekevent) {
-
 			} else
 				redirect("/");
 		}
 
 		if ($opsi == "tampilkan") {
-			$data = array('title' => 'Soal Latihan', 'menuaktif' => '15',
-				'isi' => 'v_channel_soal');
+			$data = array(
+				'title' => 'Soal Latihan', 'menuaktif' => '15',
+				'isi' => 'v_channel_soal'
+			);
 			$paketsoal = $this->M_channel->getPaket($linklist);
 			$data['soalkeluar'] = $paketsoal[0]->soalkeluar;
 			$data['acaksoal'] = $paketsoal[0]->acaksoal;
@@ -2837,8 +2793,10 @@ class Channel extends CI_Controller
 			$data['kodeevent'] = $kodeevent;
 			$data['asal'] = "owner";
 		} else if ($opsi == "buat") {
-			$data = array('title' => 'Soal Latihan', 'menuaktif' => '15',
-				'isi' => 'v_channel_buatsoal');
+			$data = array(
+				'title' => 'Soal Latihan', 'menuaktif' => '15',
+				'isi' => 'v_channel_buatsoal'
+			);
 			$paket = $this->M_channel->getPaket($linklist);
 			$data['judul'] = $paket[0]->nama_paket;
 			$data['dafsoal'] = $this->M_channel->getSoal($paket[0]->id);
@@ -2846,8 +2804,10 @@ class Channel extends CI_Controller
 			$data['kodeevent'] = $kodeevent;
 			$data['asal'] = "owner";
 		} else if ($opsi == "seting") {
-			$data = array('title' => 'Seting Soal Latihan', 'menuaktif' => '15',
-				'isi' => 'v_channel_soal_seting');
+			$data = array(
+				'title' => 'Seting Soal Latihan', 'menuaktif' => '15',
+				'isi' => 'v_channel_soal_seting'
+			);
 			$paketsoal = $this->M_channel->getPaket($linklist);
 			$data['paket'] = $paketsoal;
 			$dafsoal = $this->M_channel->getSoal($paketsoal[0]->id);
@@ -2855,8 +2815,10 @@ class Channel extends CI_Controller
 			$data['linklist'] = $linklist;
 			$data['kodeevent'] = $kodeevent;
 		} else if ($opsi == "kerjakan") {
-			$data = array('title' => 'Soal Latihan', 'menuaktif' => '15',
-				'isi' => 'v_channel_soal');
+			$data = array(
+				'title' => 'Soal Latihan', 'menuaktif' => '15',
+				'isi' => 'v_channel_soal'
+			);
 			$paketsoal = $this->M_channel->getPaket($linklist);
 			$data['soalkeluar'] = $paketsoal[0]->soalkeluar;
 			$data['acaksoal'] = $paketsoal[0]->acaksoal;
@@ -2872,8 +2834,10 @@ class Channel extends CI_Controller
 			} else {
 				$expired = true;
 			}
-			$data = array('title' => 'Uraian Tugas', 'menuaktif' => '15',
-				'isi' => 'v_channel_soal_jsiswa');
+			$data = array(
+				'title' => 'Uraian Tugas', 'menuaktif' => '15',
+				'isi' => 'v_channel_soal_jsiswa'
+			);
 			$nilai = $this->M_channel->getNilaiSiswa($linklist);
 			if (!$nilai)
 				$nilai = null;
@@ -2884,8 +2848,10 @@ class Channel extends CI_Controller
 		} else if ($opsi == null) {
 			redirect("/channel");
 		} else if ($opsi != "tampilkan") {
-			$data = array('title' => 'Mulai Soal', 'menuaktif' => '15',
-				'isi' => 'v_channel_mulai');
+			$data = array(
+				'title' => 'Mulai Soal', 'menuaktif' => '15',
+				'isi' => 'v_channel_mulai'
+			);
 			$paketsoal = $this->M_channel->getPaket($opsi);
 			$data['soalkeluar'] = $paketsoal[0]->soalkeluar;
 			$data['acaksoal'] = $paketsoal[0]->acaksoal;
@@ -2906,8 +2872,10 @@ class Channel extends CI_Controller
 	public function materi($opsi = null, $linklist = null)
 	{
 		if ($opsi == "buat") {
-			$data = array('title' => 'Uraian Materi', 'menuaktif' => '15',
-				'isi' => 'v_channel_buatmateri');
+			$data = array(
+				'title' => 'Uraian Materi', 'menuaktif' => '15',
+				'isi' => 'v_channel_buatmateri'
+			);
 			$this->load->Model('M_channel');
 			$paket = $this->M_channel->getPaket($linklist);
 			$data['judul'] = $paket[0]->nama_paket;
@@ -2915,8 +2883,10 @@ class Channel extends CI_Controller
 			$data['file'] = $paket[0]->filemateri;
 			$data['linklist'] = $linklist;
 		} else if ($opsi == "tampilkan") {
-			$data = array('title' => 'Uraian Materi', 'menuaktif' => '15',
-				'isi' => 'v_channel_materi');
+			$data = array(
+				'title' => 'Uraian Materi', 'menuaktif' => '15',
+				'isi' => 'v_channel_materi'
+			);
 			$paket = $this->M_channel->getPaket($linklist);
 			$data['judul'] = $paket[0]->nama_paket;
 			$data['uraian'] = $paket[0]->uraianmateri;
@@ -2946,8 +2916,10 @@ class Channel extends CI_Controller
 				$expired = true;
 			}
 
-			$data = array('title' => 'Uraian Tugas', 'menuaktif' => '15',
-				'isi' => 'v_channel_buattugas');
+			$data = array(
+				'title' => 'Uraian Tugas', 'menuaktif' => '15',
+				'isi' => 'v_channel_buattugas'
+			);
 			$this->load->Model('M_channel');
 			$paket = $this->M_channel->getTugas($tipepaket, $linklist);
 			if (!$paket) {
@@ -2969,38 +2941,36 @@ class Channel extends CI_Controller
 			if ($idsiswa != null) {
 				$cekevent = $this->M_channel->cekevent_pl_guru($idsiswa);
 				if ($cekevent) {
-
 				} else
 					redirect("/");
 			}
-
 		} else if ($opsi == "tampilkan") {
 			if ($idsiswa != null || $this->session->userdata("a02") || $this->session->userdata("a03")) {
 				$expired = false;
 			} else {
 				$expired = true;
-
 			}
 
-			$data = array('title' => 'Uraian Tugas', 'menuaktif' => '15',
-				'isi' => 'v_channel_tugas');
+			$data = array(
+				'title' => 'Uraian Tugas', 'menuaktif' => '15',
+				'isi' => 'v_channel_tugas'
+			);
 			$paket = $this->M_channel->getTugas($tipepaket, $linklist);
 			if (!$paket || $paket->tanyatxt == "")
 				redirect(base_url() . "channel/tugas/saya/buat/" . $linklist);
 			$getalluservk = $this->M_channel->getUserVK($tipepaket, $linklist, $paket->id_tugas);
-//			echo "<br><br><br>";
-//			echo "<pre>";
-//			echo var_dump($getalluservk);
-//			echo "</pre>";
+			//			echo "<br><br><br>";
+			//			echo "<pre>";
+			//			echo var_dump($getalluservk);
+			//			echo "</pre>";
 
-//			echo "JML1:".sizeof($getalluservk);
+			//			echo "JML1:".sizeof($getalluservk);
 			$tgl_sekarang = new DateTime();
 			$tgl_sekarang->setTimezone(new DateTimezone('Asia/Jakarta'));
 			$dafuser = array();
 			foreach ($getalluservk as $datauser) {
 				$tglbatas = new DateTime($datauser->tgl_batas);
 				if ($tgl_sekarang > $tglbatas) {
-
 				} else {
 					if ($datauser->strata_paket == 2 || $datauser->strata_paket == 3)
 						$dafuser[] = $datauser;
@@ -3018,11 +2988,9 @@ class Channel extends CI_Controller
 			if ($idsiswa != null) {
 				$cekevent = $this->M_channel->cekevent_pl_guru($idsiswa);
 				if ($cekevent) {
-
 				} else
 					redirect("/");
 			}
-
 		} else if ($opsi == "penilaian") {
 			if ($this->session->userdata("a02") || $this->session->userdata("a03")) {
 				$expired = false;
@@ -3030,8 +2998,10 @@ class Channel extends CI_Controller
 				$expired = true;
 			}
 
-			$data = array('title' => 'Uraian Tugas', 'menuaktif' => '15',
-				'isi' => 'v_channel_responguru');
+			$data = array(
+				'title' => 'Uraian Tugas', 'menuaktif' => '15',
+				'isi' => 'v_channel_responguru'
+			);
 			$tugasguru = $this->M_channel->getTugas($tipepaket, $linklist);
 			$data['tugasguru'] = $tugasguru;
 			$idtugasguru = $tugasguru->id_tugas;
@@ -3062,8 +3032,8 @@ class Channel extends CI_Controller
 		// $jawaban_user = array ("1");
 		// $idjawaban_user = array ("7");
 		// $linklist = "63ft165k44zp";
-		
-		
+
+
 		$paket = $this->M_channel->getPaket($linklist);
 		$jmlsoalkeluar = $paket[0]->soalkeluar;
 		$iduserpaket = $paket[0]->id_user;
@@ -3094,7 +3064,7 @@ class Channel extends CI_Controller
 
 		$nilai = intval($betul * (100 / $jmlsoalkeluar) * 100) / 100;
 
-//		if($iduser!=$iduserpaket)
+		//		if($iduser!=$iduserpaket)
 		{
 			$nilaiuser = $this->M_channel->ceknilai($linklist, $iduser);
 			$highscore = $nilaiuser->highscore;
@@ -3104,31 +3074,28 @@ class Channel extends CI_Controller
 			$tgl_sekarang = new DateTime();
 			$tgl_sekarang->setTimezone(new DateTimezone('Asia/Jakarta'));
 			$data['modified'] = $tgl_sekarang->format("Y-m-d H-i:s");
-			if ($this->session->userdata('siam')==3)
-			{
-				echo($nilai);
-			}
-			else
-			{
+			if ($this->session->userdata('siam') == 3) {
+				echo ($nilai);
+			} else {
 				$update = $this->M_channel->updatenilai($data, $linklist, $iduser);
 				if ($update)
-					echo($nilai);
+					echo ($nilai);
 				else
 					echo "gagal";
 			}
 		}
-//		else
-//		{
-//			echo ($nilai);
-//		}
+		//		else
+		//		{
+		//			echo ($nilai);
+		//		}
 
 	}
 
 	public function upload_gambarsoal($linklist, $id, $kodefield, $fielddb)
 	{
-//		if (!$this->session->userdata('a01') && $this->session->userdata('sebagai') != 4) {
-//			redirect('/event');
-//		}
+		//		if (!$this->session->userdata('a01') && $this->session->userdata('sebagai') != 4) {
+		//			redirect('/event');
+		//		}
 
 		$paket = $this->M_channel->getPaket($linklist);
 		$id_paket = $paket[0]->id;
@@ -3156,7 +3123,7 @@ class Channel extends CI_Controller
 		$this->load->library('upload', $config);
 		if ($this->upload->do_upload("f" . $kodefield)) {
 			$gbr = $this->upload->data();
-//			$dataupload = array('upload_data' => $this->upload->data());
+			//			$dataupload = array('upload_data' => $this->upload->data());
 
 			if ($gbr['image_width'] > 600) {
 				$config['image_library'] = 'gd2';
@@ -3174,7 +3141,7 @@ class Channel extends CI_Controller
 				}
 				$this->image_lib->clear();
 			}
-//			$namafile1 = $dataupload['upload_data']['file_name'];
+			//			$namafile1 = $dataupload['upload_data']['file_name'];
 			$namafile1 = $gbr['file_name'];
 			$namafile = preg_replace('/[^A-Za-z0-9.\-]/', '', $namafile1);
 			$namafile = preg_replace('/-+/', '-', $namafile);
@@ -3187,13 +3154,13 @@ class Channel extends CI_Controller
 
 			$this->M_channel->updategbrsoal($namafilebaru, $id, $fielddb);
 
-//			if ($addedit == "edit") {
-//				//rename($alamat . $namafile1, $alamat . $namafilebaru);
-//				echo "Gambar berhasil diubah";
-//			} else {
-//				//rename($alamat . $namafile1, $alamat.'image0.jpg');
-//				echo "Gambar siap";
-//			}
+			//			if ($addedit == "edit") {
+			//				//rename($alamat . $namafile1, $alamat . $namafilebaru);
+			//				echo "Gambar berhasil diubah";
+			//			} else {
+			//				//rename($alamat . $namafile1, $alamat.'image0.jpg');
+			//				echo "Gambar siap";
+			//			}
 
 			echo "Gambar OK";
 
@@ -3204,7 +3171,7 @@ class Channel extends CI_Controller
 		}
 	}
 
-	public function updatesoal($linklist, $kodeevent = null, $bulan=null, $tahun=null)
+	public function updatesoal($linklist, $kodeevent = null, $bulan = null, $tahun = null)
 	{
 		$tekssoal = $this->input->post('textsoal');
 		$teksopsia = $this->input->post('textopsia');
@@ -3246,15 +3213,13 @@ class Channel extends CI_Controller
 			$data['opsiegbr'] = "";
 
 		$this->M_channel->updatesoal($data, $idsoal);
-		if ($kodeevent=="evm")
-			{
-				$alamat = "/evm/".$bulan."/".$tahun;
-			}
-		else if ($kodeevent != null)
+		if ($kodeevent == "evm") {
+			$alamat = "/evm/" . $bulan . "/" . $tahun;
+		} else if ($kodeevent != null)
 			$alamat = "/" . $kodeevent;
 		else
 			$alamat = "";
-		
+
 		redirect('virtualkelas/soal/buat/' . $linklist . $alamat);
 	}
 
@@ -3272,7 +3237,7 @@ class Channel extends CI_Controller
 	public function delsoal()
 	{
 		$id = $this->input->post('id_soal');
-//		if (pemilik)
+		//		if (pemilik)
 		{
 			if ($this->M_channel->delsoal($id))
 				echo "berhasil";
@@ -3287,18 +3252,16 @@ class Channel extends CI_Controller
 		$urutsoal = $this->input->post('soalacak');
 		$statussoal = $this->input->post('statussoal');
 
-//		if (pemilik)
+		//		if (pemilik)
 		{
 			$data = array();
 			$data['soalkeluar'] = $soalkeluar;
 			$data['acaksoal'] = $urutsoal;
 			$data['statussoal'] = $statussoal;
 
-			if ($kodeevent=="evm")
-				{
-					$alamat = "/evm/".$bulan."/".$tahun;
-				}
-			else if ($kodeevent != null)
+			if ($kodeevent == "evm") {
+				$alamat = "/evm/" . $bulan . "/" . $tahun;
+			} else if ($kodeevent != null)
 				$alamat = "/" . $kodeevent;
 			else
 				$alamat = "";
@@ -3343,7 +3306,6 @@ class Channel extends CI_Controller
 			echo "sukses";
 		else
 			echo "gagal";
-
 	}
 
 	public function updatetugas($linklist)
@@ -3360,7 +3322,6 @@ class Channel extends CI_Controller
 			echo "sukses";
 		} else
 			echo "gagal";
-
 	}
 
 	public function updatetugasnilai()
@@ -3417,7 +3378,6 @@ class Channel extends CI_Controller
 			$this->M_channel->updatemateri($data, $linklist);
 
 			echo "Dokumen OK";
-
 		} else {
 			echo $this->upload->display_errors();
 		}
@@ -3457,7 +3417,6 @@ class Channel extends CI_Controller
 			$this->M_channel->updatetugas($data, $linklist);
 
 			echo "Dokumen OK";
-
 		} else {
 			echo $this->upload->display_errors();
 		}
@@ -3518,8 +3477,8 @@ class Channel extends CI_Controller
 		$tjenis = array("sekolah" => 1, "lain" => 2, "bimbel" => 3);
 		$jenischat = $tjenis[$opsi];
 
-//		if ($npsnpaket==$this->session->userdata('npsn'))
-//			$jenischat = 2;
+		//		if ($npsnpaket==$this->session->userdata('npsn'))
+		//			$jenischat = 2;
 
 		$data['datapesan'] = $this->M_channel->getChat($jenischat, null, $linklist);
 		$data['dafplaylist'] = $this->M_channel->getDafPlayListModul($opsi, $linklist);
@@ -3531,10 +3490,10 @@ class Channel extends CI_Controller
 			$data['punyalist'] = false;
 		}
 
-//		echo "<pre>";
-//		echo var_dump($data['playlist']);
-//		echo "</pre>";
-//		die();
+		//		echo "<pre>";
+		//		echo var_dump($data['playlist']);
+		//		echo "</pre>";
+		//		die();
 
 		$data['namasekolah'] = "Topik " . $paketsoal[0]->nama_paket . "";
 		$this->load->model('M_vksekolah');
@@ -3545,7 +3504,6 @@ class Channel extends CI_Controller
 		if ($linklistevent != null) {
 			$cekevent = $this->M_channel->cekevent_pl_guru($linklistevent);
 			if ($cekevent) {
-
 			} else
 				redirect("/");
 		}
@@ -3597,7 +3555,6 @@ class Channel extends CI_Controller
 			$paketsiswa = $this->M_channel->getTugasSiswa($paket->id_tugas, $idsiswa);
 			force_download('uploads/tugas/' . $paketsiswa->jawabanfile, null);
 		}
-
 	}
 
 	public function chat($jenis = null, $linklist = null)
@@ -3626,7 +3583,8 @@ class Channel extends CI_Controller
 
 		$bolehchat = false;
 		if (($this->session->userdata('a02') && $this->session->userdata('sebagai') == 1)
-			|| $this->session->userdata('a03'))
+			|| $this->session->userdata('a03')
+		)
 			$bolehchat = true;
 
 		if ($this->session->userdata('bimbel') != 3 && $jenis == "bimbel")
@@ -3639,17 +3597,19 @@ class Channel extends CI_Controller
 			echo "<script>alert ('BELUM LOGIN ATAU BELUM PUNYA PAKET');
 			this.close();</script>";
 		} else {
-			$data = array('title' => 'Uraian Materi', 'menuaktif' => '15',
-				'isi' => 'v_chat');
+			$data = array(
+				'title' => 'Uraian Materi', 'menuaktif' => '15',
+				'isi' => 'v_chat'
+			);
 
 			$data['message'] = $this->session->flashdata('message');
 			$data['authURL'] = $this->facebook->login_url();
 			$data['loginURL'] = $this->google->loginURL();
 
 			$datapesan = $this->M_channel->getChat($jenischat, $npsnku);
-//			echo "<pre>";
-//			echo var_dump($datapesan);
-//			echo "</pre>";
+			//			echo "<pre>";
+			//			echo var_dump($datapesan);
+			//			echo "</pre>";
 
 			$data['datapesan'] = $datapesan;
 			$data['jenis'] = $jenis;
@@ -3664,22 +3624,21 @@ class Channel extends CI_Controller
 		}
 	}
 
-	public function sendchat($opsi=null)
+	public function sendchat($opsi = null)
 	{
 		$bulan = array("", "Jan", "Peb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agt", "Sep", "Okt", "Nop", "Des");
 		$pesan = $this->input->post('pesanku');
 		$jenis = $this->input->post('jenis');
-		$tjenis = array("sekolah" => 1, "lain" => 1, "bimbel" => 3, "live" => 4, "mentor" =>5, "calver" =>6);
+		$tjenis = array("sekolah" => 1, "lain" => 1, "bimbel" => 3, "live" => 4, "mentor" => 5, "calver" => 6);
 		$jenischat = $tjenis[$jenis];
 		$linklist = $this->input->post('linklistku');
-		
-		if ($jenis=="mentor")
-			$linklist = $linklist."o".$this->session->userdata('npsn');
-		if ($opsi=="mentor")
-			{
-				$npsnmentor = $this->input->post('npsne');
-				$linklist = $linklist.$npsnmentor;
-			}
+
+		if ($jenis == "mentor")
+			$linklist = $linklist . "o" . $this->session->userdata('npsn');
+		if ($opsi == "mentor") {
+			$npsnmentor = $this->input->post('npsne');
+			$linklist = $linklist . $npsnmentor;
+		}
 		if ($linklist != null && $linklist != "")
 			$npsnku = "";
 		else
@@ -3697,7 +3656,7 @@ class Channel extends CI_Controller
 			);
 
 
-			if ($this->M_channel->addChat($data) > 0 AND $pesan != null) {
+			if ($this->M_channel->addChat($data) > 0 and $pesan != null) {
 				$now = new DateTime();
 				$now->setTimezone(new DateTimezone('Asia/Jakarta'));
 				$curr_date = $now->format('Y-m-d ');
@@ -3709,7 +3668,6 @@ class Channel extends CI_Controller
 				foreach ($pesanharini as $datane) {
 
 					if (in_array(substr($datane->tanggal, 0, 10), $do_not_duplicate)) {
-
 					} else {
 						$do_not_duplicate[] = substr($datane->tanggal, 0, 10);
 						echo '<div class="row">
@@ -3728,7 +3686,7 @@ class Channel extends CI_Controller
 						echo '<div class="row">
 			<table style="font-size:14px;background-color: #f6fff7; text-align:right;float:right;margin-top:0px;margin-bottom:0px;max-width:100%;border: #5faabd 0.5px dashed;vertical-align: center;padding: 15px;">
 			<tr>
-			<td style="font-size:14px;padding:5px;padding-bottom: 0px;">' . $datane->pesan . '<br><span style="font-size: 10px;">'.substr($datane->tanggal, 11, 5).
+			<td style="font-size:14px;padding:5px;padding-bottom: 0px;">' . $datane->pesan . '<br><span style="font-size: 10px;">' . substr($datane->tanggal, 11, 5) .
 							'</span></td>
 			
 			</tr>
@@ -3746,7 +3704,7 @@ class Channel extends CI_Controller
 									</tr>
 									<tr>
 										<td style="font-size:14px;padding:5px;padding-top: 0px;">' .
-							$datane->pesan . '<br><span style="font-size: 10px;">'.substr($datane->tanggal, 11, 5).
+							$datane->pesan . '<br><span style="font-size: 10px;">' . substr($datane->tanggal, 11, 5) .
 							'</span></td>
 										
 									</tr>
@@ -3761,19 +3719,18 @@ class Channel extends CI_Controller
 			echo "gagal";
 	}
 
-	public function loadchat($opsi=null)
+	public function loadchat($opsi = null)
 	{
 		$bulan = array("", "Jan", "Peb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agt", "Sep", "Okt", "Nop", "Des");
 		$jenis = $this->input->post('jenis');
-		$tjenis = array("sekolah" => 1, "lain" => 1, "bimbel" => 3, "live" => 4, "mentor" => 5, "calver"=>6);
+		$tjenis = array("sekolah" => 1, "lain" => 1, "bimbel" => 3, "live" => 4, "mentor" => 5, "calver" => 6);
 		$linklist = $this->input->post('linklistku');
-		if ($jenis=="mentor")
-			$linklist = $this->input->post('linklistku')."o".$this->session->userdata('npsn');
-		if ($opsi=="mentor")
-			{
-				$npsnmentor = $this->input->post('npsne');
-				$linklist = $linklist.$npsnmentor;
-			}
+		if ($jenis == "mentor")
+			$linklist = $this->input->post('linklistku') . "o" . $this->session->userdata('npsn');
+		if ($opsi == "mentor") {
+			$npsnmentor = $this->input->post('npsne');
+			$linklist = $linklist . $npsnmentor;
+		}
 		$jenischat = $tjenis[$jenis];
 
 		if ($this->session->userdata('loggedIn')) {
@@ -3783,29 +3740,28 @@ class Channel extends CI_Controller
 			$now->setTimezone(new DateTimezone('Asia/Jakarta'));
 			$curr_date = $now->format('Y-m-d ');
 
-//			if (file_exists('chats.txt')) {
-//				echo "file ada";
-//				die();
-//			} else {
-//				$namaFile = 'chats.txt';
-//				$file = fopen($namaFile, 'w');
-//				$konten = "";
-//				fwrite($file, $konten);
-//				fclose($file);
-//			}
+			//			if (file_exists('chats.txt')) {
+			//				echo "file ada";
+			//				die();
+			//			} else {
+			//				$namaFile = 'chats.txt';
+			//				$file = fopen($namaFile, 'w');
+			//				$konten = "";
+			//				fwrite($file, $konten);
+			//				fclose($file);
+			//			}
 			$npsnku = $this->session->userdata('npsn');
 			$pesanharini = $this->M_channel->getChat($jenischat, $npsnku, $linklist, $curr_date);
 
-//			echo "LINK".$linklist;
-//			echo "<pre>";
-//			echo var_dump($pesanharini);
-//			echo "</pre>";
+			//			echo "LINK".$linklist;
+			//			echo "<pre>";
+			//			echo var_dump($pesanharini);
+			//			echo "</pre>";
 
 			$do_not_duplicate = array();
 
 			foreach ($pesanharini as $datane) {
 				if (in_array(substr($datane->tanggal, 0, 10), $do_not_duplicate)) {
-
 				} else {
 					$do_not_duplicate[] = substr($datane->tanggal, 0, 10);
 					echo '<div class="row">
@@ -3824,7 +3780,7 @@ class Channel extends CI_Controller
 					echo '<div class="row">
 			<table style="font-size:14px;background-color: #f6fff7; text-align:right;float:right;margin-top:0px;margin-bottom:0px;max-width:100%;border: #5faabd 0.5px dashed;vertical-align: center;padding: 15px;">
 			<tr>
-			<td style="font-size:14px;padding:5px;padding-bottom: 0px;">' . $datane->pesan . '<br><span style="font-size: 10px;">'.substr($datane->tanggal, 11, 5).
+			<td style="font-size:14px;padding:5px;padding-bottom: 0px;">' . $datane->pesan . '<br><span style="font-size: 10px;">' . substr($datane->tanggal, 11, 5) .
 						'</span></td>
 			
 			</tr>
@@ -3842,7 +3798,7 @@ class Channel extends CI_Controller
 									</tr>
 									<tr>
 										<td style="font-size:14px;padding:5px;padding-top: 0px;">' .
-						$datane->pesan . '<br><span style="font-size: 10px;">'.substr($datane->tanggal, 11, 5).
+						$datane->pesan . '<br><span style="font-size: 10px;">' . substr($datane->tanggal, 11, 5) .
 						'</span></td>
 										
 									</tr>
@@ -3851,14 +3807,13 @@ class Channel extends CI_Controller
 				}
 			}
 		}
-
 	}
 
-	public function loaduser($opsi=null)
+	public function loaduser($opsi = null)
 	{
 		$linklist = $this->input->post('linklistku');
 		$jenis = $this->input->post('jenis');
-		$tjenis = array("sekolah" => 1, "lain" => 2, "bimbel" => 3, "live" => 4, "mentor" =>5, "calver" =>6);
+		$tjenis = array("sekolah" => 1, "lain" => 2, "bimbel" => 3, "live" => 4, "mentor" => 5, "calver" => 6);
 		$jenischat = $tjenis[$jenis];
 
 		if ($this->session->userdata('loggedIn')) {
@@ -3873,9 +3828,9 @@ class Channel extends CI_Controller
 			$tglbatas = date('Y-m-d H:i:s', $newdate);
 
 			$useronline = $this->M_channel->updateOnlineChat($jenischat, $linklist, $curr_time, $tglbatas, $iduser);
-//			echo "<pre>";
-//			echo var_dump($useronline);
-//			echo "</pre>";
+			//			echo "<pre>";
+			//			echo var_dump($useronline);
+			//			echo "</pre>";
 
 			$jmlpesan = 1;
 			foreach ($useronline as $datane) {
@@ -3947,25 +3902,21 @@ class Channel extends CI_Controller
 
 			$selisih = ($tahun - $tahunorder) * 12 + ($bulan - $bulanorder);
 
-//			echo "Test:".$cekstatusbayar->order_id;
-//			die();
+			//			echo "Test:".$cekstatusbayar->order_id;
+			//			die();
 
 			if ($statusbayar == 4) {
-
 			} else if ($selisih >= 2) {
 				redirect("channel/sekolahoff");
 			} else if ($selisih == 1) {
 				if ($tanggal <= 5) {
-
 				} else {
 					redirect("channel/sekolahoff");
 				}
-
 			} else {
 				if ($statusbayar == 1) {
 					redirect("channel/sekolahoff");
 				} else if ($statusbayar == 3) {
-
 				}
 			}
 		} else {
@@ -4005,7 +3956,6 @@ class Channel extends CI_Controller
 				} else {
 					return "off";
 				}
-
 			} else {
 				if ($statusbayar == 1) {
 					return "off";
@@ -4020,8 +3970,10 @@ class Channel extends CI_Controller
 
 	public function sekolahoff()
 	{
-		$data = array('title' => 'Playing VOD', 'menuaktif' => 1,
-			'isi' => 'v_informasisekolahoff');
+		$data = array(
+			'title' => 'Playing VOD', 'menuaktif' => 1,
+			'isi' => 'v_informasisekolahoff'
+		);
 		$data['message'] = $this->session->flashdata('message');
 		$data['authURL'] = $this->facebook->login_url();
 		$data['loginURL'] = $this->google->loginURL();
@@ -4069,8 +4021,10 @@ class Channel extends CI_Controller
 
 	public function setjadwalvicon_bimbel($kodelink)
 	{
-		$data = array('title' => 'Edit Playlist Bimbel', 'menuaktif' => '4',
-			'isi' => 'v_channel_setjadwalvicon_bimbel');
+		$data = array(
+			'title' => 'Edit Playlist Bimbel', 'menuaktif' => '4',
+			'isi' => 'v_channel_setjadwalvicon_bimbel'
+		);
 
 		$data['message'] = $this->session->flashdata('message');
 		$data['authURL'] = $this->facebook->login_url();
@@ -4094,8 +4048,10 @@ class Channel extends CI_Controller
 
 	public function setjadwalvicon_modul($kodelink)
 	{
-		$data = array('title' => 'Edit Playlist Modul', 'menuaktif' => '4',
-			'isi' => 'v_channel_setjadwalvicon');
+		$data = array(
+			'title' => 'Edit Playlist Modul', 'menuaktif' => '4',
+			'isi' => 'v_channel_setjadwalvicon'
+		);
 
 		$data['message'] = $this->session->flashdata('message');
 		$data['authURL'] = $this->facebook->login_url();
@@ -4156,10 +4112,10 @@ class Channel extends CI_Controller
 
 
 				$data['dafplaylist'] = $this->M_channel->getDafPlayListSekolah($npsn, 0, $hari);
-//					echo "<pre>";
-//					echo var_dump($data['dafplaylist']);
-//					echo "</pre>";
-//					die();
+				//					echo "<pre>";
+				//					echo var_dump($data['dafplaylist']);
+				//					echo "</pre>";
+				//					die();
 
 				if ($data['dafplaylist']) {
 					//echo "Disini-1";
@@ -4167,22 +4123,19 @@ class Channel extends CI_Controller
 					$statusakhir = $data['dafplaylist'][0]->link_list;
 					if ($linklist == null) {
 						$data['playlist'] = $this->M_channel->getPlayListSekolah($npsn, $statusakhir);
-
 					} else {
 						$data['playlist'] = $this->M_channel->getPlayListSekolah($npsn, $linklist);
-
 					}
 
 					/////////paksa dulu ------------
 					$data['playlist'] = $this->M_channel->getPlayListSekolah($npsn, $statusakhir);
 					$linklist = $statusakhir;
-
 				} else {
 					//echo "Disini-2";
 					$data['punyalist'] = false;
-//            if (!$this->session->userdata('loggedIn')) {
-//                redirect('/');
-//            }
+					//            if (!$this->session->userdata('loggedIn')) {
+					//                redirect('/');
+					//            }
 				}
 
 				//die();
@@ -4201,14 +4154,12 @@ class Channel extends CI_Controller
 
 				$data['dafchannelguru'] = $this->M_channel->getChannelGuru($npsn);
 				$cekinfosekolah = $this->M_channel->getInfoSekolah($npsn);
-				
+
 
 				if ($cekinfosekolah) {
 					$data['infosekolah'] = $cekinfosekolah;
 				}
 				$data['dafvideo'] = $this->M_channel->getVodSekolah($npsn);
-
-
 			}
 
 			$data['id_playlist'] = $linklist;
@@ -4217,71 +4168,60 @@ class Channel extends CI_Controller
 		} else {
 			die();
 		}
-
 	}
 
-	public function setfreepremium($npsn)
+	public function setfreepremium($npsn, $prodi)
 	{
 		if (!$this->session->userdata('a01'))
 			redirect('/');
 
 		$data = array();
 		$data['konten'] = 'v_channel_setfreepremium';
-		$sekolahku = $this->M_channel->getSekolahKu($npsn);
+		$sekolahku = $this->M_channel->getSekolahKu($npsn, $prodi);
 		$this->load->Model('M_eksekusi');
-		$dataverifikator = $this->M_eksekusi->getveraktif($npsn);
-		$data['idver'] = $dataverifikator->id;
-		$data['datasekolah'] = $sekolahku[0];
+		$dataverifikator = $this->M_eksekusi->getveraktif($npsn, $prodi);
+
+		$data['idver'] = $dataverifikator->kd_user;
+		$data['datasekolah'] = $sekolahku;
 
 		// echo "<pre>";
 		// echo var_dump($data['datasekolah']);
 		// echo "</pre>";
+		// die();
 
-		if (!$data['datasekolah'])
-		{
+		if (!$data['datasekolah']) {
+		} else {
 
-		}
-		else
-		{
-			
 			$statussekolah = "NON";
 			$ceksekolahpremium = ceksekolahpremium($npsn);
 			$data['statussekolah'] = " [ - ]";
-			if ($ceksekolahpremium['status_sekolah'] != "non")
-			{
+			if ($ceksekolahpremium['status_sekolah'] != "non") {
 				$statussekolah = $ceksekolahpremium['status_sekolah'];
 				if ($statussekolah == "Lite Siswa")
 					$statussekolah = "Lite";
 				$data['statussekolah'] = " [ " . $statussekolah . " ] ";
 			}
 
-			if($statussekolah=="Premium")
-				{
-					$strata = 3;
-					if ($ceksekolahpremium['tipebayar']=="freepremium")
-						$strata = 9;
-				}
-			else if($statussekolah=="Pro")
-			{
+			if ($statussekolah == "Premium") {
+				$strata = 3;
+				if ($ceksekolahpremium['tipebayar'] == "freepremium")
+					$strata = 9;
+			} else if ($statussekolah == "Pro") {
 				$strata = 2;
-				if ($ceksekolahpremium['tipebayar']=="freepro")
+				if ($ceksekolahpremium['tipebayar'] == "freepro")
 					$strata = 8;
-			}
-			else if($statussekolah=="Lite")
-			{
+			} else if ($statussekolah == "Lite") {
 				$strata = 1;
-				if ($ceksekolahpremium['tipebayar']=="freelite")
+				if ($ceksekolahpremium['tipebayar'] == "freelite")
 					$strata = 7;
-			}
-			else
+			} else
 				$strata = 0;
 
 
 			$data['strata'] = $strata;
 			$data['tgl_berakhir'] = "";
 			$data['order_id'] = "";
-			if($strata > 0)
-			{
+			if ($strata > 0) {
 				$data['tgl_berakhir'] = $ceksekolahpremium['tgl_berakhir'];
 				$data['order_id'] = $ceksekolahpremium['order_id'];
 			}
@@ -4303,33 +4243,30 @@ class Channel extends CI_Controller
 		$pilihan = $this->input->post('pilihan');
 		$strata = $this->input->post('istrata');
 		$iduser = $this->input->post('iduser');
-		$npsnsekolah = $this->input->post('npsnuser');
+		$npsnsekolah = $this->input->post('npsnsekolah');
+		$kdprodi = $this->input->post('kdprodi');
 
-		if ($strata=="freelite")
-			{
-				$nstrata = 7;
-				$orderid = "TVS-FREE-".$iduser."-".rand(1000, 9999);
-			}
-		else if ($strata=="freepro")
-			{
-				$nstrata = 8;
-				$orderid = "TP2-FREE-".$iduser."-".rand(1000, 9999);
-			}
-		else if ($strata=="freepremium")
-			{
-				$nstrata = 9;
-				$orderid = "TF2-FREE-".$iduser."-".rand(1000, 9999);
-			}
+		if ($strata == "freelite") {
+			$nstrata = 1;
+			$orderid = "TVS-FREE-" . $iduser . "-" . rand(1000, 9999);
+		} else if ($strata == "freepro") {
+			$nstrata = 2;
+			$orderid = "TP2-FREE-" . $iduser . "-" . rand(1000, 9999);
+		} else if ($strata == "freepremium") {
+			$nstrata = 3;
+			$orderid = "TF2-FREE-" . $iduser . "-" . rand(1000, 9999);
+		}
 
-		$tglberakhir = $this->input->post('itahun')."-".
-		str_pad($this->input->post('ibulan'), 2, '0', STR_PAD_LEFT).
-		"-".str_pad($this->input->post('itanggal'), 2, '0', STR_PAD_LEFT)." 23:59:59";
+		$tglberakhir = $this->input->post('itahun') . "-" .
+			str_pad($this->input->post('ibulan'), 2, '0', STR_PAD_LEFT) .
+			"-" . str_pad($this->input->post('itanggal'), 2, '0', STR_PAD_LEFT) . " 23:59:59";
 
 		$now = new DateTime();
 		$now->setTimezone(new DateTimezone('Asia/Jakarta'));
 		$tglsekarang = $now->format('Y-m-d H:i:s');
 
 		$data['npsn_sekolah'] = $npsnsekolah;
+		$data['kd_prodi'] = $kdprodi;
 		$data['iduser'] = $iduser;
 		$data['order_id'] = $orderid;
 		$data['tgl_order'] = $tglsekarang;
@@ -4338,79 +4275,65 @@ class Channel extends CI_Controller
 		$data['tgl_berakhir'] = $tglberakhir;
 		$data['status'] = 3;
 
-	
-		if ($strataawal>=7)
-		{
+
+		if ($strataawal >= 7) {
 			$order_id = $this->input->post('orderid');
 			$this->load->Model('M_payment');
 
-			if ($pilihan==1)
-			{
-				$this->M_payment->tambahbayar($data,$order_id, $iduser);
+			if ($pilihan == 1) {
+				$this->M_payment->tambahbayar($data, $order_id, $iduser);
 
 				$dataupdate = array();
 				$dataupdate['strata_sekolah'] = $nstrata;
 				$dataupdate['kadaluwarsa'] = $tglberakhir;
-				$this->M_channel->updatestratachnsekolah($dataupdate, $npsnsekolah);
-			}
-			else
-			{
+				$this->M_channel->updatestratachnsekolah($dataupdate, $npsnsekolah, $kdprodi);
+			} else {
 				$datahapus = array();
 				$datahapus['status'] = 0;
-				$this->M_payment->tambahbayar($datahapus,$order_id, $iduser);
+				$this->M_payment->tambahbayar($datahapus, $order_id, $iduser);
 
 				$statussekolah = "NON";
-				$ceksekolahpremium = ceksekolahpremium($npsnsekolah);
+				$ceksekolahpremium = ceksekolahpremium($npsnsekolah, $kdprodi);
 				$data['statussekolah'] = " [ - ]";
-				if ($ceksekolahpremium['status_sekolah'] != "non")
-				{
+				if ($ceksekolahpremium['status_sekolah'] != "non") {
 					$statussekolah = $ceksekolahpremium['status_sekolah'];
 					if ($statussekolah == "Lite Siswa")
 						$statussekolah = "Lite";
 					$data['statussekolah'] = " [ " . $statussekolah . " ] ";
 				}
 
-				if($statussekolah=="Premium")
-				{
+				if ($statussekolah == "Premium") {
 					$strata = 3;
-					if ($ceksekolahpremium['tipebayar']=="freepremium")
+					if ($ceksekolahpremium['tipebayar'] == "freepremium")
 						$strata = 9;
-				}
-				else if($statussekolah=="Pro")
-				{
+				} else if ($statussekolah == "Pro") {
 					$strata = 2;
-					if ($ceksekolahpremium['tipebayar']=="freepro")
+					if ($ceksekolahpremium['tipebayar'] == "freepro")
 						$strata = 8;
-				}
-				else if($statussekolah=="Lite")
-				{
+				} else if ($statussekolah == "Lite") {
 					$strata = 1;
-					if ($ceksekolahpremium['tipebayar']=="freelite")
+					if ($ceksekolahpremium['tipebayar'] == "freelite")
 						$strata = 7;
-				}
-				else
+				} else
 					$strata = 0;
 
 				$dataupdate['npsn'] = $npsnsekolah;
 				$dataupdate['strata_sekolah'] = $strata;
 				$dataupdate['kadaluwarsa'] = $ceksekolahpremium['tgl_berakhir'];
-				$this->M_channel->updatestratachnsekolah($dataupdate, $npsnsekolah);
-				
+				$this->M_channel->updatestratachnsekolah($dataupdate, $npsnsekolah, $kdprodi);
 			}
-		}
-		else
-		{
+		} else {
 			$this->load->Model('M_payment');
 			$this->M_payment->addDonasi($data);
 
 			$dataupdate['strata_sekolah'] = $nstrata;
 			$dataupdate['kadaluwarsa'] = $tglberakhir;
-			
-			$this->M_channel->updatestratachnsekolah($dataupdate, $npsnsekolah);
+
+			$this->M_channel->updatestratachnsekolah($dataupdate, $npsnsekolah, $kdprodi);
 			$getchannel = $this->M_channel->getChannelSiap(0);
 		}
 
-		redirect ('/channel/daftarprodi');
+		redirect('/channel/daftarchannel');
 	}
 
 	public function nosiaran()
@@ -4422,15 +4345,15 @@ class Channel extends CI_Controller
 
 	public function pilihsiaran()
 	{
-		
-		if ($this->session->userdata('verifikator')==3) {
+
+		if ($this->session->userdata('verifikator') == 3) {
 			$npsn = $this->session->userdata('npsn');
 			$getuser = getstatususer();
 			$prodi = $getuser['kelasku'];
 
 			$getpilihansiaran = $this->M_channel->getsiaranaktif($npsn, $prodi);
 			$data = array();
-			$data['tombolpilihansiaran'] = base_url()."assets/images/switch".$getpilihansiaran->siaranaktif.".png";
+			$data['tombolpilihansiaran'] = base_url() . "assets/images/switch" . $getpilihansiaran->siaranaktif . ".png";
 			$data['urllive'] = $getpilihansiaran->urllive;
 			$data['siaranaktif'] = $getpilihansiaran->siaranaktif;
 
@@ -4448,10 +4371,10 @@ class Channel extends CI_Controller
 			$this->load->Model('M_channel');
 			$getsekolah = $this->M_channel->getSekolahKu($npsn, $prodi);
 			$stratasekolah = $getsekolah->strata_sekolah;
-			$dafstratasekolah=array('-', 'Lite', 'Pro', 'Premium');
+			$dafstratasekolah = array('-', 'Lite', 'Pro', 'Premium');
 			$statussekolah = $dafstratasekolah[$stratasekolah];
 
-			if ($statussekolah=="Pro" || $statussekolah=="Premium")
+			if ($statussekolah == "Pro" || $statussekolah == "Premium")
 				$data['konten'] = "channelsiaran";
 			else
 				$data['konten'] = "channelsiaran_lite";
@@ -4473,18 +4396,18 @@ class Channel extends CI_Controller
 
 			if (strlen($npsn) > 0) {
 
-				$ceknpsn = $this->M_channel->getSekolahKu($npsn,$prodi);
+				$ceknpsn = $this->M_channel->getSekolahKu($npsn, $prodi);
 
 				if (!$ceknpsn) {
 					// echo "PERLU UPDATE SEKOLAH";
-					$ceknpsn = $this->M_channel->insertkeDafSekolahKu($npsn,$prodi);
+					$ceknpsn = $this->M_channel->insertkeDafSekolahKu($npsn, $prodi);
 				}
 
-				$data['dafplaylist'] = $this->M_channel->getDafPlayListSekolah($npsn, $prodi,0, $hari);
-//					echo "<pre>";
-//					echo var_dump($data['dafplaylist']);
-//					echo "</pre>";
-//					die();
+				$data['dafplaylist'] = $this->M_channel->getDafPlayListSekolah($npsn, $prodi, 0, $hari);
+				//					echo "<pre>";
+				//					echo var_dump($data['dafplaylist']);
+				//					echo "</pre>";
+				//					die();
 
 				if ($data['dafplaylist']) {
 					//echo "Disini-1";
@@ -4492,22 +4415,19 @@ class Channel extends CI_Controller
 					$statusakhir = $data['dafplaylist'][0]->link_list;
 					if ($linklist == null) {
 						$data['playlist'] = $this->M_channel->getPlayListSekolah($npsn, $prodi, $statusakhir);
-
 					} else {
 						$data['playlist'] = $this->M_channel->getPlayListSekolah($npsn, $linklist);
-
 					}
 
 					/////////paksa dulu ------------
 					$data['playlist'] = $this->M_channel->getPlayListSekolah($npsn, $prodi, $statusakhir);
 					$linklist = $statusakhir;
-
 				} else {
 					//echo "Disini-2";
 					$data['punyalist'] = false;
-//            if (!$this->session->userdata('loggedIn')) {
-//                redirect('/');
-//            }
+					//            if (!$this->session->userdata('loggedIn')) {
+					//                redirect('/');
+					//            }
 				}
 
 				//die();
@@ -4526,14 +4446,12 @@ class Channel extends CI_Controller
 
 				$data['dafchannelguru'] = $this->M_channel->getChannelGuru($npsn, $prodi);
 				$cekinfosekolah = $this->M_channel->getInfoSekolah($npsn, $prodi);
-				
+
 
 				if ($cekinfosekolah) {
 					$data['infosekolah'] = $cekinfosekolah;
 				}
 				$data['dafvideo'] = $this->M_channel->getVodSekolah($npsn, $prodi);
-
-
 			}
 
 			$data['id_playlist'] = $linklist;
@@ -4542,7 +4460,6 @@ class Channel extends CI_Controller
 		} else {
 			die();
 		}
-	
 	}
 
 	public function updateurl()
@@ -4552,14 +4469,11 @@ class Channel extends CI_Controller
 		$getuser = getstatususer();
 		$prodi = $getuser['kelasku'];
 
-		$updateurl = $this->M_channel->updateurl($url,$npsn,$prodi);
+		$updateurl = $this->M_channel->updateurl($url, $npsn, $prodi);
 
-		if ($updateurl)
-		{
+		if ($updateurl) {
 			echo "sukses";
-		}
-		else
-		{
+		} else {
 			echo "gagal";
 		}
 	}
@@ -4571,19 +4485,16 @@ class Channel extends CI_Controller
 		$getuser = getstatususer();
 		$prodi = $getuser['kelasku'];
 
-		if ($siaranaktif==2)
-		$siaranganti=1;
+		if ($siaranaktif == 2)
+			$siaranganti = 1;
 		else
-		$siaranganti=2;
+			$siaranganti = 2;
 
-		$updatesiaran = $this->M_channel->updatesiaran($siaranganti,$npsn, $prodi);
+		$updatesiaran = $this->M_channel->updatesiaran($siaranganti, $npsn, $prodi);
 
-		if ($updatesiaran)
-		{
+		if ($updatesiaran) {
 			echo "sukses";
-		}
-		else
-		{
+		} else {
 			echo "gagal";
 		}
 	}
@@ -4597,5 +4508,4 @@ class Channel extends CI_Controller
 			echo '';
 		}
 	}
-
 }

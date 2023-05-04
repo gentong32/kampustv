@@ -1,4 +1,8 @@
 <!-- content begin -->
+<form target="_blank" name="klasvirtual" action="<?php echo base_url();?>kelasvirtual/login/index.php" method="POST">
+<input type="hidden" name="idtoken" value ="<?php echo $moodleiduser;?>">
+<input type="hidden" name="sebagai" value ="<?php echo $moodlesebagai;?>">
+</form>
 <div class="no-bottom no-top" id="content">
 	<div id="top"></div>
 	<!-- section begin -->
@@ -34,15 +38,21 @@
 							</div>
 						</div>
 						<div>
-							<a href="<?php echo base_url(); ?>virtualkelas/modul_guru/saya">
+							<?php if ($this->session->userdata('id_user')!="6144863729f79310f6d0233f38b96b0a_166468819_")
+							{ ?>
+								<a href="#" onclick = "submitform();">
+							<?php } else {?>
+								<a href= "<?php echo base_url().'virtualkelas/modul_guru/saya';?>">
+								<?php } ?>
 								<img src="<?php echo base_url(); ?>images/fitur/sekolah-saya.jpg"
 									 class="lazy video__item_preview" alt="" style="cursor: pointer">
 							</a>
+							
 						</div>
 					</div>
 					<div class="video__item_info">
 						<a>
-							<h3 align="center">Modul Sekolah</h3>
+							<h3 align="center">Kelas Virtual</h3>
 						</a>
 					</div>
 				</div>
@@ -81,5 +91,12 @@
 	</section>
 </div>
 
+
+<script type="text/javascript">
+function submitform()
+{
+  document.klasvirtual.submit();
+}
+</script>
 
 <!-- content close -->

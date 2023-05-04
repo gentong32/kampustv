@@ -55,10 +55,11 @@ else
 						<?php if ($profilku->statususer == 3){?>
 						<li>
 							<a href="#element" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i
-									class="fa fa-youtube-play red_color"></i> <span>Video</span></a>
+									class="fa fa-youtube-play red_color"></i> <span>Channel Video</span></a>
 							<ul class="collapse list-unstyled" id="element" style="padding-top: 5px;padding-left:20px;">
 								<li><a href="<?php echo base_url()."video/saya/dashboard";?>">> <span>Video Saya</span></a></li>
-								<!-- <li><a href="<?php //echo base_url()."video/event/dashboard";?>">> <span>Video Event</span></a></li> -->
+								<!-- <li><a href="<?php //echo //base_url()."channel/playlistkampus/dashboard";?>">> <span>Playlist Siaran</span></a></li> -->
+								<li><a href="<?php echo base_url()."video/event/dashboard";?>">> <span>Video Event</span></a></li>
 							</ul>
 						</li>
 
@@ -220,7 +221,7 @@ else
 						<a href="#elementpla" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i
 									class="fa fa-television blue1_color"></i> <span>Playlist Kampus</span></a>
 							<ul class="collapse list-unstyled" id="elementpla">
-								<li><a href="<?php echo base_url()."channel/playlistsekolah/dashboard";?>">> <span>Daftar Playlist Kampus</span></a></li>
+								<li><a href="<?php echo base_url()."channel/playlistkampus/dashboard";?>">> <span>Daftar Playlist Kampus</span></a></li>
 								<li><a href="<?php echo base_url()."channel/pilihsiaran";?>">> <span>MCR Siaran TV Kampus</span></a></li>
 							</ul>
 						</li>
@@ -229,6 +230,9 @@ else
 					
 						<li><a href="<?php echo base_url() . 'profil/pembayaran'; ?>"><i
 									class="fa fa-money yellow_color"></i> <span>Iuran</span></a>
+						</li>
+						<li><a href="<?php echo base_url() . 'eksekusi'; ?>"><i
+									class="fa fa-info yellow_color"></i> <span>Promosi Sekolah</span></a>
 						</li>
 						<?php }
 						else
@@ -304,6 +308,7 @@ else
 											<li><a href="<?php echo base_url()."virtualkelas/event";?>">> <span>Tambah Modul Kampus</span></a></li>
 										<?php } ?>
 								<li><a href="<?php echo base_url()."virtualkelas/modul";?>">> <span>Daftar Modul Kampus</span></a></li>
+								<li><a href="<?php echo base_url()."virtualkelas/krs";?>">> <span>Jadwal KRS</span></a></li>
 							</ul>
 						</li>
 					<?php }
@@ -432,7 +437,7 @@ else
 						</button>
 						<div class="logo_section">
 							<a href="<?php echo base_url(); ?>"><img class="img-responsive"
-																	 src="<?php echo base_url(); ?>images/logo/logo.png"
+																	 src="<?php echo base_url(); ?>images/logo-2.png"
 																	 alt="#"/></a>
 						</div>
 						<div class="right_topbar">

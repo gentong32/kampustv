@@ -31,6 +31,8 @@ class Virtualkelas extends CI_Controller
 			if (!$this->session->userdata("activate")) {
 				redirect("login/lengkapiprofil");
 			} else {
+				$data['moodleiduser'] = $this->session->userdata('id_user');
+				$data['moodlesebagai'] = $this->session->userdata('sebagai');
 				if ($this->session->userdata('sebagai') == 1 || $this->session->userdata('bimbel') >= 3) {
 					$data['konten'] = "virtual_kelas_sign_guru";
 				} else {

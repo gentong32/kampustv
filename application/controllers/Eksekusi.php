@@ -7,15 +7,14 @@ class Eksekusi extends CI_Controller
 		parent::__construct();
 		$this->load->model('M_induk');
 		$this->load->model('M_eksekusi');
-		$this->load->helper(array('Form', 'Cookie', 'String', 'captcha', 'download'));
+		$this->load->helper(array('Form', 'Cookie', 'String', 'captcha', 'download','statusverifikator','tanggalan'));
 		$this->load->library('google');
 		$this->load->library('facebook');
 		$this->load->library('encrypt');
 		$this->load->library('email');
 		$this->load->library('pagination');
 
-		if (!$this->session->userdata('a01') &&
-			($this->session->userdata('siae') == 0 && $this->session->userdata('siam') == 0 && $this->session->userdata('bimbel') == 0)) {
+		if (!$this->session->userdata('a02')) {
 			redirect('/');
 		}
 	}
@@ -26,24 +25,147 @@ class Eksekusi extends CI_Controller
 		$data['konten'] = 'v_eksekusi';
 
 		$iduser = $this->session->userdata("id_user");
+		$statusdonasi = 0;
 
 		$data['standar'] = $this->M_eksekusi->getStandar();
-
+		$data ['batasakhir'] = "2000-01-01 00:00:00";
 		$cekdata = $this->M_eksekusi->getlasteksekusi($iduser, 0);
+		
 		if ($cekdata)
+		{
 			$data ['dafeksekusi'] = $cekdata;
+			$kodeeks = $cekdata->kode_eks;
+			$data ['dafgrupsekolah'] = $this->M_eksekusi->getdafgrupsekolah($kodeeks);
+			
+		}
 		else {
-			$cekdata = $this->M_eksekusi->addeksekusi($iduser);
-			$data ['dafeksekusi'] = $cekdata;
+
+			$cekdata = $this->M_eksekusi->getlasteksekusi($iduser, 1);
+			if ($cekdata)
+			{
+				$data ['dafeksekusi'] = $cekdata;
+				$data ['dafgrupsekolah'] = $this->M_eksekusi->getdafgrupsekolah($cekdata->kode_eks);
+				$orderidterakhir = $cekdata->order_id;
+				$kodeeks = $cekdata->kode_eks;
+				$this->load->model("M_payment");
+				$payment = $this->M_payment->cekstatusdonasi($orderidterakhir);
+				$batasakhir = jamnamabulan_panjang($payment->tgl_berakhir);
+				
+				$data ['batasakhir'] = $batasakhir;
+			}
+			else
+				$orderidterakhir = "orderidgakada";
+
+			$npsn = $this->session->userdata('npsn');
+			$getuser = getstatususer();
+			$prodi = $getuser['kelasku'];
+			$this->load->model('M_payment');
+
+			// echo "NPSN:$npsn, KODEPRODI:$prodi<br>";
+			$bayarankampus = $this->M_payment->getlastpaymentsekolah($npsn, $prodi);
+			// echo var_dump($bayarankampus);
+			// die();
+			if ($bayarankampus)
+			{	
+				$batasakhir = $bayarankampus->tgl_berakhir;
+				if (time() - strtotime($batasakhir)>0)
+				{
+					// echo "Silakan melakukan pembayaran tagihan kampus terlebih dahulu, untuk dapat menjalankan program Promosi Sekolah.";
+					// die();
+					redirect(base_url().'informasi/promobayardulu');
+				}
+				else
+				{
+					$orderid = $bayarankampus->order_id;
+					if ($orderid==$orderidterakhir)
+					{
+						// echo "Sudah terlaksana";
+						$statusdonasi = 1;
+					}
+					else
+					{
+						if (substr($orderid,0,2)=="TP")
+						{
+							$jmlsekolah = 10;
+						}
+						else if (substr($orderid,0,2)=="TF")
+						{
+							$jmlsekolah = 20;
+						}
+						$adddata = $this->M_eksekusi->addeksekusi($iduser, $orderid, $jmlsekolah);
+						$data ['dafeksekusi'] = $adddata;
+						$kodeeks = $adddata->kode_eks;
+						$data ['dafgrupsekolah'] = $this->M_eksekusi->getdafgrupsekolah($kodeeks);
+					}
+				}
+
+			}
+			else
+			{
+				redirect(base_url().'informasi/promobayardulu');
+			}
+
+			
 		}
 
-		$data ['datadonatur'] = $this->M_eksekusi->getDonatur($cekdata->id_donatur);
-		$data ['dafgrupsekolah'] = $this->M_eksekusi->getdafgrupsekolah($cekdata->kode_eks);
+		$data ['statusdonasi'] = $statusdonasi;
 
-		$sekolahdonasi = $this->M_eksekusi->getsekolahdonasi($cekdata->kode_eks);
+		// $data ['datadonatur'] = $this->M_eksekusi->getDonatur($cekdata->id_donatur);
+		
+
+		$sekolahdonasi = $this->M_eksekusi->getsekolahdonasi($kodeeks);
 		$data ['dafsekolahdonasi'] = $sekolahdonasi;
 
 		$this->load->view('layout/wrapper_umum', $data);
+	}
+
+	public function dieksekusi($kodeeks)
+	{
+		$data = array("status_donasi" => 1);
+		$iduser = $this->session->userdata("id_user");
+
+		$this->load->model("M_eksekusi");
+		$update = $this->M_eksekusi->updateeksekusi($data, $kodeeks, $iduser);
+		if ($update)
+		{
+			//update data sponsor di database tvsekolah
+			$this->sinkrondatasponsor($kodeeks);
+		}
+		else
+		echo "gagal";
+	}
+
+	public function sinkrondatasponsor($kodeeks)
+	{
+		$getuser = getstatususer();
+		$prodi = $getuser['namaprodi'];
+		$kampus = $getuser['namakampus'];
+		if ($prodi=="KAMPUS")
+		$tprodi = $prodi;
+		else
+		$tprodi = "Prodi. ".$prodi;
+		$namasponsor = $tprodi." - ".$kampus;
+
+		$this->load->model("M_eksekusi");
+		$daftarsekolahsponsor = $this->M_eksekusi->getsekolahdonasi($kodeeks);
+		// echo "<pre>";
+		// echo var_dump($daftarsekolahsponsor);
+		// echo "</pre>";
+		$data = array();
+		$baris=1;
+		foreach ($daftarsekolahsponsor as $row) {
+			$data[$baris]['npsn'] = $row->npsn;
+			$data[$baris]['nama_sponsor'] = $namasponsor;
+			$data[$baris]['url_sponsor'] = $row->url_video;
+			$data[$baris]['durasi_sponsor'] = $row->durasi_video;
+			$data[$baris]['batas_sponsor'] = $row->batasdonasi;
+			$baris++;
+		}
+		$update = $this->M_eksekusi->updatesponsortvsekolah($data);
+		if ($update)
+		echo "sukses";
+		else
+		echo "gagal";
 	}
 
 	public function kode($kodeeks)
@@ -149,18 +271,21 @@ class Eksekusi extends CI_Controller
 		$data = array();
 		$data['konten'] = 'v_eksekusi_sekolah';
 
-		$this->load->model("M_vod");
-		$data['dafjenjang'] = $this->M_vod->getJenjangAll();
+		$this->load->model("M_vod2");
+		$data['dafjenjang'] = $this->M_vod2->getJenjangAll();
 
-		$this->load->model("M_channel");
+		$this->load->model("M_channel2");
 		if ($berdasarkan == null && $hal == null && $propinsi == null && $kab == null && $jenjang == null)
-			$data['dafchannel'] = $this->M_channel->retrieveStatistikAE($berdasarkan, $hal, $propinsi, $kab, $jenjang, $tampil);
+			$data['dafchannel'] = $this->M_channel2->retrieveStatistikAE($berdasarkan, $hal, $propinsi, $kab, $jenjang, $tampil);
 		else
-			$data['dafchannel'] = $this->M_channel->getStatistikAE($berdasarkan, $hal, $propinsi, $kab, $jenjang,$tampil);
+			$data['dafchannel'] = $this->M_channel2->getStatistikAE($berdasarkan, $hal, $propinsi, $kab, $jenjang,$tampil);
+
+		// echo var_dump($data['dafchannel']);
+		// die();
 
 		$data['kode_eks'] = $kode_eks;
-		$data['dafpropinsi'] = $this->M_channel->getPropinsiAll();
-		$data['dafkota'] = $this->M_channel->getKota($propinsi);
+		$data['dafpropinsi'] = $this->M_channel2->getPropinsiAll();
+		$data['dafkota'] = $this->M_channel2->getKota($propinsi);
 		$data['berdasarkan'] = $berdasarkan;
 		$data['hal'] = $hal;
 		$data['prop'] = $propinsi;
@@ -173,8 +298,24 @@ class Eksekusi extends CI_Controller
 
 	public function setpilihsekolah($kode_eks, $berdasarkan, $hal, $propinsi, $kab, $jenjang, $tampil)
 	{
-		$this->load->model("M_channel");
-		$ambildata = $this->M_channel->getStatistikAE($berdasarkan, $hal, $propinsi, $kab, $jenjang, $tampil);
+		$this->load->model("M_channel2");
+		$ambildata = $this->M_channel2->getStatistikAE($berdasarkan, $hal, $propinsi, $kab, $jenjang, $tampil);
+
+		// echo "<pre>";
+		// echo var_dump($ambildata);
+		// echo "</pre>";
+		// die();
+
+		$this->load->model("M_eksekusi");
+		$dataeks = $this->M_eksekusi->getordereksbykode($kode_eks);
+		$orderid = $dataeks->order_id;
+		$urlsponsor = $dataeks->url_sponsor;
+		$durasisponsor = $dataeks->durasi_sponsor;
+
+		$this->load->model("M_payment");
+		$payment = $this->M_payment->cekstatusdonasi($orderid);
+
+		$batasakhir = $payment->tgl_berakhir;
 
 //		echo "<pre>";
 //		echo var_dump($ambildata);
@@ -217,6 +358,9 @@ class Eksekusi extends CI_Controller
 					$totalnya = $row->jmlkonten;
 				$data[$jmldata]['total'] = $totalnya;
 				$data[$jmldata]['grup'] = $grup;
+				$data[$jmldata]['batasdonasi'] = $batasakhir;
+				$data[$jmldata]['url_video'] = $urlsponsor;
+				$data[$jmldata]['durasi_video'] = $durasisponsor;
 				$jmldata++;
 			}
 			if ($this->M_eksekusi->insertbatch_pilsekolah($data, $kode_eks))

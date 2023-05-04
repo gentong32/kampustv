@@ -624,7 +624,7 @@ class User extends CI_Controller
 		IF ($this->session->userdata('verifikator')==1)
 			$tujuan = "usersekolah/dashboard/calver";
 		if ($this->session->userdata('a01'))
-			redirect("/user/calkontri");
+			redirect("/user/dosen");
 		else
 			redirect('user/'.$tujuan);
 	}

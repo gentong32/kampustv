@@ -134,14 +134,14 @@ $default_url_sponsor = '';
 $default_durasi_sponsor = '00:00:00';
 $default_thumb_sponsor = '';
 
-if ($datadonatur) {
-	$nama_donatur = $datadonatur->nama_donatur;
-	$nama_lembaga = $datadonatur->nama_lembaga;
-	$id_donatur = $datadonatur->id;
-	$default_url_sponsor = $datadonatur->default_url_sponsor;
-	$default_durasi_sponsor = $datadonatur->default_durasi_sponsor;
-	$default_thumb_sponsor = $datadonatur->default_thumb_sponsor;
-}
+// if ($datadonatur) {
+// 	$nama_donatur = $datadonatur->nama_donatur;
+// 	$nama_lembaga = $datadonatur->nama_lembaga;
+// 	$id_donatur = $datadonatur->id;
+// 	$default_url_sponsor = $datadonatur->default_url_sponsor;
+// 	$default_durasi_sponsor = $datadonatur->default_durasi_sponsor;
+// 	$default_thumb_sponsor = $datadonatur->default_thumb_sponsor;
+// }
 
 $urlsponsor = $dafeksekusi->url_sponsor;
 $durasisponsor = $dafeksekusi->durasi_sponsor;
@@ -171,7 +171,7 @@ if ($urlsponsor == "")
 				<div class="row">
 
 					<div class="col-md-12 text-center wow fadeInRight" data-wow-delay=".5s">
-						<h1>ACCOUNT EXECUTIVE</h1>
+						<h1>PROMOSI SEKOLAH</h1>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -187,7 +187,7 @@ if ($urlsponsor == "")
 
 				<div id="tempatsoal" class="container"
 					 style="opacity:80%;padding-bottom:20px;color: black;">
-					<center><h3>TRANSAKSI AE</h3></center>
+					<center><h3>SPONSOR SEKOLAH</h3></center>
 					<div style="margin-bottom: 10px;">
 						<button class="btn-main"
 								onclick="window.location.href='<?php echo base_url(); ?>profil/'">Kembali
@@ -199,31 +199,23 @@ if ($urlsponsor == "")
 							<div class="row">
 								<div class="col-1" style="border: solid 1px black">
 									<center>
-										<div style="font-size: 16px;padding-top:20px;">
-											JENIS DONASI
-										</div>
-										<hr style="margin: 20px;">
-										<div style="display: inline-block;">
-											<button id="tbdonasi1" onclick="return pilihdonasi(1);"
-													class="<?php echo $classjenis[1]; ?>">
-												PURE DONASI
-											</button>
-											<button id="tbdonasi2" onclick="return pilihdonasi(2);"
-													class="<?php echo $classjenis[2]; ?>">
-												SPONSOR
-											</button>
-										</div>
+										
 										<div id="dinputurl" class="form-group"
-											 style="display: <?php echo $cekjenis; ?>; width: 250px;margin: auto;">
-											<label style="font-size: 16px;" class="col-md-12 control-label">Alamat Youtube
-												Sponsor</label>
+											 style="margin: auto;padding:30px;">
+											<label style="font-size: 16px;" class="col-md-12 control-label"><h3>Alamat Youtube
+												Sponsor</h3></label>
 											<div class="col-md-12" style="width: 100%;">
 												<textarea style="font-size:18px;" rows="3" cols="220" class="form-control" id="ivlog"
 												  name="ivlog"
-												  maxlength="200"><?php echo $urlsponsor; ?></textarea>
+												  maxlength="200"><?php echo $urlsponsor; ?></textarea><br>
+												  <?php if ($statusdonasi==0) :?>
 												<button id="tbgetyutub" class="btn btn-default"
 														onclick="return ambilinfoyutub()">OK
 												</button>
+												<?php else: ?>
+													<button disabled class="btn btn-default">OK
+												</button>
+												<?php endif; ?>
 												<br>
 											</div>
 
@@ -255,14 +247,14 @@ if ($urlsponsor == "")
 
 										</div>
 										<div style="display: block;padding: 15px;">
-											Donasi/Sponsor akan diberikan untuk bulan depan.
+											<!-- Donasi/Sponsor akan diberikan untuk bulan depan. -->
 										</div>
 									</center>
 								</div>
 							</div>
 						</div>
 					</div>
-
+<!-- 
 					<br>
 					<div class="wb_LayoutGrid1">
 						<div class="LayoutGrid1">
@@ -279,57 +271,31 @@ if ($urlsponsor == "")
 										<div class="row" style="margin-bottom:20px;padding-bottom: 20px;">
 											<div style="display: inline-block;">
 												<button id="tbtotal1" onclick="return pilihtotal(1)"
-														class="<?php echo $classtotal[1]; ?>">
+														class="<?php //echo $classtotal[1]; ?>">
 													10
 												</button>
 												<button id="tbtotal2" onclick="return pilihtotal(2)"
-														class="<?php echo $classtotal[2]; ?>">
+														class="<?php //echo $classtotal[2]; ?>">
 													25
 												</button>
 												<button id="tbtotal3" onclick="return pilihtotal(3)"
-														class="<?php echo $classtotal[3]; ?>">
+														class="<?php //echo $classtotal[3]; ?>">
 													50
 												</button>
 												<button id="tbtotal4" onclick="return pilihtotal(4)"
-														class="<?php echo $classtotal[4]; ?>">
+														class="<?php //echo $classtotal[4]; ?>">
 													100
 												</button>
 											</div>
-
-											<!--					<div style="font-size: 16px;padding-top:10px;">-->
-											<!--						Premium-->
-											<!--					</div>-->
-											<!--					<div class="row" style="margin-bottom:20px;padding-bottom: 0px;">-->
-											<!--						<div style="display: inline-block;">-->
-											<!--							<button id="tbtotal5" onclick="return pilihtotal(5)" class="tbeks0">-->
-											<!--								1-->
-											<!--							</button>-->
-											<!--						</div>-->
-											<!--						<div style="display: inline-block;">-->
-											<!--							<button id="tbtotal6" onclick="return pilihtotal(6)" class="tbeks0">-->
-											<!--								2-->
-											<!--							</button>-->
-											<!--						</div>-->
-											<!--						<div style="display: inline-block">-->
-											<!--							<button id="tbtotal7" onclick="return pilihtotal(7)" class="tbeks0">-->
-											<!--								5-->
-											<!--							</button>-->
-											<!--						</div>-->
-											<!--						<div style="display: inline-block">-->
-											<!--							<button id="tbtotal8" onclick="return pilihtotal(8)" class="tbeks0">-->
-											<!--								10-->
-											<!--							</button>-->
-											<!--						</div>-->
-											<!--					</div>-->
 
 										</div>
 									</center>
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> -->
 
-					<br>
+					<!-- <br>
 					<div class="wb_LayoutGrid1">
 						<div class="LayoutGrid1">
 							<div class="row">
@@ -341,15 +307,15 @@ if ($urlsponsor == "")
 										<hr style="margin: 20px;">
 										<div style="display: inline-block;">
 											<button id="tbjangka1" onclick="return pilihjangka(3)"
-													class="<?php echo $jangka[1]; ?>">
+													class="<?php //echo $jangka[1]; ?>">
 												3 BULAN
 											</button>
 											<button id="tbjangka2" onclick="return pilihjangka(6)"
-													class="<?php echo $jangka[2]; ?>">
+													class="<?php //echo $jangka[2]; ?>">
 												6 BULAN
 											</button>
 											<button id="tbjangka3" onclick="return pilihjangka(12)"
-													class="<?php echo $jangka[3]; ?>">
+													class="<?php //echo $jangka[3]; ?>">
 												1 TAHUN
 											</button>
 										</div>
@@ -358,10 +324,10 @@ if ($urlsponsor == "")
 											TOTAL DONASI
 											<div id="itotaldonasi" style="font-weight: bold; font-size: 20px;">
 												<?php
-												if ($dafeksekusi->total_donasi > 0)
-													echo "Rp " . number_format($dafeksekusi->total_donasi, 0, ",", ".") . ",-";
-												else
-													echo "Rp 0,-"; ?>
+												// if ($dafeksekusi->total_donasi > 0)
+													// echo "Rp " . number_format($dafeksekusi->total_donasi, 0, ",", ".") . ",-";
+												// else
+													// echo "Rp 0,-"; ?>
 											</div>
 										</div>
 
@@ -369,7 +335,7 @@ if ($urlsponsor == "")
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> -->
 
 					<br>
 					<div class="wb_LayoutGrid1">
@@ -382,10 +348,15 @@ if ($urlsponsor == "")
 										</div>
 										<hr style="margin: 20px;">
 										<div style="display: block;margin-bottom: 20px;">
+										<?php if ($statusdonasi==0) :?>
 											<button style="padding:10px;color:black;font-weight:bold;font-size: 17px" class="tbeks0"
 													id="tbtampil1"
 													onclick="return tampilkanstatistik()">Pilih Sekolah
 											</button>
+											<?php else: ?>
+											<button disabled style="padding:10px;color:black;font-weight:bold;font-size: 17px">Pilih Sekolah
+											</button>
+											<?php endif; ?>
 											<button style="padding:10px;color:black;font-weight:bold;font-size: 17px" class="tbeks0"
 													id="tbtamil2"
 													onclick="return tampilkanpilihan()">Tampilkan Pilihan
@@ -399,9 +370,15 @@ if ($urlsponsor == "")
 				font-size: 18px; font-weight: bold; max-width: 330px;">
 												<span style="vertical-align: middle"><?php echo $grupbayar[$b]; ?></span>
 												<br>
+												<?php if ($statusdonasi==0) :?>
 												<button onclick="return hapusgrup('<?php echo $grupbayar[$b]; ?>');"
 														style="font-weight: normal; ">Hapus
 												</button>
+												<?php else :?>
+												<button onclick="return hapusgrup('<?php echo $grupbayar[$b]; ?>');"
+														style="font-weight: normal;" disabled>Hapus
+												</button>
+												<?php endif;?>
 											</div>
 										<?php } ?>
 
@@ -438,8 +415,8 @@ if ($urlsponsor == "")
 											 style="display: <?php if ($totalsekolahdonasi > $dafeksekusi->total_sekolah)
 												 echo 'block'; else echo 'none'; ?>">
 											<div style="padding-bottom: 10px;">
-					<span id="kettotalsekolah" style="color:red;font-size: 14px;font-style: italic;">*Jumlah sekolah yang dipilih lebih banyak dari jumlah donasi,
-					akan diambil sesuai urutan paling atas.</span>
+					<span id="kettotalsekolah" style="color:red;font-size: 14px;font-style: italic;">*Total sekolah yang dipilih lebih dari 10.
+					Akan diambil sesuai urutan paling atas.</span>
 											</div>
 											<button
 												style="margin-bottom:20px;padding:10px;color:black;font-weight:bold;font-size: 17px"
@@ -453,7 +430,7 @@ if ($urlsponsor == "")
 						</div>
 					</div>
 
-					<br>
+					<!-- <br>
 					<div class="wb_LayoutGrid1">
 						<div class="LayoutGrid1">
 							<div class="row">
@@ -473,16 +450,16 @@ if ($urlsponsor == "")
 										<div style="margin:auto;margin-top:20px;margin-bottom: 20px;border: 1.5px solid dodgerblue;
 				padding: 10px;justify-content: center;
 				font-size: 18px; font-weight: bold; max-width: 330px;">
-											<span style="vertical-align: middle"><?php echo $nama_donatur; ?></span>
+											<span style="vertical-align: middle"><?php //echo $nama_donatur; ?></span>
 											<br>
 											<span
-												style="font-size:15px;vertical-align: middle">[ <?php echo $nama_lembaga; ?> ]</span>
+												style="font-size:15px;vertical-align: middle">[ <?php //echo $nama_lembaga; ?> ]</span>
 										</div>
 									</center>
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> -->
 
 					<br>
 					<div class="wb_LayoutGrid1">
@@ -491,14 +468,23 @@ if ($urlsponsor == "")
 								<div class="col-1" style="border: solid 1px black">
 									<center>
 										<div style="font-size: 16px;padding-top:20px;">
-											EKSEKUSI
+											AKTIVASI PROMOSI
 										</div>
 										<hr style="margin: 20px;">
 										<div style="display: block;">
+										<?php if ($statusdonasi==0) :?>
 											<button
 												style="margin-bottom:20px;padding:10px;color:black;font-weight:bold;font-size: 17px"
-												id="pay-button">Eksekusi Sekarang
+												id="pay-button">Aktifkan Sekarang
 											</button>
+											<?php else:?>
+												<button
+												style="margin-bottom:20px;padding:10px;color:black;font-weight:bold;font-size: 17px"
+												disabled>Sudah Berhasil Diaktifkan
+												</button>
+												<br>
+												Promosi berkakhir tanggal <?=$batasakhir; ?>
+											<?php endif;?>	
 										</div>
 										<div id="ket_eksekusi" style="font-weight:bold;color: #9d261d;padding-bottom: 10px;">
 
@@ -525,7 +511,7 @@ if ($urlsponsor == "")
 	var totalpilihan = 0;
 	var jangkapilihan = <?php echo $dafeksekusi->bulan_donasi; ?>;
 	var namadonatur = "<?php echo $nama_donatur; ?>";
-	var jenisdonasi = <?php echo $dafeksekusi->jenis_donasi; ?>;
+	var jenisdonasi = 2; 
 	var regprem = <?php echo $dafeksekusi->reg_prem; ?>;
 	var totalsekolah = <?php echo $dafeksekusi->total_sekolah; ?>;
 	var totalsekolahterpilih = <?php echo $totalsekolahdonasi; ?>;
@@ -840,10 +826,10 @@ if ($urlsponsor == "")
 			oke = false;
 		}
 
-		if (namadonatur == "") {
-			pesan = pesan + "- Donatur belum dipilih<br>";
-			oke = false;
-		}
+		// if (namadonatur == "") {
+		// 	pesan = pesan + "- Donatur belum dipilih<br>";
+		// 	oke = false;
+		// }
 
 		if (oke == false) {
 			document.getElementById("ket_eksekusi").innerHTML = pesan;
@@ -855,42 +841,11 @@ if ($urlsponsor == "")
 			$(this).attr("disabled", "disabled");
 
 			$.ajax({
-				url: '<?php echo base_url();?>payment/token_donasi_ae/<?php echo $dafeksekusi->kode_eks;?>',
+				url: '<?php echo base_url();?>eksekusi/dieksekusi/<?php echo $dafeksekusi->kode_eks;?>',
 				cache: false,
 
 				success: function (data) {
-					//location = data;
-					//console.log('token = ' + data);
-
-					var resultType = document.getElementById('result-type');
-					var resultData = document.getElementById('result-data');
-
-					function changeResult(type, data) {
-						$("#result-type").val(type);
-						$("#result-data").val(JSON.stringify(data));
-						//resultType.innerHTML = type;
-						//resultData.innerHTML = JSON.stringify(data);
-					}
-
-					snap.pay(data, {
-
-						onSuccess: function (result) {
-							changeResult('success', result);
-							console.log(result.status_message);
-							console.log(result);
-							$("#payment-form").submit();
-						},
-						onPending: function (result) {
-							changeResult('pending', result);
-							console.log(result.status_message);
-							$("#payment-form").submit();
-						},
-						onError: function (result) {
-							changeResult('error', result);
-							console.log(result.status_message);
-							$("#payment-form").submit();
-						}
-					});
+					location.reload();
 				}
 			});
 		}

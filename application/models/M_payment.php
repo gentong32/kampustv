@@ -544,7 +544,7 @@ class M_payment extends CI_Model
 		$this->db->from('tb_payment');
 		$this->db->where('npsn_sekolah', $npsn);
 		$this->db->where('kd_prodi', $prodi);
-		$this->db->where('(tipebayar<>"auto")');
+		// $this->db->where('(tipebayar<>"auto")');
 		$this->db->order_by('status','asc');
 		$query = $this->db->get();
 		$ret = $query->last_row();

@@ -26,10 +26,8 @@
 				<br><br>
 			</div>
 			<div style="font-size: larger; color: black">
-				<center>Selamat. Anda telah menjadi <b>Verifikator</b> dan mendapatkan gratis iuran hingga akhir
-					<b><?php echo $sampai; ?></b>.
-					<br> Untuk selanjutnya setiap bulan dikenakan iuran sebesar <b>Rp <?php
-						echo number_format($iuran, 0, ",", "."); ?>,-</b></center>
+				<center>Selamat. Anda telah menjadi Verifikator Channel Kampus. Anda mendapatkan otoritas untuk memverifikasi calon Kontributor, Video Kontributor, dan Penyusunan Playlist Siaran Channel Kampus Anda. Untuk selanjutnya Verifikator dikenakan iuran sebesar Rp 5.000.000,- (lima juta rupiah) untuk satu tahun. 
+				</center>
 				<br>
 			</div>
 		</div>

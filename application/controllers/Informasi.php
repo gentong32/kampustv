@@ -624,6 +624,14 @@ class Informasi extends CI_Controller
 
 	}
 
+	public function promobayardulu()
+	{
+		$data = array();
+		$data['konten'] = "promobayardulu";
+
+		$this->load->view('layout/wrapper_umum', $data);
+	}
+
 	public function cekdatabase()
 	{
 		$this->load->Model('M_jurnal');

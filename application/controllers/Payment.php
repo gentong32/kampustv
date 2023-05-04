@@ -2850,7 +2850,8 @@ class Payment extends CI_Controller
 					}
 
 					if ($this->M_payment->updatestatuspayment($order_id, $data3)) {
-						hitungfeeiuran($order_id);
+						$this->updatepembayaransekolah($order_id);
+						// hitungfeeiuran($order_id);
 						echo "";
 					} else {
 						echo "gagal";
@@ -4656,6 +4657,28 @@ class Payment extends CI_Controller
 		{
 			$this->hitungmidtransvk($row->kode_beli);
 		}
+	}
+
+	private function updatepembayaransekolah($orderid)
+	{
+		$this->load->model('M_payment');
+		$cekorder = $this->M_payment->cekorder($orderid);
+		$npsn_sekolah = $cekorder->npsn_sekolah;
+		$kd_prodi = $cekorder->kd_prodi;
+		$strata = 1;
+		if (substr($orderid,0,2)=="TP")
+		$strata = 2;
+		else if (substr($orderid,0,2)=="TF")
+		$strata = 3;
+		$kadaluwarsa = $cekorder->tgl_berakhir;
+		$this->load->model('M_channel');
+		$this->M_channel->updatestatusbayarsekolah($npsn_sekolah, $kd_prodi, $strata, $kadaluwarsa);
+
+		// echo "NPSN = $npsn_sekolah<br>";
+		// echo "Prodi = $kd_prodi<br>";
+		// echo "Strata = $strata<br>";
+		// echo "Kadaluwarsa = $kadaluwarsa<br>";
+
 	}
 
 

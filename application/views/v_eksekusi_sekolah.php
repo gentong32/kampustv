@@ -67,7 +67,7 @@ foreach ($dafchannel as $datane) {
 $seltampil[1] = "";
 $seltampil[2] = "";
 
-if ($tampil == 20) {
+if ($tampil == 10) {
 	$seltampil[2] = "selected";
 } else {
 	$seltampil[1] = "selected";
@@ -90,7 +90,7 @@ if ($dafchannel) {
 				<div class="row">
 
 					<div class="col-md-12 text-center wow fadeInRight" data-wow-delay=".5s">
-						<h1>ACCOUNT EXECUTIVE</h1>
+						<h1>PROMOSI KE SEKOLAH</h1>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -183,8 +183,8 @@ if ($dafchannel) {
 						<div id="isitampil"
 							 style="margin:auto;text-align:center;width:200px;padding-bottom:5px;display:inline-block">
 							<select class="form-control" name="itampil" id="itampil">
-								<option <?php echo $seltampil[1]; ?> value="10">10 baris</option>
-								<option <?php echo $seltampil[2]; ?> value="20">20 baris</option>
+								<option <?php echo $seltampil[1]; ?> value="5">5 baris</option>
+								<option <?php echo $seltampil[2]; ?> value="10">10 baris</option>
 							</select>
 
 						</div>
@@ -788,6 +788,7 @@ if ($dafchannel) {
 			kab = "/all";
 		}
 
+		// alert ("<?php //echo base_url() . 'eksekusi/setpilihsekolah/' . $kode_eks . '/';?>" + berdasar + hal + prop + kab + jenjang + tampil);
 
 		$.ajax({
 			url: "<?php echo base_url() . 'eksekusi/setpilihsekolah/' . $kode_eks . '/';?>" +

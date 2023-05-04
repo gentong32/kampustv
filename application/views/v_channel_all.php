@@ -56,8 +56,8 @@ $stratasekolah = Array('-', 'Lite', 'Pro', 'Premium','','','','Free Lite','Free 
 							<th style='width:10%;text-align:center'>Verifikator</th>
 							<th style='width:10%;text-align:center'>Telp</th>
 							<th style='width:10%;text-align:center'>Email</th>
-							<!-- <th style='width:10%;text-align:center'>Status Sekolah</th>
-							<th style="text-align:center">Aksi</th> -->
+							<th style='width:10%;text-align:center'>Status Sekolah</th>
+							<th style="text-align:center">Aksi</th>
 						</tr>
 						</thead>
 					</table>
@@ -109,13 +109,14 @@ $stratasekolah = Array('-', 'Lite', 'Pro', 'Premium','','','','Free Lite','Free 
 			if ($datane->status == 2 || $datane->first_name == "")
 				$disebel = " disabled ";
 			
-			$tombolfree = '<button '.$disebel.' id=\"tbfree'.$datane->id.'\" onclick=\"window.open(\'' . base_url() . 'channel/setfreepremium/' . $datane->npsn . '\',\'_self\')\" type=\"button\">Free' .
+			$tombolfree = '<button '.$disebel.' id=\"tbfree'.$datane->id.'\" onclick=\"window.open(\'' . base_url() . 'channel/setfreepremium/' . $datane->npsn_sekolah .'/'.$datane->kd_prodi. '\',\'_self\')\" type=\"button\">Beri Free' .
 			'</button>';
 
-			$tombol = '<button onclick=\"gantistatus(' . $datane->id . ')\" id=\"thumbnail\" ' .
-				'type=\"button\">Aktif/Non</button>' .
-				'<button onclick=\"window.open(\'' . base_url() . 'channel/sekolah/ch' . $datane->npsn . '\',\'_blank\')\" type=\"button\">Buka' .
-				'</button>'.$tombolfree;
+			// $tombol = '<button onclick=\"gantistatus(' . $datane->id . ')\" id=\"thumbnail\" ' .
+			// 	'type=\"button\">Aktif/Non</button>' .
+			// 	'<button onclick=\"window.open(\'' . base_url() . 'channel/sekolah/ch' . $datane->npsn . '\',\'_blank\')\" type=\"button\">Buka' .
+			// 	'</button>'.$tombolfree;
+			$tombol = $tombolfree;
 			
 
 			$stratane=$stratasekolah[$datane->strata_sekolah];
@@ -131,8 +132,8 @@ $stratasekolah = Array('-', 'Lite', 'Pro', 'Premium','','','','Free Lite','Free 
 				"\", \"" . $datane->first_name . " " . $datane->last_name .
 				"\", \"" . $datane->hp .
 				"\", \"" . $datane->email .
-				// "\", \"" . $status .
-				// "\", \"" . $tombol . 
+				"\", \"" . $tstrata .
+				"\", \"" . $tombol . 
 				"\"]);\n\r";
 		}
 		?>
